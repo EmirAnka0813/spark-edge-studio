@@ -5,7 +5,6 @@
   <title>Spark Ad Studio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Basit ama şık stil -->
   <style>
     :root {
       --bg: #050816;
@@ -538,7 +537,6 @@
       gap: 10px;
       flex-wrap: wrap;
     }
-
   </style>
 </head>
 <body>
@@ -584,7 +582,7 @@
             görüp takip edebiliyorsun.
           </p>
           <div class="pill-row">
-            <span class="pill">🎯 Hedef: 13–14 yaş odaklı yaratıcı içerikler</span>
+            <span class="pill">🎯 13–14 yaş odaklı kreatif içerikler</span>
             <span class="pill">🏟 Kulüpler & markalar</span>
             <span class="pill">💬 Yöneticiyle doğrudan mesaj</span>
           </div>
@@ -607,7 +605,7 @@
       <div class="auth-wrapper">
         <div class="auth-title">Hesabına giriş yap veya yeni bir hesap oluştur</div>
         <div class="auth-sub">
-          Yönetici girişi için kullanıcı adı: <b>admin</b>, şifre: <b>spark123</b>.
+          Hesabınla giriş yapabilir veya yeni bir üyelik oluşturup stüdyoyu kullanmaya başlayabilirsin.
         </div>
         <div class="card">
           <div class="auth-tabs">
@@ -618,7 +616,7 @@
           <div id="auth-login">
             <div class="field">
               <label for="login-email">E-posta veya kullanıcı adı</label>
-              <input id="login-email" type="text" placeholder="ör: seninmailin@mail.com veya admin" />
+              <input id="login-email" type="text" placeholder="ör: seninmailin@mail.com" />
             </div>
             <div class="field">
               <label for="login-pass">Şifre</label>
@@ -660,7 +658,7 @@
       <div class="notif-list" id="notif-list"></div>
     </section>
 
-    <!-- STÜDYO: PROFİL + REKLAM İSTEĞİ + MESAJ -->
+    <!-- STÜDYO -->
     <section class="screen" id="screen-studio">
       <h2 class="section-title">Stüdyo</h2>
       <p class="section-sub">
@@ -688,7 +686,7 @@
           </div>
           <div class="field">
             <label for="ad-desc">Detay</label>
-            <textarea id="ad-desc" placeholder="Hedef kitle, platform (Instagram, YouTube), tarz (komik, ciddi, vs.)"></textarea>
+            <textarea id="ad-desc" placeholder="Hedef kitle, platform (Instagram, YouTube), tarz (komik, ciddi, vb.)"></textarea>
           </div>
           <button class="primary-btn btn-full" id="btn-send-ad">Reklam İsteğini Gönder</button>
           <div class="status-text" id="status-ad"></div>
@@ -780,11 +778,9 @@
 <footer>
   <div class="container row">
     <span>© <span id="year"></span> Spark Ad Studio</span>
-    <span style="font-size:11px;">Yönetici girişi: admin / spark123</span>
   </div>
 </footer>
 
-<!-- FIREBASE + APP LOGIC -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
   import {
@@ -797,8 +793,9 @@
     updateDoc
   } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
+  // Bu config SENİN Firebase projen:
   const firebaseConfig = {
-    apiKey: "AIzaSyDc6kmOfcRwWLFxPAKOqtB5w_QJkTdHqh8",
+    apiKey: "AIzaSyDc6kmOfcRwWLFxPAK0qtB5w_QJkTdHqh8",
     authDomain: "spark-ad-studio.firebaseapp.com",
     projectId: "spark-ad-studio",
     storageBucket: "spark-ad-studio.firebasestorage.app",
@@ -943,43 +940,48 @@
       return;
     }
 
-    const usersRef = collection(db, "users");
-    const snap = await getDocs(usersRef);
-    let exists = false;
-    snap.forEach(d => {
-      const u = d.data();
-      if (u.email === email) exists = true;
-    });
-    if (exists) {
-      statusRegister.textContent = "Bu e-posta zaten kayıtlı.";
-      return;
+    try {
+      const usersRef = collection(db, "users");
+      const snap = await getDocs(usersRef);
+      let exists = false;
+      snap.forEach(d => {
+        const u = d.data();
+        if (u.email === email) exists = true;
+      });
+      if (exists) {
+        statusRegister.textContent = "Bu e-posta zaten kayıtlı.";
+        return;
+      }
+
+      const now = new Date().toLocaleString("tr-TR");
+      const docRef = await addDoc(usersRef, {
+        name,
+        email,
+        pass,
+        role: "user",
+        createdAt: now,
+        lastLogin: now,
+      });
+
+      currentUser = {
+        id: docRef.id,
+        name,
+        email,
+        role: "user",
+        createdAt: now,
+        lastLogin: now,
+      };
+      localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
+      statusRegister.textContent = "";
+      updateHeaderState();
+      welcomeText.textContent = `Hoş geldin, ${currentUser.name} 👋`;
+      renderProfile();
+      loadNotificationsForUser();
+      setActiveScreen("main");
+    } catch (err) {
+      console.error(err);
+      statusRegister.textContent = "Kayıt sırasında bir hata oluştu (Rules ayarlarını kontrol et).";
     }
-
-    const now = new Date().toLocaleString("tr-TR");
-    const docRef = await addDoc(usersRef, {
-      name,
-      email,
-      pass,
-      role: "user",
-      createdAt: now,
-      lastLogin: now,
-    });
-
-    currentUser = {
-      id: docRef.id,
-      name,
-      email,
-      role: "user",
-      createdAt: now,
-      lastLogin: now,
-    };
-    localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
-    statusRegister.textContent = "";
-    updateHeaderState();
-    welcomeText.textContent = `Hoş geldin, ${currentUser.name} 👋`;
-    renderProfile();
-    loadNotificationsForUser();
-    setActiveScreen("main");
   });
 
   document.getElementById("btn-login").addEventListener("click", async () => {
@@ -992,6 +994,7 @@
       return;
     }
 
+    // Gizli Yönetici girişi (ekranda yazmıyoruz, sadece sen biliyorsun)
     if (loginVal === "admin" && pass === "spark123") {
       currentUser = {
         id: "ADMIN",
@@ -1006,39 +1009,44 @@
       return;
     }
 
-    const usersRef = collection(db, "users");
-    const snap = await getDocs(usersRef);
-    let found = null;
-    snap.forEach(d => {
-      const u = d.data();
-      if ((u.email === loginVal || u.name === loginVal) && u.pass === pass) {
-        found = { id: d.id, ...u };
-      }
-    });
-
-    if (!found) {
-      statusLogin.textContent = "Kullanıcı bulunamadı veya şifre hatalı.";
-      return;
-    }
-
-    const now = new Date().toLocaleString("tr-TR");
     try {
-      await updateDoc(doc(db, "users", found.id), { lastLogin: now });
-    } catch (e) {}
-    found.lastLogin = now;
+      const usersRef = collection(db, "users");
+      const snap = await getDocs(usersRef);
+      let found = null;
+      snap.forEach(d => {
+        const u = d.data();
+        if ((u.email === loginVal || u.name === loginVal) && u.pass === pass) {
+          found = { id: d.id, ...u };
+        }
+      });
 
-    currentUser = found;
-    localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
-    statusLogin.textContent = "";
-    updateHeaderState();
+      if (!found) {
+        statusLogin.textContent = "Kullanıcı bulunamadı veya şifre hatalı.";
+        return;
+      }
 
-    if (currentUser.role === "admin") {
-      setActiveScreen("admin");
-    } else {
-      welcomeText.textContent = `Hoş geldin, ${currentUser.name} 👋`;
-      renderProfile();
-      loadNotificationsForUser();
-      setActiveScreen("main");
+      const now = new Date().toLocaleString("tr-TR");
+      try {
+        await updateDoc(doc(db, "users", found.id), { lastLogin: now });
+      } catch (e) {}
+      found.lastLogin = now;
+
+      currentUser = found;
+      localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
+      statusLogin.textContent = "";
+      updateHeaderState();
+
+      if (currentUser.role === "admin") {
+        setActiveScreen("admin");
+      } else {
+        welcomeText.textContent = `Hoş geldin, ${currentUser.name} 👋`;
+        renderProfile();
+        loadNotificationsForUser();
+        setActiveScreen("main");
+      }
+    } catch (err) {
+      console.error(err);
+      statusLogin.textContent = "Sunucuya bağlanırken hata oluştu (muhtemelen Firestore Rules engelliyor).";
     }
   });
 
@@ -1054,41 +1062,46 @@
 
   async function loadNotificationsForUser() {
     if (!currentUser || currentUser.role !== "user") return;
-    const reqRef = collection(db, "requests");
-    const snap = await getDocs(reqRef);
-    const my = [];
-    snap.forEach(d => {
-      const r = d.data();
-      if (r.userEmail === currentUser.email) my.push(r);
-    });
+    try {
+      const reqRef = collection(db, "requests");
+      const snap = await getDocs(reqRef);
+      const my = [];
+      snap.forEach(d => {
+        const r = d.data();
+        if (r.userEmail === currentUser.email) my.push(r);
+      });
 
-    if (!my.length) {
-      notifList.innerHTML = `<div>Henüz reklam isteğin yok. Stüdyo ekranından yeni bir istek gönderebilirsin.</div>`;
-      return;
-    }
-
-    my.sort((a, b) => (a.createdAt || "").localeCompare(b.createdAt || ""));
-    notifList.innerHTML = my.map(r => {
-      let cls = "s-pending";
-      let txt = "Beklemede";
-      if (r.status === "approved") {
-        cls = "s-approved";
-        txt = "Onaylandı";
-      } else if (r.status === "rejected") {
-        cls = "s-rejected";
-        txt = "Reddedildi";
+      if (!my.length) {
+        notifList.innerHTML = `<div>Henüz reklam isteğin yok. Stüdyo ekranından yeni bir istek gönderebilirsin.</div>`;
+        return;
       }
-      return `
-        <div class="notif-item">
-          <div class="notif-meta">
-            ${r.createdAt || ""} – <strong>${r.brand}</strong> (${r.product})
-            <span class="pill-status ${cls}">${txt}</span>
+
+      my.sort((a, b) => (a.createdAt || "").localeCompare(b.createdAt || ""));
+      notifList.innerHTML = my.map(r => {
+        let cls = "s-pending";
+        let txt = "Beklemede";
+        if (r.status === "approved") {
+          cls = "s-approved";
+          txt = "Onaylandı";
+        } else if (r.status === "rejected") {
+          cls = "s-rejected";
+          txt = "Reddedildi";
+        }
+        return `
+          <div class="notif-item">
+            <div class="notif-meta">
+              ${r.createdAt || ""} – <strong>${r.brand}</strong> (${r.product})
+              <span class="pill-status ${cls}">${txt}</span>
+            </div>
+            <div>${r.details}</div>
+            ${r.adminNote ? `<div style="font-size:12px; margin-top:4px;">Yönetici notu: ${r.adminNote}</div>` : ""}
           </div>
-          <div>${r.details}</div>
-          ${r.adminNote ? `<div style="font-size:12px; margin-top:4px;">Yönetici notu: ${r.adminNote}</div>` : ""}
-        </div>
-      `;
-    }).join("");
+        `;
+      }).join("");
+    } catch (err) {
+      console.error(err);
+      notifList.innerHTML = "<div>Bildirimler yüklenirken hata oluştu.</div>";
+    }
   }
 
   document.getElementById("btn-send-ad").addEventListener("click", async () => {
@@ -1106,23 +1119,28 @@
       return;
     }
 
-    const now = new Date().toLocaleString("tr-TR");
-    await addDoc(collection(db, "requests"), {
-      userName: currentUser.name,
-      userEmail: currentUser.email,
-      brand,
-      product,
-      details: desc,
-      status: "pending",
-      adminNote: "",
-      createdAt: now,
-    });
+    try {
+      const now = new Date().toLocaleString("tr-TR");
+      await addDoc(collection(db, "requests"), {
+        userName: currentUser.name,
+        userEmail: currentUser.email,
+        brand,
+        product,
+        details: desc,
+        status: "pending",
+        adminNote: "",
+        createdAt: now,
+      });
 
-    document.getElementById("ad-brand").value = "";
-    document.getElementById("ad-product").value = "";
-    document.getElementById("ad-desc").value = "";
-    statusAd.textContent = "Reklam isteğin Yöneticiye gönderildi.";
-    loadNotificationsForUser();
+      document.getElementById("ad-brand").value = "";
+      document.getElementById("ad-product").value = "";
+      document.getElementById("ad-desc").value = "";
+      statusAd.textContent = "Reklam isteğin Yöneticiye gönderildi.";
+      loadNotificationsForUser();
+    } catch (err) {
+      console.error(err);
+      statusAd.textContent = "Reklam isteği gönderilirken hata oluştu.";
+    }
   });
 
   document.getElementById("btn-send-msg").addEventListener("click", async () => {
@@ -1137,17 +1155,22 @@
       statusMsg.textContent = "Konu ve mesaj dolu olmalı.";
       return;
     }
-    const now = new Date().toLocaleString("tr-TR");
-    await addDoc(collection(db, "messages"), {
-      fromName: currentUser.name,
-      fromEmail: currentUser.email,
-      subject,
-      body,
-      createdAt: now,
-    });
-    document.getElementById("msg-subject").value = "";
-    document.getElementById("msg-body").value = "";
-    statusMsg.textContent = "Mesajın Yöneticiye iletildi.";
+    try {
+      const now = new Date().toLocaleString("tr-TR");
+      await addDoc(collection(db, "messages"), {
+        fromName: currentUser.name,
+        fromEmail: currentUser.email,
+        subject,
+        body,
+        createdAt: now,
+      });
+      document.getElementById("msg-subject").value = "";
+      document.getElementById("msg-body").value = "";
+      statusMsg.textContent = "Mesajın Yöneticiye iletildi.";
+    } catch (err) {
+      console.error(err);
+      statusMsg.textContent = "Mesaj gönderilirken hata oluştu.";
+    }
   });
 
   onSnapshot(collection(db, "requests"), (snap) => {
@@ -1179,6 +1202,7 @@
       let txt = "Beklemede";
       if (r.status === "approved") { cls = "s-approved"; txt = "Onaylandı"; }
       else if (r.status === "rejected") { cls = "s-rejected"; txt = "Reddedildi"; }
+      const approvedLocked = r.status === "approved";
       return `
         <div class="admin-item">
           <div class="admin-meta">
@@ -1190,9 +1214,10 @@
           ${r.adminNote ? `<div>Yönetici notu: ${r.adminNote}</div>` : ""}
           <div class="admin-actions">
             <input type="text" id="note-${r.id}" placeholder="Kısa not (opsiyonel)" />
-            <button class="btn-small btn-approve" data-id="${r.id}" data-status="approved">Onayla</button>
-            <button class="btn-small btn-reject" data-id="${r.id}" data-status="rejected">Reddet</button>
+            <button class="btn-small btn-approve" data-id="${r.id}" data-status="approved" ${approvedLocked ? "disabled" : ""}>Onayla</button>
+            <button class="btn-small btn-reject" data-id="${r.id}" data-status="rejected" ${approvedLocked ? "disabled" : ""}>Reddet</button>
           </div>
+          ${approvedLocked ? `<div style="font-size:11px;color:#4ade80;margin-top:3px;">Bu istek onaylandı, tekrar reddedilemez.</div>` : ""}
         </div>
       `;
     }).join("");
@@ -1204,17 +1229,25 @@
         const newStatus = btn.dataset.status;
         const noteInput = document.getElementById(`note-${id}`);
         const adminNote = noteInput ? noteInput.value.trim() : "";
-        const ref = doc(db, "requests", id);
-        const snap = await getDocs(collection(db, "requests"));
-        let current = null;
-        snap.forEach(d => {
-          if (d.id === id) current = d.data();
-        });
-        if (current && current.status === "approved" && newStatus === "rejected") {
-          alert("Onaylanan bir istek reddedilemez.");
-          return;
+        try {
+          const ref = doc(db, "requests", id);
+
+          // Onaylanmış isteği reddetme koruması:
+          const allSnap = await getDocs(collection(db, "requests"));
+          let current = null;
+          allSnap.forEach(d => {
+            if (d.id === id) current = d.data();
+          });
+          if (current && current.status === "approved" && newStatus === "rejected") {
+            alert("Onaylanan bir istek reddedilemez.");
+            return;
+          }
+
+          await updateDoc(ref, { status: newStatus, adminNote });
+        } catch (err) {
+          console.error(err);
+          alert("Durum güncellenirken hata oluştu.");
         }
-        await updateDoc(ref, { status: newStatus, adminNote });
       });
     });
   }
