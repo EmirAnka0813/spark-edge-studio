@@ -1,1145 +1,353 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Spark Ad Studio | Reklam Uygulaması</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
-
-  <style>
-    :root {
-      --bg: #050816;
-      --bg-soft: #0b1020;
-      --accent: #ff7a3c;
-      --accent-soft: #ffd3b8;
-      --text: #f5f5f5;
-      --muted: #b3b7c9;
-      --card: #11182b;
-      --radius-xl: 18px;
-      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.45);
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont,
-        "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #11182b 0, #050816 55%, #04030a 100%);
-      color: var(--text);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    a { color: inherit; text-decoration: none; }
-    img { max-width: 100%; display: block; }
-
-    .container {
-      width: min(1120px, 92vw);
-      margin: 0 auto;
-    }
-
-    .hidden { display: none !important; }
-
-    /* HEADER */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      backdrop-filter: blur(18px);
-      background: linear-gradient(to bottom, rgba(5, 8, 22, 0.94), transparent);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 0;
-      gap: 12px;
-    }
-
-    .nav-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .nav-logo-img {
-      width: 40px;
-      height: 40px;
-      border-radius: 14px;
-      object-fit: contain;
-      background: #fff;
-      padding: 4px;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
-    }
-
-    .nav-title {
-      font-weight: 600;
-      font-size: 18px;
-      letter-spacing: 0.03em;
-    }
-
-    .nav-sub {
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 14px;
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .nav-link-btn {
-      background: transparent;
-      border: none;
-      color: var(--muted);
-      cursor: pointer;
-      padding: 4px 6px;
-    }
-
-    .nav-link-btn:hover { color: var(--accent); }
-
-    .nav-cta {
-      padding: 7px 14px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #ff7a3c, #ffb347);
-      color: #111;
-      font-size: 13px;
-      font-weight: 600;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55);
-      border: none;
-      cursor: pointer;
-      transition: transform 0.12s ease, box-shadow 0.12s ease;
-    }
-
-    .nav-cta:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6);
-    }
-
-    main { padding-bottom: 40px; }
-    .screen { padding: 40px 0; }
-
-    /* INFO / HERO */
-    .info-layout {
-      display: grid;
-      grid-template-columns: minmax(0,1.2fr) minmax(0,1fr);
-      gap: 28px;
-      align-items: center;
-    }
-
-    .hero-kicker {
-      font-size: 11px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--accent-soft);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: var(--accent);
-    }
-
-    h1 {
-      font-size: clamp(30px, 4.8vw, 40px);
-      font-weight: 700;
-      line-height: 1.1;
-      margin-bottom: 10px;
-    }
-
-    h1 span {
-      background: linear-gradient(135deg, #ffb347, #ff7a3c, #ff4b6a);
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .lead {
-      font-size: 14px;
-      color: var(--muted);
-      max-width: 520px;
-      margin-bottom: 18px;
-    }
-
-    .card {
-      background: var(--card);
-      border-radius: var(--radius-xl);
-      padding: 16px 16px 14px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.5);
-      font-size: 13px;
-    }
-
-    .card h3 { font-size: 15px; margin-bottom: 6px; }
-
-    .info-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin: 10px 0 18px;
-      font-size: 11px;
-    }
-
-    .info-badge {
-      padding: 4px 9px;
-      border-radius: 999px;
-      background: rgba(15,23,42,0.9);
-      border: 1px solid rgba(148,163,184,0.4);
-      color: var(--accent-soft);
-    }
-
-    .info-btn {
-      padding: 10px 18px;
-      border-radius: 999px;
-      border: none;
-      background: linear-gradient(135deg, #ff7a3c, #ff4b6a);
-      color: #111;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: var(--shadow-soft);
-      margin-top: 10px;
-    }
-
-    .info-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
-    }
-
-    /* AUTH */
-    .auth-wrapper {
-      max-width: 420px;
-      margin: 0 auto;
-    }
-
-    .auth-title {
-      text-align: center;
-      font-size: 20px;
-      margin-bottom: 10px;
-    }
-
-    .auth-sub {
-      text-align: center;
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 20px;
-    }
-
-    .auth-card {
-      background: var(--card);
-      border-radius: 16px;
-      padding: 18px 16px 16px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .auth-tabs {
-      display: flex;
-      margin-bottom: 14px;
-      border-radius: 999px;
-      background: rgba(5,8,22,0.9);
-      padding: 3px;
-    }
-
-    .auth-tab {
-      flex: 1;
-      text-align: center;
-      padding: 6px 0;
-      font-size: 13px;
-      border-radius: 999px;
-      cursor: pointer;
-      color: var(--muted);
-    }
-
-    .auth-tab.active {
-      background: linear-gradient(135deg, #ff7a3c, #ffb347);
-      color: #111;
-      font-weight: 600;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin-bottom: 10px;
-    }
-
-    .field label {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .field input {
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      padding: 8px 10px;
-      background: rgba(5, 8, 22, 0.8);
-      color: var(--text);
-      font-size: 13px;
-      outline: none;
-    }
-
-    .field input::placeholder {
-      color: #666c85;
-    }
-
-    .btn-primary {
-      width: 100%;
-      padding: 9px 14px;
-      border-radius: 999px;
-      border: none;
-      background: linear-gradient(135deg, #ff7a3c, #ff4b6a);
-      color: #111;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: var(--shadow-soft);
-      margin-top: 4px;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
-    }
-
-    .auth-status {
-      font-size: 12px;
-      color: var(--accent-soft);
-      min-height: 16px;
-      margin-top: 8px;
-    }
-
-    /* MAIN */
-    .welcome {
-      font-size: 14px;
-      color: var(--accent-soft);
-      margin-bottom: 10px;
-    }
-
-    .section-title {
-      font-size: 22px;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    .section-desc {
-      font-size: 14px;
-      color: var(--muted);
-      margin-bottom: 18px;
-    }
-
-    .notification-list {
-      margin-top: 8px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(11,16,32,0.95);
-      padding: 10px;
-      font-size: 13px;
-    }
-
-    .notif-item {
-      padding: 8px 6px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .notif-item:last-child { border-bottom: none; }
-
-    .notif-meta {
-      font-size: 11px;
-      color: var(--accent-soft);
-      margin-bottom: 2px;
-    }
-
-    .status-pill {
-      display: inline-block;
-      padding: 2px 7px;
-      border-radius: 999px;
-      font-size: 10px;
-      margin-left: 6px;
-    }
-
-    .status-pending {
-      background: rgba(234,179,8,0.15);
-      color: #facc15;
-    }
-
-    .status-approved {
-      background: rgba(22,163,74,0.2);
-      color: #4ade80;
-    }
-
-    .status-rejected {
-      background: rgba(239,68,68,0.18);
-      color: #fca5a5;
-    }
-
-    /* SETTINGS */
-    .settings-grid {
-      display: grid;
-      grid-template-columns: minmax(0,1.1fr) minmax(0,1.1fr);
-      gap: 18px;
-    }
-
-    .textarea {
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      padding: 8px 10px;
-      background: rgba(5, 8, 22, 0.8);
-      color: var(--text);
-      font-size: 13px;
-      outline: none;
-      min-height: 90px;
-      resize: vertical;
-    }
-
-    /* ADMIN */
-    .admin-card {
-      background: rgba(11,16,32,0.95);
-      border-radius: 18px;
-      padding: 16px;
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 14px 32px rgba(0,0,0,0.5);
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 18px;
-    }
-
-    .admin-list {
-      margin-top: 8px;
-      max-height: 260px;
-      overflow-y: auto;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.06);
-      padding: 8px;
-      background: rgba(4,6,18,0.9);
-      font-size: 12px;
-    }
-
-    .submission-item {
-      padding: 6px 4px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .submission-item:last-child { border-bottom: none; }
-
-    .submission-meta {
-      font-size: 11px;
-      color: var(--accent-soft);
-      margin-bottom: 2px;
-    }
-
-    .admin-actions {
-      margin-top: 4px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      align-items: center;
-    }
-
-    .admin-actions input {
-      border-radius: 999px;
-      padding: 4px 8px;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(5,8,22,0.8);
-      color: var(--text);
-      font-size: 11px;
-      flex: 1;
-      min-width: 140px;
-    }
-
-    .btn-approve,
-    .btn-reject {
-      padding: 4px 9px;
-      border-radius: 999px;
-      border: none;
-      font-size: 11px;
-      cursor: pointer;
-    }
-
-    .btn-approve {
-      background: rgba(22,163,74,0.9);
-      color: #e5f9ed;
-    }
-
-    .btn-reject {
-      background: rgba(239,68,68,0.9);
-      color: #fee2e2;
-    }
-
-    footer {
-      padding: 18px 0 22px;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    footer .row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    footer a { color: var(--accent-soft); font-size: 12px; }
-
-    @media (max-width: 820px) {
-      .info-layout { grid-template-columns: 1fr; }
-      .settings-grid { grid-template-columns: 1fr; }
-    }
-
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Spark Ad Studio</title>
+
+<style>
+body {
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#111;
+    color:white;
+}
+
+/* ÜST MENÜ */
+header {
+    background:#222;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+header h1 {
+    font-size:20px;
+    margin:0;
+}
+header button {
+    background:#ffcc00;
+    border:none;
+    padding:10px 15px;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+/* SAYFA KUTUSU */
+.page {
+    display:none;
+    padding:20px;
+}
+
+/* INPUT */
+input,select,textarea {
+    width:100%;
+    padding:10px;
+    margin-top:8px;
+    margin-bottom:15px;
+    border-radius:6px;
+    border:none;
+    font-size:16px;
+}
+
+/* FORM KUTUSU */
+.box {
+    background:#1c1c1c;
+    padding:20px;
+    border-radius:8px;
+    margin-top:20px;
+}
+
+button.primary {
+    width:100%;
+    background:#ffcc00;
+    border:none;
+    padding:12px;
+    border-radius:6px;
+    font-weight:bold;
+    cursor:pointer;
+    font-size:17px;
+}
+
+/* ANA MENÜ */
+nav {
+    display:flex;
+    justify-content:space-around;
+    background:#222;
+    padding:10px 0;
+}
+nav button {
+    background:none;
+    border:none;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+/* ADMİN MASA */
+table {
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
+td, th {
+    border:1px solid #555;
+    padding:10px;
+}
+
+/* TEMA RENKLERİ */
+.light {
+    background:white;
+    color:black;
+}
+.light header {
+    background:#eee;
+}
+.light nav {
+    background:#ddd;
+}
+.light .box {
+    background:#f3f3f3;
+}
+.light input, .light textarea {
+    background:white;
+    color:black;
+}
+
+</style>
 </head>
 
 <body>
-<header id="top">
-  <div class="container nav">
-    <div class="nav-left">
-      <img src="spark-logo.png" alt="Spark Ad Studio" class="nav-logo-img" />
-      <div>
-        <div class="nav-title">Spark Ad Studio</div>
-        <div class="nav-sub">Kulüpler & Markalar İçin Reklam</div>
-      </div>
-    </div>
-    <div class="nav-right">
-      <div class="nav-links hidden" id="navLinks">
-        <button class="nav-link-btn" onclick="navigateMain()">Ana Sayfa</button>
-        <button class="nav-link-btn" onclick="navigateSettings()">Stüdyo & Ayarlar</button>
-      </div>
-      <button class="nav-cta" id="mainActionBtn">Üye Ol / Giriş Yap</button>
-    </div>
-  </div>
+
+<header>
+    <h1>Spark Ad Studio</h1>
+    <button id="loginMenuBtn">Üye Ol / Giriş Yap</button>
 </header>
 
-<main>
-  <!-- BİLGİ SAYFASI -->
-  <div id="screen-info" class="screen">
-    <div class="container info-layout">
-      <div>
-        <div class="hero-kicker">
-          <span class="dot"></span> KULÜPLER VE MARKALAR İÇİN MİNİ STÜDYO
-        </div>
-        <h1><span>Spark Ad Studio</span> ile akılda kalıcı reklamlar üret.</h1>
-        <p class="lead">
-          Spark Ad Studio, kulüpler ve markalar için genç bakış açısıyla reklam
-          fikirleri üreten mini bir dijital stüdyo. Üye olup giriş yaptıktan sonra,
-          reklam isteklerini gönderip Yönetici’nin geri dönüşlerini bildirimler
-          kısmından takip edebilirsin.
+<nav id="mainMenu" style="display:none;">
+    <button onclick="showPage('home')">Ana Sayfa</button>
+    <button onclick="showPage('createAd')">Reklam İste</button>
+    <button onclick="showPage('messages')">Mesaj Gönder</button>
+    <button onclick="showPage('settings')">Ayarlar</button>
+    <button onclick="showPage('admin')" id="adminBtn" style="display:none;">Yönetici</button>
+</nav>
+
+<!-- GİRİŞ SAYFASI -->
+<div class="page" id="loginPage" style="display:block;">
+    <div class="box">
+        <h2>Giriş Yap</h2>
+        <input id="loginEmail" type="email" placeholder="E-posta">
+        <input id="loginPass" type="password" placeholder="Şifre">
+        <button class="primary" onclick="login()">Giriş Yap</button>
+
+        <h3>Veya Üye Ol</h3>
+        <input id="registerEmail" type="email" placeholder="E-posta">
+        <input id="registerPass" type="password" placeholder="Şifre">
+        <input id="registerName" type="text" placeholder="Adınız">
+        <button class="primary" onclick="register()">Üye Ol</button>
+    </div>
+
+    <div class="box">
+        <h2>Spark Ad Studio Nedir?</h2>
+        <p>
+            Bu platform kulüpler ve markalar için reklam içerikleri üretir.  
+            Üyeler reklam isteği gönderebilir, mesaj yazabilir ve bildirimleri görebilir.
         </p>
-        <div class="info-badges">
-          <span class="info-badge">🎮 Genç odaklı kreatif fikirler</span>
-          <span class="info-badge">🏟 Kulüpler ve markalar için</span>
-          <span class="info-badge">✉︎ Yöneticiye direkt mesaj</span>
-        </div>
-        <button class="info-btn" onclick="showScreen('auth')">Üye Ol / Giriş Yap</button>
-      </div>
-
-      <div class="card">
-        <h3>Bu stüdyo nasıl çalışıyor?</h3>
-        <p style="font-size:13px;color:var(--muted);margin-bottom:8px;">
-          Üye olduktan sonra:
-        </p>
-        <ul style="font-size:13px;color:var(--muted);margin-left:18px;">
-          <li>“Stüdyo & Ayarlar” kısmından reklam isteği gönderirsin,</li>
-          <li>Yönetici isteğini inceler, onaylar veya reddeder,</li>
-          <li>Sonuçları ana sayfadaki bildirimlerden takip edersin.</li>
-        </ul>
-        <p style="font-size:12px;color:var(--accent-soft);margin-top:10px;">
-          Telefon: <strong>0534 969 30 20</strong>
-        </p>
-      </div>
     </div>
-  </div>
+</div>
 
-  <!-- GİRİŞ / ÜYE OL -->
-  <div id="screen-auth" class="screen hidden">
-    <div class="container auth-wrapper">
-      <div class="auth-title">Hesabına giriş yap veya üye ol</div>
-      <div class="auth-sub">
-        Üyelik sonrası ana sayfaya düşersin ve reklam isteklerini takip edebilirsin.
-      </div>
+<!-- ANA SAYFA -->
+<div class="page" id="home">
+    <h2>Bildirimler</h2>
+    <div id="notifications"></div>
+</div>
 
-      <div class="auth-card">
-        <div class="auth-tabs">
-          <div id="tab-login" class="auth-tab active" onclick="switchAuthTab('login')">Giriş Yap</div>
-          <div id="tab-register" class="auth-tab" onclick="switchAuthTab('register')">Üye Ol</div>
-        </div>
+<!-- REKLAM İSTE -->
+<div class="page" id="createAd">
+    <h2>Reklam İsteği Gönder</h2>
+    <textarea id="adText" placeholder="Reklam detayını yaz..."></textarea>
+    <button class="primary" onclick="sendAd()">Gönder</button>
+</div>
 
-        <!-- GİRİŞ FORMU -->
-        <div id="login-form">
-          <div class="field">
-            <label for="loginUsername">Kullanıcı adı veya email</label>
-            <input id="loginUsername" type="text" placeholder="kullanıcı adı veya email" />
-          </div>
-          <div class="field">
-            <label for="loginPass">Şifre</label>
-            <input id="loginPass" type="password" placeholder="Şifren" />
-          </div>
-          <button class="btn-primary" onclick="loginUser()">Giriş Yap</button>
-          <div class="auth-status" id="authStatus"></div>
-        </div>
+<!-- MESAJ GÖNDER -->
+<div class="page" id="messages">
+    <h2>Yöneticiye Mesaj Gönder</h2>
+    <textarea id="msgText" placeholder="Mesajınızı yazın..."></textarea>
+    <button class="primary" onclick="sendMessage()">Gönder</button>
+</div>
 
-        <!-- ÜYE OL FORMU -->
-        <div id="register-form" class="hidden">
-          <div class="field">
-            <label for="signupUsername">Kullanıcı adı</label>
-            <input id="signupUsername" type="text" placeholder="Örn: emir07" />
-          </div>
-          <div class="field">
-            <label for="signupEmail">E-posta</label>
-            <input id="signupEmail" type="email" placeholder="ornek@mail.com" />
-          </div>
-          <div class="field">
-            <label for="signupPass">Şifre</label>
-            <input id="signupPass" type="password" placeholder="Bir şifre belirle" />
-          </div>
-          <button class="btn-primary" onclick="signupUser()">Üye Ol ve Ana Sayfaya Geç</button>
-          <div class="auth-status" id="authStatusRegister"></div>
-        </div>
-      </div>
-    </div>
-  </div>
+<!-- AYARLAR -->
+<div class="page" id="settings">
+    <h2>Tema Seç</h2>
+    <select id="themeSelect" onchange="changeTheme()">
+        <option value="dark">Koyu Tema</option>
+        <option value="light">Açık Tema</option>
+    </select>
+</div>
 
-  <!-- ANA SAYFA (BİLDİRİMLER) -->
-  <div id="screen-main" class="screen hidden">
-    <div class="container">
-      <div class="welcome">Hoş geldin, <span id="welcomeUser"></span> 👋</div>
-      <h2 class="section-title">Bildirimler</h2>
-      <p class="section-desc">
-        Gönderdiğin reklam isteklerinin onay / red durumlarını buradan takip edebilirsin.
-      </p>
-      <div class="notification-list" id="notifList"></div>
-    </div>
-  </div>
+<!-- ADMİN PANEL -->
+<div class="page" id="admin">
+    <h2>Yönetici Paneli</h2>
 
-  <!-- STÜDYO & AYARLAR -->
-  <div id="screen-settings" class="screen hidden">
-    <div class="container">
-      <div class="welcome">Stüdyo & Ayarlar</div>
-      <h2 class="section-title">Profil ve Reklam İstekleri</h2>
-      <p class="section-desc">
-        Buradan profilini görebilir, reklam isteği gönderebilir ve Yöneticiye mesaj atabilirsin.
-      </p>
+    <h3>Gelen Reklam İstekleri</h3>
+    <table>
+        <thead><tr><th>Kullanıcı</th><th>İstek</th><th>Onay</th></tr></thead>
+        <tbody id="adminRequests"></tbody>
+    </table>
 
-      <div class="settings-grid">
-        <!-- Profil -->
-        <div class="card">
-          <h3>Profil Bilgilerin</h3>
-          <p id="profileInfo" style="font-size:13px;color:var(--muted);margin-top:8px;"></p>
-        </div>
+    <h3>Mesajlar</h3>
+    <table>
+        <thead><tr><th>Kimden</th><th>Mesaj</th></tr></thead>
+        <tbody id="adminMessages"></tbody>
+    </table>
 
-        <!-- Reklam İsteği -->
-        <div class="card">
-          <h3>Reklam İsteği Gönder</h3>
-          <p style="font-size:12px;color:var(--muted);">
-            Hangi kulüp/marka için nasıl bir reklam istediğini kısaca anlat.
-          </p>
-          <div class="field">
-            <label for="reqBrand">Marka / Kulüp adı</label>
-            <input id="reqBrand" type="text" placeholder="Örn: X Spor Kulübü" />
-          </div>
-          <div class="field">
-            <label for="reqProduct">Ürün / kampanya</label>
-            <input id="reqProduct" type="text" placeholder="Örn: Yeni forma tanıtımı" />
-          </div>
-          <div class="field">
-            <label for="reqDesc">Detay</label>
-            <textarea id="reqDesc" class="textarea" placeholder="Hedef kitle, tarz, platform vb."></textarea>
-          </div>
-          <button class="btn-primary" style="width:auto;" onclick="handleAdRequest()">Reklam İsteğini Gönder</button>
-          <div class="auth-status" id="reqStatus"></div>
-        </div>
+    <h3>Üyeler</h3>
+    <div id="userList"></div>
+</div>
 
-        <!-- Yöneticiye Mesaj -->
-        <div class="card">
-          <h3>Yöneticiye Mesaj Gönder</h3>
-          <p style="font-size:12px;color:var(--muted);">
-            Soru, öneri veya proje fikrini buradan Yöneticiye iletebilirsin.
-          </p>
-          <div class="field">
-            <label for="msgSubject">Konu</label>
-            <input id="msgSubject" type="text" placeholder="Kısa başlık" />
-          </div>
-          <div class="field">
-            <label for="msgText">Mesajın</label>
-            <textarea id="msgText" class="textarea" placeholder="Ne söylemek istersin?"></textarea>
-          </div>
-          <button class="btn-primary" style="width:auto;" onclick="handleUserMessage()">Mesajı Gönder</button>
-          <div class="auth-status" id="msgStatus"></div>
-        </div>
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+import { getFirestore, collection, addDoc, onSnapshot, getDocs } 
+from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
-        <!-- İletişim -->
-        <div class="card">
-          <h3>İletişim</h3>
-          <p style="font-size:13px;color:var(--muted);">
-            Telefon: <strong>0534 969 30 20</strong><br />
-            Buradan gönderdiğin tüm istek ve mesajlar Yönetici paneline düşer.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
+const firebaseConfig = {
+    apiKey: "AIzaSyDc6kmOfcRwWLFxPAKOqtB5w_QJkTdHqh8",
+    authDomain: "spark-ad-studio.firebaseapp.com",
+    projectId: "spark-ad-studio",
+    storageBucket: "spark-ad-studio.firebasestorage.app",
+    messagingSenderId: "91249468928",
+    appId: "1:91249468928:web:6661ecd7e1ff1e92c41ae5",
+    measurementId: "G-JW6S3PGH98"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-  <!-- YÖNETİCİ PANELİ -->
-  <div id="screen-admin" class="screen hidden">
-    <div class="container">
-      <div class="welcome">Yönetici paneline hoş geldin 👑</div>
-      <h2 class="section-title">Reklam İstekleri, Mesajlar ve Üyeler</h2>
-      <p class="section-desc">
-        Buradan kullanıcıların reklam isteklerini onaylayabilir veya reddedebilir,
-        gönderilen mesajları ve üye listesini görüntüleyebilirsin.
-      </p>
+let currentUser = null;
 
-      <div class="admin-card">
-        <h3>Reklam İstekleri</h3>
-        <div class="admin-list" id="adminRequests"></div>
-      </div>
+function showPage(id){
+    document.querySelectorAll(".page").forEach(p => p.style.display="none");
+    document.getElementById(id).style.display="block";
+}
 
-      <div class="admin-card">
-        <h3>Kullanıcı Mesajları</h3>
-        <div class="admin-list" id="adminMessages"></div>
-      </div>
+document.getElementById("loginMenuBtn").onclick = () => showPage("loginPage");
+showPage("loginPage");
 
-      <div class="admin-card">
-        <h3>Üyeler</h3>
-        <div class="admin-list" id="adminUsers"></div>
-      </div>
-    </div>
-  </div>
-</main>
+async function register(){
+    const email = registerEmail.value;
+    const pass = registerPass.value;
+    const name = registerName.value;
 
-<footer>
-  <div class="container row">
-    <span>© <span id="year"></span> Spark Ad Studio. Tüm hakları saklıdır.</span>
-    <a href="#top">Yukarı çık ↑</a>
-  </div>
-</footer>
-
-<script>
-  const ADMIN_PASSWORD = "spark123";
-  let currentUser = null;
-
-  document.getElementById("year").textContent = new Date().getFullYear();
-
-  function showScreen(which) {
-    ["info","auth","main","settings","admin"].forEach(id => {
-      const el = document.getElementById("screen-" + id);
-      if (!el) return;
-      el.classList.toggle("hidden", id !== which);
+    await addDoc(collection(db,"users"),{
+        email,pass,name,role:"user"
     });
-  }
 
-  function updateHeader() {
-    const navLinks = document.getElementById("navLinks");
-    const btn = document.getElementById("mainActionBtn");
-    if (currentUser) {
-      navLinks.classList.remove("hidden");
-      btn.textContent = "Çıkış Yap";
-      btn.onclick = logoutUser;
-    } else {
-      navLinks.classList.add("hidden");
-      btn.textContent = "Üye Ol / Giriş Yap";
-      btn.onclick = () => showScreen("auth");
-    }
-  }
+    alert("Kayıt başarılı!");
+}
 
-  function navigateMain() {
-    if (!currentUser) { showScreen("auth"); return; }
-    if (currentUser.role === "admin") {
-      showScreen("admin");
-      renderAdminRequests();
-      renderAdminMessages();
-      renderAdminUsers();
-    } else {
-      showScreen("main");
-      renderNotifications();
-    }
-  }
+async function login(){
+    const email = loginEmail.value;
+    const pass = loginPass.value;
 
-  function navigateSettings() {
-    if (!currentUser) { showScreen("auth"); return; }
-    if (currentUser.role === "admin") {
-      showScreen("admin");
-      renderAdminRequests();
-      renderAdminMessages();
-      renderAdminUsers();
-    } else {
-      showScreen("settings");
-      renderProfile();
-    }
-  }
+    const q = await getDocs(collection(db,"users"));
+    let found = null;
 
-  function switchAuthTab(tab) {
-    const loginForm = document.getElementById("login-form");
-    const registerForm = document.getElementById("register-form");
-    const tabLogin = document.getElementById("tab-login");
-    const tabRegister = document.getElementById("tab-register");
-
-    if (tab === "login") {
-      loginForm.classList.remove("hidden");
-      registerForm.classList.add("hidden");
-      tabLogin.classList.add("active");
-      tabRegister.classList.remove("active");
-    } else {
-      loginForm.classList.add("hidden");
-      registerForm.classList.remove("hidden");
-      tabLogin.classList.remove("active");
-      tabRegister.classList.add("active");
-    }
-  }
-
-  function getUsers() {
-    return JSON.parse(localStorage.getItem("sparkUsers") || "[]");
-  }
-
-  function saveUsers(users) {
-    localStorage.setItem("sparkUsers", JSON.stringify(users));
-  }
-
-  function signupUser() {
-    const username = document.getElementById("signupUsername").value.trim();
-    const email = document.getElementById("signupEmail").value.trim();
-    const pass = document.getElementById("signupPass").value.trim();
-    const status = document.getElementById("authStatusRegister");
-
-    if (!username || !email || !pass) {
-      status.textContent = "Lütfen tüm alanları doldur.";
-      return;
-    }
-
-    let users = getUsers();
-    if (users.find(u => u.username === username || u.email === email)) {
-      status.textContent = "Bu kullanıcı adı veya e-posta zaten kullanılıyor.";
-      return;
-    }
-
-    const now = new Date().toLocaleString("tr-TR");
-    const user = { username, email, pass, role: "user", createdAt: now, lastLogin: now };
-    users.push(user);
-    saveUsers(users);
-
-    currentUser = user;
-    localStorage.setItem("sparkCurrentUser", JSON.stringify(currentUser));
-    document.getElementById("welcomeUser").textContent = currentUser.username;
-    status.textContent = "";
-    updateHeader();
-    renderProfile();
-    renderNotifications();
-    showScreen("main");
-  }
-
-  function loginUser() {
-    const loginVal = document.getElementById("loginUsername").value.trim();
-    const pass = document.getElementById("loginPass").value.trim();
-    const status = document.getElementById("authStatus");
-
-    if (!loginVal || !pass) {
-      status.textContent = "Lütfen kullanıcı adı/email ve şifre gir.";
-      return;
-    }
-
-    if (loginVal === "admin" && pass === ADMIN_PASSWORD) {
-      currentUser = { username: "Yönetici", role: "admin" };
-      localStorage.setItem("sparkCurrentUser", JSON.stringify(currentUser));
-      status.textContent = "Yönetici olarak giriş yapıldı.";
-      updateHeader();
-      showScreen("admin");
-      renderAdminRequests();
-      renderAdminMessages();
-      renderAdminUsers();
-      return;
-    }
-
-    let users = getUsers();
-    const idx = users.findIndex(
-      u => (u.username === loginVal || u.email === loginVal) && u.pass === pass
-    );
-    if (idx === -1) {
-      status.textContent = "Kullanıcı bulunamadı veya şifre hatalı.";
-      return;
-    }
-
-    const now = new Date().toLocaleString("tr-TR");
-    users[idx].lastLogin = now;
-    saveUsers(users);
-
-    currentUser = users[idx];
-    localStorage.setItem("sparkCurrentUser", JSON.stringify(currentUser));
-    document.getElementById("welcomeUser").textContent = currentUser.username;
-    status.textContent = "Hoş geldin " + currentUser.username + " 🎉";
-    updateHeader();
-    renderProfile();
-    renderNotifications();
-    showScreen("main");
-  }
-
-  function logoutUser() {
-    currentUser = null;
-    localStorage.removeItem("sparkCurrentUser");
-    updateHeader();
-    showScreen("info");
-  }
-
-  function renderProfile() {
-    if (!currentUser || currentUser.role !== "user") return;
-    const el = document.getElementById("profileInfo");
-    const html = `
-      Kullanıcı adı: <strong>${currentUser.username}</strong><br>
-      E-posta: ${currentUser.email}<br>
-      Üyelik tarihi: ${currentUser.createdAt || "-"}<br>
-      Son giriş: ${currentUser.lastLogin || "-"}
-    `;
-    el.innerHTML = html;
-  }
-
-  function renderNotifications() {
-    const box = document.getElementById("notifList");
-    if (!box) return;
-    if (!currentUser || currentUser.role !== "user") {
-      box.innerHTML = "<div>Önce giriş yapmalısın.</div>";
-      return;
-    }
-
-    let list = JSON.parse(localStorage.getItem("sparkAdRequests") || "[]");
-    const myList = list.filter(r => r.user === currentUser.username);
-    if (!myList.length) {
-      box.innerHTML = "<div>Henüz reklam isteğin yok. Stüdyo & Ayarlar menüsünden yeni bir istek gönderebilirsin.</div>";
-      return;
-    }
-
-    box.innerHTML = myList.map(req => {
-      const statusClass =
-        req.status === "approved"
-          ? "status-approved"
-          : req.status === "rejected"
-          ? "status-rejected"
-          : "status-pending";
-      const statusText =
-        req.status === "approved"
-          ? "Onaylandı"
-          : req.status === "rejected"
-          ? "Reddedildi"
-          : "Beklemede";
-      return `
-        <div class="notif-item">
-          <div class="notif-meta">
-            ${req.date} – <strong>${req.brand}</strong> (${req.product})
-            <span class="status-pill ${statusClass}">${statusText}</span>
-          </div>
-          <div>${req.desc}</div>
-          ${req.adminMessage ? `<div style="margin-top:4px;font-size:12px;">Yönetici notu: ${req.adminMessage}</div>` : ""}
-        </div>
-      `;
-    }).join("");
-  }
-
-  function handleAdRequest() {
-    const statusEl = document.getElementById("reqStatus");
-    if (!currentUser || currentUser.role !== "user") {
-      statusEl.textContent = "Önce kullanıcı olarak giriş yapmalısın.";
-      return;
-    }
-
-    const brand = document.getElementById("reqBrand").value.trim();
-    const product = document.getElementById("reqProduct").value.trim();
-    const desc = document.getElementById("reqDesc").value.trim();
-
-    if (!brand || !product || !desc) {
-      statusEl.textContent = "Lütfen tüm alanları doldur.";
-      return;
-    }
-
-    let list = JSON.parse(localStorage.getItem("sparkAdRequests") || "[]");
-    list.push({
-      id: Date.now(),
-      user: currentUser.username,
-      email: currentUser.email,
-      brand,
-      product,
-      desc,
-      status: "pending",
-      adminMessage: "",
-      date: new Date().toLocaleString("tr-TR")
+    q.forEach(doc=>{
+        const d = doc.data();
+        if(d.email===email && d.pass===pass){
+            found = {id:doc.id, ...d};
+        }
     });
-    localStorage.setItem("sparkAdRequests", JSON.stringify(list));
 
-    statusEl.textContent = "Reklam isteğin Yöneticiye gönderildi.";
-    document.getElementById("reqBrand").value = "";
-    document.getElementById("reqProduct").value = "";
-    document.getElementById("reqDesc").value = "";
-    renderNotifications();
-  }
-
-  function handleUserMessage() {
-    const statusEl = document.getElementById("msgStatus");
-    if (!currentUser || currentUser.role !== "user") {
-      statusEl.textContent = "Önce kullanıcı olarak giriş yapmalısın.";
-      return;
+    if(!found){
+        alert("Hatalı giriş");
+        return;
     }
 
-    const subject = document.getElementById("msgSubject").value.trim();
-    const text = document.getElementById("msgText").value.trim();
+    currentUser = found;
 
-    if (!subject || !text) {
-      statusEl.textContent = "Lütfen konu ve mesajı doldur.";
-      return;
-    }
-
-    let list = JSON.parse(localStorage.getItem("sparkUserMessages") || "[]");
-    list.push({
-      id: Date.now(),
-      fromUser: currentUser.username,
-      email: currentUser.email,
-      subject,
-      text,
-      date: new Date().toLocaleString("tr-TR")
-    });
-    localStorage.setItem("sparkUserMessages", JSON.stringify(list));
-
-    statusEl.textContent = "Mesajın Yöneticiye iletildi.";
-    document.getElementById("msgSubject").value = "";
-    document.getElementById("msgText").value = "";
-  }
-
-  function renderAdminRequests() {
-    const box = document.getElementById("adminRequests");
-    if (!box) return;
-    let list = JSON.parse(localStorage.getItem("sparkAdRequests") || "[]");
-    if (!list.length) {
-      box.innerHTML = "<div>Henüz reklam isteği yok.</div>";
-      return;
-    }
-    box.innerHTML = list.map(req => {
-      const statusClass =
-        req.status === "approved"
-          ? "status-approved"
-          : req.status === "rejected"
-          ? "status-rejected"
-          : "status-pending";
-      const statusText =
-        req.status === "approved"
-          ? "Onaylandı"
-          : req.status === "rejected"
-          ? "Reddedildi"
-          : "Beklemede";
-      const approvedLocked = req.status === "approved";
-      return `
-        <div class="submission-item">
-          <div class="submission-meta">
-            ${req.date} – <strong>${req.brand}</strong> (${req.product}) |
-            Kullanıcı: ${req.user} (${req.email})
-            <span class="status-pill ${statusClass}">${statusText}</span>
-          </div>
-          <div>${req.desc}</div>
-          ${req.adminMessage ? `<div>Yönetici notu: ${req.adminMessage}</div>` : ""}
-          <div class="admin-actions">
-            <input type="text" id="adminNote-${req.id}" placeholder="Kısa not (opsiyonel)" />
-            <button class="btn-approve" onclick="updateRequestStatus(${req.id}, 'approved')" ${approvedLocked ? "disabled" : ""}>Onayla</button>
-            <button class="btn-reject" onclick="updateRequestStatus(${req.id}, 'rejected')" ${approvedLocked ? "disabled" : ""}>Reddet</button>
-          </div>
-          ${approvedLocked ? `<div style="font-size:11px;color:#4ade80;margin-top:3px;">Bu istek onaylandı, tekrar reddedilemez.</div>` : ""}
-        </div>
-      `;
-    }).join("");
-  }
-
-  function updateRequestStatus(id, newStatus) {
-    let list = JSON.parse(localStorage.getItem("sparkAdRequests") || "[]");
-    const idx = list.findIndex(r => r.id === id);
-    if (idx === -1) return;
-    const req = list[idx];
-
-    if (req.status === "approved" && newStatus === "rejected") {
-      alert("Onaylanan bir istek reddedilemez.");
-      return;
-    }
-
-    const noteInput = document.getElementById("adminNote-" + id);
-    req.status = newStatus;
-    req.adminMessage = noteInput ? noteInput.value.trim() : "";
-    list[idx] = req;
-    localStorage.setItem("sparkAdRequests", JSON.stringify(list));
-    renderAdminRequests();
-    if (currentUser && currentUser.role === "user") {
-      renderNotifications();
-    }
-  }
-
-  function renderAdminMessages() {
-    const box = document.getElementById("adminMessages");
-    if (!box) return;
-    let list = JSON.parse(localStorage.getItem("sparkUserMessages") || "[]");
-    if (!list.length) {
-      box.innerHTML = "<div>Henüz mesaj yok.</div>";
-      return;
-    }
-    box.innerHTML = list.map(m => `
-      <div class="submission-item">
-        <div class="submission-meta">
-          ${m.date} – <strong>${m.fromUser}</strong> (${m.email}) – ${m.subject}
-        </div>
-        <div>${m.text}</div>
-      </div>
-    `).join("");
-  }
-
-  function renderAdminUsers() {
-    const box = document.getElementById("adminUsers");
-    if (!box) return;
-    let users = getUsers();
-    if (!users.length) {
-      box.innerHTML = "<div>Henüz üye yok.</div>";
-      return;
-    }
-    box.innerHTML = users.map(u => `
-      <div class="submission-item">
-        <div class="submission-meta">
-          Kullanıcı: <strong>${u.username}</strong> (${u.email})
-        </div>
-        <div>Üyelik tarihi: ${u.createdAt || "-"}</div>
-        <div>Son giriş: ${u.lastLogin || "-"}</div>
-      </div>
-    `).join("");
-  }
-
-  (function init() {
-    const raw = localStorage.getItem("sparkCurrentUser");
-    if (raw) {
-      try { currentUser = JSON.parse(raw); } catch(e){ currentUser = null; }
-    }
-    updateHeader();
-    if (currentUser) {
-      document.getElementById("welcomeUser").textContent = currentUser.username || "";
-      if (currentUser.role === "admin") {
-        showScreen("admin");
-        renderAdminRequests();
-        renderAdminMessages();
-        renderAdminUsers();
-      } else {
-        renderProfile();
-        renderNotifications();
-        showScreen("main");
-      }
+    if(found.role==="admin"){
+        document.getElementById("adminBtn").style.display="block";
     } else {
-      showScreen("info");
+        document.getElementById("adminBtn").style.display="none";
     }
-  })();
+
+    document.getElementById("mainMenu").style.display="flex";
+    showPage("home");
+}
+
+async function sendAd(){
+    if(!currentUser){ alert("Giriş yap"); return; }
+
+    await addDoc(collection(db,"requests"),{
+        user: currentUser.name,
+        text: adText.value,
+        status:"bekliyor"
+    });
+    adText.value="";
+    alert("İstek gönderildi!");
+}
+
+async function sendMessage(){
+    if(!currentUser){ alert("Giriş yap"); return; }
+
+    await addDoc(collection(db,"messages"),{
+        user: currentUser.name,
+        text: msgText.value
+    });
+
+    msgText.value="";
+    alert("Mesaj gönderildi!");
+}
+
+function changeTheme(){
+    const theme = themeSelect.value;
+    if(theme==="light"){
+        document.body.classList.add("light");
+    } else {
+        document.body.classList.remove("light");
+    }
+}
+
+/* ADMİN GERÇEK ZAMANLI */
+onSnapshot(collection(db,"requests"), snap=>{
+    adminRequests.innerHTML="";
+    snap.forEach(doc=>{
+        const d = doc.data();
+        adminRequests.innerHTML += `
+        <tr>
+            <td>${d.user}</td>
+            <td>${d.text}</td>
+            <td>${d.status}</td>
+        </tr>`;
+    });
+});
+
+onSnapshot(collection(db,"messages"), snap=>{
+    adminMessages.innerHTML="";
+    snap.forEach(doc=>{
+        const d = doc.data();
+        adminMessages.innerHTML += `
+        <tr>
+            <td>${d.user}</td>
+            <td>${d.text}</td>
+        </tr>`;
+    });
+});
+
+onSnapshot(collection(db,"users"), snap=>{
+    userList.innerHTML="";
+    snap.forEach(doc=>{
+        const d = doc.data();
+        userList.innerHTML += `<p>${d.name} (${d.email})</p>`;
+    });
+});
+
 </script>
+
 </body>
 </html>
+
 
 
