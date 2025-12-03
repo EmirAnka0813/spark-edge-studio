@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Spark Edge Studio | Reklam Uygulaması</title>
+  <title>Spark Ad Studio | Reklam Uygulaması</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
 
@@ -17,7 +17,6 @@
       --muted: #b3b7c9;
       --card: #11182b;
       --radius-xl: 18px;
-      --radius-lg: 14px;
       --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.45);
     }
 
@@ -42,7 +41,6 @@
 
     .hidden { display: none !important; }
 
-    /* HEADER */
     header {
       position: sticky;
       top: 0;
@@ -108,9 +106,7 @@
       padding: 4px 6px;
     }
 
-    .nav-link-btn:hover {
-      color: var(--accent);
-    }
+    .nav-link-btn:hover { color: var(--accent); }
 
     .nav-cta {
       padding: 7px 14px;
@@ -141,17 +137,8 @@
       cursor: pointer;
     }
 
-    /* SCREENS */
     main { padding-bottom: 40px; }
     .screen { padding: 40px 0; }
-
-    /* AUTH SCREEN */
-    .auth-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-      gap: 30px;
-      align-items: flex-start;
-    }
 
     .hero-kicker {
       font-size: 11px;
@@ -191,12 +178,6 @@
       margin-bottom: 18px;
     }
 
-    .auth-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 14px;
-    }
-
     .card {
       background: var(--card);
       border-radius: var(--radius-xl);
@@ -206,9 +187,20 @@
       font-size: 13px;
     }
 
-    .card h3 {
-      font-size: 15px;
-      margin-bottom: 6px;
+    .card h3 { font-size: 15px; margin-bottom: 6px; }
+
+    /* AUTH GRID */
+    .auth-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 30px;
+      align-items: flex-start;
+    }
+
+    .auth-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
     }
 
     .field {
@@ -285,7 +277,6 @@
       width: fit-content;
     }
 
-    /* MAIN SCREEN */
     .section-title {
       font-size: 22px;
       font-weight: 600;
@@ -304,60 +295,51 @@
       margin-bottom: 10px;
     }
 
-    .tile-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 18px;
-    }
-
-    .tile {
-      background: radial-gradient(circle at top left,
-        #ffb34722,
-        #1a2035 45%,
-        #050816 100%);
-      border-radius: var(--radius-xl);
-      padding: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      font-size: 13px;
-      color: var(--muted);
-      cursor: pointer;
-      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.5);
-    }
-
-    .tile:hover {
-      border-color: var(--accent);
-    }
-
-    .tile h3 {
-      font-size: 15px;
-      margin-bottom: 4px;
-      color: var(--text);
-    }
-
-    .panel {
-      margin-top: 18px;
-      background: rgba(11,16,32,0.95);
-      border-radius: 18px;
-      padding: 14px;
+    .notification-list {
+      margin-top: 8px;
+      border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(11,16,32,0.95);
+      padding: 10px;
       font-size: 13px;
-      color: var(--muted);
     }
 
-    .panel h4 {
-      font-size: 15px;
-      margin-bottom: 6px;
-      color: var(--text);
+    .notif-item {
+      padding: 8px 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
     }
 
-    .panel-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 18px;
-      margin-top: 18px;
+    .notif-item:last-child { border-bottom: none; }
+
+    .notif-meta {
+      font-size: 11px;
+      color: var(--accent-soft);
+      margin-bottom: 2px;
     }
 
-    /* SETTINGS SCREEN */
+    .status-pill {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 10px;
+      margin-left: 6px;
+    }
+
+    .status-pending {
+      background: rgba(234,179,8,0.15);
+      color: #facc15;
+    }
+
+    .status-approved {
+      background: rgba(22,163,74,0.2);
+      color: #4ade80;
+    }
+
+    .status-rejected {
+      background: rgba(239,68,68,0.18);
+      color: #fca5a5;
+    }
+
     .settings-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -387,7 +369,16 @@
       background: rgba(255,122,60,0.1);
     }
 
-    /* ADMIN SCREEN */
+    .panel {
+      margin-top: 18px;
+      background: rgba(11,16,32,0.95);
+      border-radius: 18px;
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,0.08);
+      font-size: 13px;
+      color: var(--muted);
+    }
+
     .admin-card {
       background: rgba(11,16,32,0.95);
       border-radius: 18px;
@@ -430,29 +421,6 @@
       margin-bottom: 2px;
     }
 
-    .status-pill {
-      display: inline-block;
-      padding: 2px 7px;
-      border-radius: 999px;
-      font-size: 10px;
-      margin-left: 6px;
-    }
-
-    .status-pending {
-      background: rgba(234,179,8,0.15);
-      color: #facc15;
-    }
-
-    .status-approved {
-      background: rgba(22,163,74,0.2);
-      color: #4ade80;
-    }
-
-    .status-rejected {
-      background: rgba(239,68,68,0.18);
-      color: #fca5a5;
-    }
-
     .admin-actions {
       margin-top: 4px;
       display: flex;
@@ -491,7 +459,6 @@
       color: #fee2e2;
     }
 
-    /* FOOTER */
     footer {
       padding: 18px 0 22px;
       font-size: 12px;
@@ -508,852 +475,836 @@
 
     footer a { color: var(--accent-soft); font-size: 12px; }
 
-    /* RESPONSIVE */
     @media (max-width: 820px) {
       .auth-grid { grid-template-columns: 1fr; }
       .nav-links { display: none; }
     }
+
+    .info-layout {
+      display: grid;
+      grid-template-columns: minmax(0,1.2fr) minmax(0,1fr);
+      gap: 28px;
+      align-items: center;
+    }
+
+    .info-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(5,8,22,0.7);
+      color: var(--accent-soft);
+      margin-bottom: 8px;
+    }
+
+    .info-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 10px 0 18px;
+      font-size: 11px;
+    }
+
+    .info-badge {
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.4);
+      color: var(--accent-soft);
+    }
+
+    .info-list {
+      font-size: 13px;
+      color: var(--muted);
+      margin-left: 18px;
+    }
   </style>
 </head>
 <body>
-  <!-- HEADER -->
-  <header id="top">
-    <div class="container nav">
-      <div class="nav-left">
-        <!-- Logo dosyan: spark-logo.png -->
-        <img src="spark-logo.png" alt="Spark Edge Studio Logo" class="nav-logo-img" />
-        <div>
-          <div class="nav-title" data-i18n="brandTitle">Spark Edge Studio</div>
-          <div class="nav-sub" data-i18n="brandSub">Kulüpler & Markalar İçin Reklam</div>
-        </div>
+<header id="top">
+  <div class="container nav">
+    <div class="nav-left">
+      <img src="spark-logo.png" alt="Spark Ad Studio Logo" class="nav-logo-img" />
+      <div>
+        <div class="nav-title">Spark Ad Studio</div>
+        <div class="nav-sub">Kulüpler & Markalar İçin Reklam</div>
       </div>
-      <div class="nav-right">
-        <div class="nav-links hidden" id="navLinks">
-          <button class="nav-link-btn" onclick="navigateMain()" data-i18n="navMain">Ana Ekran</button>
-          <button class="nav-link-btn" onclick="navigateSettings()" data-i18n="navSettings">Ayarlar</button>
+    </div>
+    <div class="nav-right">
+      <div class="nav-links hidden" id="navLinks">
+        <button class="nav-link-btn" onclick="navigateMain()">Ana Sayfa</button>
+        <button class="nav-link-btn" onclick="navigateSettings()">Stüdyo & Ayarlar</button>
+      </div>
+      <select id="langSelect" class="lang-select">
+        <option value="tr">TR</option>
+        <option value="en">EN</option>
+      </select>
+      <button class="nav-cta" id="mainActionBtn">Üye Ol / Giriş Yap</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- BİLGİ SAYFASI -->
+  <div id="screen-info" class="screen">
+    <div class="container info-layout">
+      <div>
+        <div class="info-pill">
+          <span class="dot"></span> KULÜPLER VE MARKALAR İÇİN MİNİ STÜDYO
         </div>
-        <select id="langSelect" class="lang-select">
-          <option value="tr">TR</option>
-          <option value="en">EN</option>
-          <option value="de">DE</option>
-        </select>
-        <button class="nav-cta hidden" id="logoutBtn" onclick="logoutUser()" data-i18n="logout">
-          Çıkış
+        <h1><span>Spark Ad Studio</span> ile akılda kalıcı reklamlar üret.</h1>
+        <p class="lead">
+          Spark Ad Studio, kulüpler ve markalar için genç bakış açısıyla reklam
+          fikirleri üreten bir mini dijital stüdyo. Üye olup giriş yaptıktan sonra,
+          reklam isteklerini gönderip Emir’in geri dönüşlerini bildirimler kısmından takip edebilirsin.
+        </p>
+        <div class="info-badges">
+          <span class="info-badge">🎮 Genç odaklı kreatif fikirler</span>
+          <span class="info-badge">🏟 Kulüpler ve markalar için</span>
+          <span class="info-badge">✉︎ Emir’e direkt mesaj</span>
+        </div>
+        <ul class="info-list">
+          <li>Yeni bir reklam isteği gönder, hangi marka/ürün için istediğini anlat.</li>
+          <li>Emir, isteğini inceleyip onay/red ve notunu ekler.</li>
+          <li>Tüm süreci bildirimler ekranından takip edersin.</li>
+        </ul>
+        <button class="btn-primary" style="margin-top:14px;" onclick="showScreen('auth')">
+          Üye Ol / Giriş Yap
         </button>
       </div>
-    </div>
-  </header>
-
-  <main>
-    <!-- SCREEN: AUTH -->
-    <div id="screen-auth" class="screen">
-      <div class="container auth-grid">
-        <div>
-          <div class="hero-kicker">
-            <span class="dot"></span>
-            <span data-i18n="authKicker">GİRİŞ EKRANI</span>
-          </div>
-          <h1>
-            <span data-i18n="authTitle1">Spark Edge Studio</span>
-            <span data-i18n="authTitle2"> hesabına giriş yap veya yeni hesap oluştur.</span>
-          </h1>
-          <p class="lead" data-i18n="authLead">
-            Canva, Xbox Game Pass veya Roblox gibi düşün: Önce hesabını aç,
-            sonra ana ekranda farklı bölümlere girip reklam projelerini ve
-            mesajlarını yönet.
-          </p>
-
-          <div class="auth-cards">
-            <!-- LOGIN -->
-            <div class="card">
-              <h3 data-i18n="loginTitle">Giriş Yap</h3>
-              <div class="field">
-                <label for="loginUsername" data-i18n="labelUsername">Kullanıcı adı</label>
-                <input id="loginUsername" type="text" placeholder="Örn: emir07" />
-              </div>
-              <div class="field">
-                <label for="loginPass" data-i18n="labelPassword">Şifre</label>
-                <input id="loginPass" type="password" placeholder="Şifreniz" />
-              </div>
-              <button class="btn-primary" onclick="loginUser()" data-i18n="btnLogin">
-                Giriş Yap
-              </button>
-              <div class="forgot" onclick="forgotPassword()" data-i18n="forgot">
-                Şifremi unuttum
-              </div>
-              <div id="authStatus" class="auth-status"></div>
-            </div>
-
-            <!-- SIGNUP -->
-            <div class="card">
-              <h3 data-i18n="signupTitle">Üye Ol</h3>
-              <div class="field">
-                <label for="signupUsername" data-i18n="labelUsername">Kullanıcı adı</label>
-                <input id="signupUsername" type="text" placeholder="Örn: emir07" />
-              </div>
-              <div class="field">
-                <label for="signupEmail">E-posta (doğrulama için)</label>
-                <input id="signupEmail" type="email" placeholder="ornek@mail.com" />
-              </div>
-              <div class="field">
-                <label for="verificationCode">Doğrulama kodu</label>
-                <div style="display:flex;gap:6px;align-items:center;">
-                  <input id="verificationCode" type="text" placeholder="6 haneli kod" style="flex:1;" />
-                  <button type="button" class="btn-ghost" onclick="sendVerificationCode()">
-                    Kod Gönder
-                  </button>
-                </div>
-                <small style="font-size:11px;color:var(--muted);">
-                  Demo: Kod SMS/e-posta gibi davranır, şu an ekranda gösterilecek.
-                </small>
-              </div>
-              <div class="field">
-                <label for="signupPass" data-i18n="labelPassword">Şifre</label>
-                <input id="signupPass" type="password" placeholder="Bir şifre belirle" />
-              </div>
-              <button class="btn-ghost" onclick="signupUser()" data-i18n="btnSignup">
-                Üye Ol ve Ana Ekrana Geç
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Sağ tarafta sadece tanıtım kartı -->
-        <div class="card">
-          <h3>Spark Edge Studio nedir?</h3>
-          <p style="font-size:13px;color:var(--muted);margin-bottom:8px;">
-            Kulüpler, markalar ve öğrenciler için akılda kalıcı reklamlar üreten
-            mini bir stüdyo. Üye olduktan sonra:
-          </p>
-          <ul style="font-size:13px;color:var(--muted);margin-left:18px;">
-            <li>Reklam isteği bırakabiliyorsun,</li>
-            <li>Admin ile mesajlaşabiliyorsun,</li>
-            <li>Ayarlar ekranından tema ve tercihleri değiştirebiliyorsun.</li>
-          </ul>
-          <p style="font-size:12px;color:var(--accent-soft);margin-top:10px;">
-            İletişim (telefon): <strong>0534 969 30 20</strong>
-          </p>
-        </div>
+      <div class="card">
+        <h3>Bu siteden ne bekleyebilirsin?</h3>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:8px;">
+          Spark Ad Studio şu işleri yapar:
+        </p>
+        <ul style="font-size:13px;color:var(--muted);margin-left:18px;">
+          <li>Sosyal medya için reklam fikirleri ve konseptler üretir,</li>
+          <li>Özellikle spor kulüpleri ve genç markalar için içerik düşünür,</li>
+          <li>Emir üzerinden mesajlaşarak fikirleri geliştirmeni sağlar.</li>
+        </ul>
+        <p style="font-size:12px;color:var(--accent-soft);margin-top:10px;">
+          Devam etmek için sağ üstten veya aşağıdaki butondan üye ol / giriş yap:
+        </p>
       </div>
     </div>
+  </div>
 
-    <!-- SCREEN: MAIN -->
-    <div id="screen-main" class="screen hidden">
-      <div class="container">
-        <div class="welcome">
-          Hoş geldin, <span id="welcomeUser"></span> 👋
+  <!-- AUTH -->
+  <div id="screen-auth" class="screen hidden">
+    <div class="container auth-grid">
+      <div>
+        <div class="hero-kicker">
+          <span class="dot"></span> HESABINA GİRİŞ YAP
         </div>
-        <h2 class="section-title" data-i18n="mainTitle">Ana Ekran</h2>
-        <p class="section-desc" data-i18n="mainDesc">
-          Aşağıdaki kutulardan reklam projeleri, işbirlikleri ve okul projeleri
-          arasında gezinebilirsin. Canva gibi, her kutu seni farklı bir alana
-          atıyormuş gibi davranır.
+        <h1><span>Spark Ad Studio</span> hesabına giriş yap veya üye ol.</h1>
+        <p class="lead">
+          Hesabını açtıktan sonra ana sayfada reklam isteklerinin durumunu görebilir,
+          Stüdyo & Ayarlar kısmından Emir’e mesaj gönderebilirsin.
         </p>
 
-        <div class="tile-grid">
-          <div class="tile" onclick="openPanel('projeler')">
-            <h3>Reklam Projelerim</h3>
-            Markan için hazırlanan fikirleri ve videoları burada toplayabilirsin.
-          </div>
-          <div class="tile" onclick="openPanel('isbirlikleri')">
-            <h3>Kulüp & Marka İşbirlikleri</h3>
-            Hangi kulüple nasıl reklam yaptığını burada tutabilirsin.
-          </div>
-          <div class="tile" onclick="openPanel('ogrenci')">
-            <h3>Öğrenci / Okul Projeleri</h3>
-            Işıkkent ve diğer okullardaki proje ödevlerini buraya yazabilirsin.
-          </div>
-        </div>
-
-        <div class="panel" id="mainPanel">
-          <h4>Henüz bir bölüm seçmedin</h4>
-          <p>
-            Kutulardan birine tıkladığında burası o bölümün içeriğini anlatan
-            alan gibi davranır. Şu an metinler demo, ileride gerçek listeler
-            ekleyebilirsin.
-          </p>
-        </div>
-
-        <!-- Reklam isteği + mesaj kartları -->
-        <div class="panel-grid">
+        <div class="auth-cards">
           <div class="card">
-            <h3>Benim İçin Reklam Yap</h3>
-            <form onsubmit="return handleAdRequest('main', event)">
-              <div class="field">
-                <label for="reqBrand-main">Marka adı</label>
-                <input id="reqBrand-main" type="text" placeholder="Örn: X Spor Kulübü" />
-              </div>
-              <div class="field">
-                <label for="reqProduct-main">Ürün / kampanya adı</label>
-                <input id="reqProduct-main" type="text" placeholder="Örn: Yeni forma tanıtımı" />
-              </div>
-              <div class="field">
-                <label for="reqDesc-main">Ürün hakkında biraz bahset</label>
-                <textarea id="reqDesc-main" placeholder="Kime hitap ediyor, nasıl bir reklam istiyorsun?"></textarea>
-              </div>
-              <div class="field">
-                <label for="reqContact-main">İletişim (mail veya kullanıcı adın)</label>
-                <input id="reqContact-main" type="text" placeholder="Sana nasıl ulaşalım?" />
-              </div>
-              <button class="btn-primary" type="submit">Reklam İsteğini Gönder</button>
-              <div id="reqStatus-main" class="auth-status"></div>
-            </form>
-          </div>
-
-          <div class="card">
-            <h3>Admin’e Mesaj Gönder</h3>
-            <form onsubmit="return handleUserMessage('main', event)">
-              <div class="field">
-                <label for="msgSubject-main">Konu</label>
-                <input id="msgSubject-main" type="text" placeholder="Kısa başlık" />
-              </div>
-              <div class="field">
-                <label for="msgText-main">Mesajın</label>
-                <textarea id="msgText-main" placeholder="Ne söylemek istersin?"></textarea>
-              </div>
-              <button class="btn-ghost" type="submit">Mesajı Gönder</button>
-              <div id="msgStatus-main" class="auth-status"></div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SCREEN: SETTINGS -->
-    <div id="screen-settings" class="screen hidden">
-      <div class="container">
-        <h2 class="section-title" data-i18n="settingsTitle">Ayarlar</h2>
-        <p class="section-desc" data-i18n="settingsDesc">
-          Burada tema rengini değiştirebilir, tercih notu bırakabilir ve tekrar
-          admin’e mesaj gönderebilirsin.
-        </p>
-
-        <div class="settings-grid">
-          <div class="card">
-            <h3>Renk Teması</h3>
-            <p style="font-size:13px;color:var(--muted);">
-              Koyu, açık veya neon tema seç. Seçim tarayıcıda hatırlanır.
-            </p>
-            <div class="theme-buttons">
-              <button class="theme-btn" data-theme="dark">Klasik Koyu</button>
-              <button class="theme-btn" data-theme="light">Açık Tema</button>
-              <button class="theme-btn" data-theme="neon">Neon / Gamer</button>
-            </div>
-          </div>
-
-          <div class="card">
-            <h3>Kullanıcı Tercihleri</h3>
-            <p style="font-size:13px;color:var(--muted);">
-              Örneğin “Futbol kulüpleri odaklıyım” gibi küçük bir not
-              bırakabilirsin.
-            </p>
+            <h3>Giriş Yap</h3>
             <div class="field">
-              <label for="prefType">Tercih notun</label>
-              <input id="prefType" type="text" placeholder="Örn: Futbol kulüpleri" />
+              <label for="loginUsername">Kullanıcı adı</label>
+              <input id="loginUsername" type="text" placeholder="Örn: emir07" />
             </div>
-            <button class="btn-primary" style="padding:7px 14px;font-size:12px;" onclick="savePreferences()">
-              Tercihi Kaydet
-            </button>
-            <div id="prefStatus" class="auth-status"></div>
+            <div class="field">
+              <label for="loginPass">Şifre</label>
+              <input id="loginPass" type="password" placeholder="Şifreniz" />
+            </div>
+            <button class="btn-primary" onclick="loginUser()">Giriş Yap</button>
+            <div class="forgot" onclick="forgotPassword()">Şifremi unuttum</div>
+            <div id="authStatus" class="auth-status"></div>
           </div>
 
           <div class="card">
-            <h3>Destek Mesajı</h3>
-            <p style="font-size:13px;color:var(--muted);">
-              Buradan da admin’e mesaj atabilirsin. Tüm mesajlar admin paneline
-              düşer.
-            </p>
-            <form onsubmit="return handleUserMessage('settings', event)">
-              <div class="field">
-                <label for="msgSubject-settings">Konu</label>
-                <input id="msgSubject-settings" type="text" placeholder="Kısa başlık" />
-              </div>
-              <div class="field">
-                <label for="msgText-settings">Mesajın</label>
-                <textarea id="msgText-settings" placeholder="Sorun, isteğin, önerin..."></textarea>
-              </div>
-              <button class="btn-ghost" type="submit">Mesajı Gönder</button>
-              <div id="msgStatus-settings" class="auth-status"></div>
-            </form>
+            <h3>Üye Ol</h3>
+            <div class="field">
+              <label for="signupUsername">Kullanıcı adı</label>
+              <input id="signupUsername" type="text" placeholder="Örn: emir07" />
+            </div>
+            <div class="field">
+              <label for="signupEmail">E-posta (zorunlu)</label>
+              <input id="signupEmail" type="email" placeholder="ornek@mail.com" />
+            </div>
+            <div class="field">
+              <label for="signupPass">Şifre</label>
+              <input id="signupPass" type="password" placeholder="Bir şifre belirle" />
+            </div>
+            <button class="btn-ghost" onclick="signupUser()">Üye Ol ve Ana Sayfaya Geç</button>
           </div>
         </div>
-
-        <div class="panel" style="margin-top:22px;">
-          <h4>İletişim Bilgileri</h4>
-          <p style="font-size:13px;color:var(--muted);">
-            Telefon: <strong>0534 969 30 20</strong><br />
-            Web üzerinden gönderilen tüm mesajlar, admin panelinde senin
-            hesabına düşer.
-          </p>
-        </div>
       </div>
-    </div>
 
-    <!-- SCREEN: ADMIN -->
-    <div id="screen-admin" class="screen hidden">
-      <div class="container">
-        <div class="welcome">Admin paneline hoş geldin 👑</div>
-        <h2 class="section-title">Reklam İstekleri & Mesajlar</h2>
-        <p class="section-desc">
-          Buradan “Benim için reklam yap” isteklerini onaylayıp reddedebilir,
-          ayrıca site üzerinden gelen kullanıcı mesajlarını görebilirsin.
+      <div class="card">
+        <h3>Spark Ad Studio nasıl çalışıyor?</h3>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:8px;">
+          Üye olduktan sonra:
         </p>
-
-        <div class="admin-card" style="margin-bottom:18px;">
-          <div class="admin-header">
-            <strong>Reklam İstekleri</strong>
-            <span style="font-size:12px;color:var(--accent-soft);">
-              (Bu demo sürümünde veriler sadece bu tarayıcıda saklanır.)
-            </span>
-          </div>
-          <div class="admin-list" id="adminRequests">
-            <!-- JS dolduracak -->
-          </div>
-        </div>
-
-        <div class="admin-card">
-          <div class="admin-header">
-            <strong>Kullanıcı Mesajları</strong>
-          </div>
-          <div class="admin-list" id="adminMessages">
-            <!-- JS dolduracak -->
-          </div>
-        </div>
+        <ul style="font-size:13px;color:var(--muted);margin-left:18px;">
+          <li>Stüdyo & Ayarlar altında “Benim için reklam yap” kısmından isteğini gönderirsin,</li>
+          <li>Emir isteğini inceler, notunu ve kararını ekler,</li>
+          <li>Sonuçları bildirimler ekranında takip edersin.</li>
+        </ul>
+        <p style="font-size:12px;color:var(--accent-soft);margin-top:10px;">
+          Telefon: <strong>0534 969 30 20</strong>
+        </p>
       </div>
     </div>
-  </main>
+  </div>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="container row">
-      <span>© <span id="year"></span> Spark Edge Studio. Tüm hakları saklıdır.</span>
-      <a href="#top">Yukarı çık ↑</a>
+  <!-- MAIN (BİLDİRİMLER) -->
+  <div id="screen-main" class="screen hidden">
+    <div class="container">
+      <div class="welcome">Hoş geldin, <span id="welcomeUser"></span> 👋</div>
+      <h2 class="section-title">Bildirimler</h2>
+      <p class="section-desc">
+        Burada sadece senin gönderdiğin reklam isteklerinin durumunu görürsün.
+        Onaylanınca veya reddedilince Emir’in notu burada görünür.
+      </p>
+      <div class="notification-list" id="notifList"></div>
     </div>
-  </footer>
+  </div>
 
-  <script>
-    // Küresel durum
-    let currentUser = null;
-    const ADMIN_PASSWORD = "spark123";
-    let verificationCode = null;
-    let verificationEmail = null;
+  <!-- SETTINGS / STÜDYO -->
+  <div id="screen-settings" class="screen hidden">
+    <div class="container">
+      <div class="welcome">Stüdyo & Ayarlar</div>
+      <h2 class="section-title">Reklam Stüdyosu</h2>
+      <p class="section-desc">
+        Buradan tema seçebilir, tercih notu kaydedebilir, reklam isteği gönderebilir
+        ve Emir’e mesaj yollayabilirsin. Gönderdiğin her şeyde e-posta adresin,
+        Emir’in ekranında görünür.
+      </p>
 
-    // Dil sistemi (basit)
-    const translations = {
-      tr: {
-        brandTitle: "Spark Edge Studio",
-        brandSub: "Kulüpler & Markalar İçin Reklam",
-        navMain: "Ana Ekran",
-        navSettings: "Ayarlar",
-        logout: "Çıkış",
-        authKicker: "GİRİŞ EKRANI",
-        authTitle1: "Spark Edge Studio",
-        authTitle2: " hesabına giriş yap veya yeni hesap oluştur.",
-        authLead:
-          "Canva, Xbox Game Pass veya Roblox gibi düşün: Önce hesabını aç, sonra ana ekranda farklı bölümlere girip reklam projelerini ve mesajlarını yönet.",
-        loginTitle: "Giriş Yap",
-        signupTitle: "Üye Ol",
-        labelUsername: "Kullanıcı adı",
-        labelPassword: "Şifre",
-        btnLogin: "Giriş Yap",
-        btnSignup: "Üye Ol ve Ana Ekrana Geç",
-        forgot: "Şifremi unuttum",
-        mainTitle: "Ana Ekran",
-        mainDesc:
-          "Aşağıdaki kutulardan reklam projeleri, işbirlikleri ve okul projeleri arasında gezinebilirsin. Canva gibi, her kutu seni farklı bir alana atıyormuş gibi davranır.",
-        settingsTitle: "Ayarlar",
-        settingsDesc:
-          "Burada tema rengini değiştirebilir, tercih notu bırakabilir ve tekrar admin’e mesaj gönderebilirsin."
-      },
-      en: {
-        brandTitle: "Spark Edge Studio",
-        brandSub: "Ads for Clubs & Brands",
-        navMain: "Home",
-        navSettings: "Settings",
-        logout: "Log out",
-        authKicker: "SIGN IN",
-        authTitle1: "Spark Edge Studio",
-        authTitle2: " account – log in or create a new one.",
-        authLead:
-          "Think like Canva, Xbox Game Pass or Roblox: create your account first, then manage ad projects and messages from the main screen.",
-        loginTitle: "Log in",
-        signupTitle: "Sign up",
-        labelUsername: "Username",
-        labelPassword: "Password",
-        btnLogin: "Log in",
-        btnSignup: "Sign up & go to Home",
-        forgot: "Forgot password",
-        mainTitle: "Home",
-        mainDesc:
-          "Use the tiles below to navigate between ad projects, collaborations and school projects. Just like Canva sections.",
-        settingsTitle: "Settings",
-        settingsDesc:
-          "Change the color theme, store a preference note, and send another message to the admin from here."
-      },
-      de: {
-        brandTitle: "Spark Edge Studio",
-        brandSub: "Werbung für Clubs & Marken",
-        navMain: "Start",
-        navSettings: "Einstellungen",
-        logout: "Abmelden",
-        authKicker: "ANMELDUNG",
-        authTitle1: "Spark Edge Studio",
-        authTitle2: " Konto – anmelden oder neu registrieren.",
-        authLead:
-          "Denke wie Canva, Xbox Game Pass oder Roblox: Zuerst ein Konto erstellen, dann Projekte und Nachrichten auf dem Hauptbildschirm verwalten.",
-        loginTitle: "Anmelden",
-        signupTitle: "Registrieren",
-        labelUsername: "Benutzername",
-        labelPassword: "Passwort",
-        btnLogin: "Anmelden",
-        btnSignup: "Registrieren & zum Start",
-        forgot: "Passwort vergessen",
-        mainTitle: "Start",
-        mainDesc:
-          "Über die Kacheln unten kannst du zwischen Werbeprojekten, Kooperationen und Schulprojekten wechseln – ähnlich wie Bereiche in Canva.",
-        settingsTitle: "Einstellungen",
-        settingsDesc:
-          "Hier kannst du das Farbschema ändern, eine Notiz speichern und dem Admin erneut eine Nachricht senden."
-      }
-    };
+      <div class="settings-grid">
+        <div class="card">
+          <h3>Tema</h3>
+          <p style="font-size:13px;color:var(--muted);">
+            Koyu, açık, neon veya sunset tema seç. Seçim tarayıcıda hatırlanır.
+          </p>
+          <div class="theme-buttons">
+            <button class="theme-btn" data-theme="dark">Klasik Koyu</button>
+            <button class="theme-btn" data-theme="light">Açık Tema</button>
+            <button class="theme-btn" data-theme="neon">Neon / Gamer</button>
+            <button class="theme-btn" data-theme="sunset">Sunset</button>
+          </div>
+        </div>
 
-    function applyLanguage(lang) {
-      const dict = translations[lang] || translations["tr"];
-      document.querySelectorAll("[data-i18n]").forEach(el => {
-        const key = el.getAttribute("data-i18n");
-        if (dict[key]) el.textContent = dict[key];
-      });
-      document.documentElement.lang = lang;
-      localStorage.setItem("sparkLang", lang);
+        <div class="card">
+          <h3>Kullanıcı Tercihi</h3>
+          <p style="font-size:13px;color:var(--muted);">
+            Örn: “Futbol kulüpleri ağırlıklı çalışmak istiyorum” gibi.
+          </p>
+          <div class="field">
+            <label for="prefType">Tercih notun</label>
+            <input id="prefType" type="text" placeholder="Örn: Futbol kulüpleri" />
+          </div>
+          <button class="btn-primary" style="padding:7px 14px;font-size:12px;" onclick="savePreferences()">
+            Tercihi Kaydet
+          </button>
+          <div id="prefStatus" class="auth-status"></div>
+        </div>
+
+        <div class="card">
+          <h3>Benim İçin Reklam Yap</h3>
+          <p style="font-size:12px;color:var(--muted);">
+            Buradan yeni bir reklam isteği gönderebilirsin.
+          </p>
+          <form onsubmit="return handleAdRequest(event)">
+            <div class="field">
+              <label for="reqBrand">Marka / Kulüp adı</label>
+              <input id="reqBrand" type="text" placeholder="Örn: X Spor Kulübü" />
+            </div>
+            <div class="field">
+              <label for="reqProduct">Ürün / kampanya adı</label>
+              <input id="reqProduct" type="text" placeholder="Örn: Yeni forma tanıtımı" />
+            </div>
+            <div class="field">
+              <label for="reqDesc">Kısaca anlat</label>
+              <textarea id="reqDesc" placeholder="Kime hitap ediyor, nasıl bir reklam istiyorsun?"></textarea>
+            </div>
+            <button class="btn-primary" type="submit">Reklam İsteğini Gönder</button>
+            <div id="reqStatus" class="auth-status"></div>
+          </form>
+        </div>
+
+        <div class="card">
+          <h3>Emir’e Mesaj Gönder</h3>
+          <p style="font-size:12px;color:var(--muted);">
+            Soru, öneri, proje fikri... Hepsi Emir’in ekranına düşer.
+          </p>
+          <form onsubmit="return handleUserMessage(event)">
+            <div class="field">
+              <label for="msgSubject">Konu</label>
+              <input id="msgSubject" type="text" placeholder="Kısa başlık" />
+            </div>
+            <div class="field">
+              <label for="msgText">Mesajın</label>
+              <textarea id="msgText" placeholder="Ne söylemek istersin?"></textarea>
+            </div>
+            <button class="btn-ghost" type="submit">Mesajı Gönder</button>
+            <div id="msgStatus" class="auth-status"></div>
+          </form>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h4>İletişim Bilgileri</h4>
+        <p style="font-size:13px;color:var(--muted);">
+          Telefon: <strong>0534 969 30 20</strong><br />
+          Web üzerinden gönderilen tüm istek ve mesajlar Emir’in ekranına düşer.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="screen-admin" class="screen hidden">
+    <div class="container">
+      <div class="welcome">Emir, admin paneline hoş geldin 👑</div>
+      <h2 class="section-title">Reklam İstekleri & Mesajlar</h2>
+      <p class="section-desc">
+        Buradan kullanıcıların reklam isteklerini onaylayıp reddedebilir,
+        ayrıca Emir’e gönderilen mesajları ve üyeleri görebilirsin.
+      </p>
+
+      <div class="admin-card" style="margin-bottom:18px;">
+        <div class="admin-header">
+          <strong>Reklam İstekleri</strong>
+          <span style="font-size:12px;color:var(--accent-soft);">
+            (Demo: Veriler sadece bu tarayıcıda saklanır.)
+          </span>
+        </div>
+        <div class="admin-list" id="adminRequests"></div>
+      </div>
+
+      <div class="admin-card" style="margin-bottom:18px;">
+        <div class="admin-header">
+          <strong>Kullanıcı Mesajları</strong>
+        </div>
+        <div class="admin-list" id="adminMessages"></div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-header">
+          <strong>Üyeler & Son Giriş Tarihleri</strong>
+        </div>
+        <div class="admin-list" id="adminUsers"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="container row">
+    <span>© <span id="year"></span> Spark Ad Studio. Tüm hakları saklıdır.</span>
+    <a href="#top">Yukarı çık ↑</a>
+  </div>
+</footer>
+
+<script>
+  let currentUser = null;
+  const ADMIN_PASSWORD = "spark123";
+
+  const translations = {
+    tr: { navMain: "Ana Sayfa", navSettings: "Stüdyo & Ayarlar", logout: "Çıkış" },
+    en: { navMain: "Home", navSettings: "Studio & Settings", logout: "Log out" }
+  };
+
+  function applyLanguage(lang) {
+    const dict = translations[lang] || translations.tr;
+    const navLinks = document.getElementById("navLinks");
+    if (navLinks) {
+      navLinks.children[0].textContent = dict.navMain;
+      navLinks.children[1].textContent = dict.navSettings;
     }
-
-    document.getElementById("langSelect").addEventListener("change", e => {
-      applyLanguage(e.target.value);
-    });
-
-    // Genel yardımcılar
-    function showScreen(which) {
-      const ids = ["auth", "main", "settings", "admin"];
-      ids.forEach(id => {
-        const el = document.getElementById("screen-" + id);
-        if (!el) return;
-        el.classList.toggle("hidden", id !== which);
-      });
-    }
-
-    function updateHeader() {
-      const logoutBtn = document.getElementById("logoutBtn");
-      const navLinks = document.getElementById("navLinks");
+    const btn = document.getElementById("mainActionBtn");
+    if (btn) {
       if (currentUser) {
-        logoutBtn.classList.remove("hidden");
-        navLinks.classList.remove("hidden");
+        btn.textContent = dict.logout;
       } else {
-        logoutBtn.classList.add("hidden");
-        navLinks.classList.add("hidden");
+        btn.textContent = "Üye Ol / Giriş Yap";
       }
     }
+    document.documentElement.lang = lang;
+    localStorage.setItem("sparkLang", lang);
+  }
 
-    function updateWelcome() {
-      const el = document.getElementById("welcomeUser");
+  document.getElementById("langSelect").addEventListener("change", e => {
+    applyLanguage(e.target.value);
+  });
+
+  function showScreen(which) {
+    ["info","auth","main","settings","admin"].forEach(id => {
+      const el = document.getElementById("screen-" + id);
       if (!el) return;
-      el.textContent = currentUser ? (currentUser.username || "Kullanıcı") : "";
+      el.classList.toggle("hidden", id !== which);
+    });
+  }
+
+  function updateHeader() {
+    const navLinks = document.getElementById("navLinks");
+    const btn = document.getElementById("mainActionBtn");
+    if (currentUser) {
+      navLinks.classList.remove("hidden");
+      btn.textContent = "Çıkış";
+      btn.onclick = logoutUser;
+    } else {
+      navLinks.classList.add("hidden");
+      btn.textContent = "Üye Ol / Giriş Yap";
+      btn.onclick = () => showScreen("auth");
+    }
+  }
+
+  function updateWelcome() {
+    const el = document.getElementById("welcomeUser");
+    if (!el) return;
+    el.textContent = currentUser ? (currentUser.username || "Kullanıcı") : "";
+  }
+
+  function navigateMain() {
+    if (!currentUser) { showScreen("auth"); return; }
+    if (currentUser.role === "admin") {
+      showScreen("admin");
+      renderAdminRequests();
+      renderAdminMessages();
+      renderAdminUsers();
+    } else {
+      showScreen("main");
+      renderNotifications();
+    }
+  }
+
+  function navigateSettings() {
+    if (!currentUser) { showScreen("auth"); return; }
+    if (currentUser.role === "admin") {
+      showScreen("admin");
+      renderAdminRequests();
+      renderAdminMessages();
+      renderAdminUsers();
+    } else {
+      showScreen("settings");
+    }
+  }
+
+  function logoutUser() {
+    currentUser = null;
+    localStorage.removeItem("sparkCurrentUser");
+    updateHeader();
+    showScreen("info");
+  }
+
+  function signupUser() {
+    const username = document.getElementById("signupUsername").value.trim();
+    const email = document.getElementById("signupEmail").value.trim();
+    const pass = document.getElementById("signupPass").value.trim();
+    const status = document.getElementById("authStatus");
+
+    if (!username || !email || !pass) {
+      status.textContent = "Kullanıcı adı, e-posta ve şifre zorunlu.";
+      return;
     }
 
-    function navigateMain() {
-      if (!currentUser) {
-        showScreen("auth");
-        return;
-      }
+    let users = JSON.parse(localStorage.getItem("sparkUsers") || "[]");
+    if (users.find(u => u.username === username)) {
+      status.textContent = "Bu kullanıcı adı zaten alınmış.";
+      return;
+    }
+
+    const now = new Date().toLocaleString("tr-TR");
+    const user = { username, email, pass, role: "user", createdAt: now, lastLogin: now };
+    users.push(user);
+    localStorage.setItem("sparkUsers", JSON.stringify(users));
+
+    currentUser = user;
+    localStorage.setItem("sparkCurrentUser", JSON.stringify(currentUser));
+    status.textContent = "";
+    updateHeader();
+    updateWelcome();
+    renderNotifications();
+    showScreen("main");
+  }
+
+  function loginUser() {
+    const username = document.getElementById("loginUsername").value.trim();
+    const pass = document.getElementById("loginPass").value.trim();
+    const status = document.getElementById("authStatus");
+
+    if (!username || !pass) {
+      status.textContent = "Giriş için kullanıcı adı ve şifre gerekli.";
+      return;
+    }
+
+    if (username === "admin" && pass === ADMIN_PASSWORD) {
+      currentUser = { username: "Emir", role: "admin" };
+      localStorage.setItem("sparkCurrentUser", JSON.stringify(currentUser));
+      status.textContent = "Emir olarak giriş yapıldı.";
+      updateHeader();
+      showScreen("admin");
+      renderAdminRequests();
+      renderAdminMessages();
+      renderAdminUsers();
+      return;
+    }
+
+    let users = JSON.parse(localStorage.getItem("sparkUsers") || "[]");
+    const idx = users.findIndex(u => u.username === username && u.pass === pass);
+    if (idx === -1) {
+      status.textContent = "Kullanıcı adı veya şifre hatalı.";
+      return;
+    }
+
+    const now = new Date().toLocaleString("tr-TR");
+    users[idx].lastLogin = now;
+    localStorage.setItem("sparkUsers", JSON.stringify(users));
+
+    currentUser = users[idx];
+    localStorage.setItem("sparkCurrentUser", JSON.stringify(currentUser));
+    status.textContent = "Hoş geldin, " + currentUser.username + " 🎉";
+    updateHeader();
+    updateWelcome();
+    renderNotifications();
+    showScreen("main");
+  }
+
+  function forgotPassword() {
+    const username = document.getElementById("loginUsername").value.trim();
+    const status = document.getElementById("authStatus");
+
+    if (!username) {
+      status.textContent = "Önce kullanıcı adını yaz.";
+      return;
+    }
+
+    if (username === "admin") {
+      status.textContent = "Demo admin şifresi: " + ADMIN_PASSWORD;
+      return;
+    }
+
+    let users = JSON.parse(localStorage.getItem("sparkUsers") || "[]");
+    const user = users.find(u => u.username === username);
+    if (!user) {
+      status.textContent = "Bu kullanıcı adına ait kayıt bulunamadı.";
+      return;
+    }
+
+    status.textContent = "Demo sistem: Şifren " + user.pass;
+  }
+
+  function renderNotifications() {
+    const box = document.getElementById("notifList");
+    if (!box) return;
+    if (!currentUser) {
+      box.innerHTML = "<div>Önce giriş yapmalısın.</div>";
+      return;
+    }
+
+    let list = JSON.parse(localStorage.getItem("sparkAdRequests") || "[]");
+    const myList = list.filter(r => r.user === currentUser.username);
+    if (!myList.length) {
+      box.innerHTML = "<div>Henüz reklam isteğin yok. Stüdyo & Ayarlar menüsünden yeni bir istek gönderebilirsin.</div>";
+      return;
+    }
+
+    box.innerHTML = myList.map(req => {
+      const statusClass =
+        req.status === "approved"
+          ? "status-approved"
+          : req.status === "rejected"
+          ? "status-rejected"
+          : "status-pending";
+      const statusText =
+        req.status === "approved"
+          ? "Onaylandı"
+          : req.status === "rejected"
+          ? "Reddedildi"
+          : "Beklemede";
+      return `
+        <div class="notif-item">
+          <div class="notif-meta">
+            ${req.date} – <strong>${req.brand}</strong> (${req.product})
+            <span class="status-pill ${statusClass}">${statusText}</span>
+          </div>
+          <div>${req.desc}</div>
+          ${req.adminMessage ? `<div style="margin-top:4px;font-size:12px;">Emir'in notu: ${req.adminMessage}</div>` : ""}
+        </div>
+      `;
+    }).join("");
+  }
+
+  const themeButtons = document.querySelectorAll(".theme-btn");
+  const root = document.documentElement;
+
+  function applyTheme(theme) {
+    if (theme === "light") {
+      root.style.setProperty("--bg", "#f9fafb");
+      root.style.setProperty("--card", "#ffffff");
+      root.style.setProperty("--text", "#111827");
+      root.style.setProperty("--muted", "#4b5563");
+      root.style.setProperty("--accent", "#111827");
+      root.style.setProperty("--accent-soft", "#6b7280");
+      document.body.style.background =
+        "radial-gradient(circle at top, #e5e7eb 0, #f9fafb 60%, #e5e7eb 100%)";
+    } else if (theme === "neon") {
+      root.style.setProperty("--bg", "#020617");
+      root.style.setProperty("--card", "#020617");
+      root.style.setProperty("--text", "#e5e7eb");
+      root.style.setProperty("--muted", "#9ca3af");
+      root.style.setProperty("--accent", "#22c55e");
+      root.style.setProperty("--accent-soft", "#6ee7b7");
+      document.body.style.background =
+        "radial-gradient(circle at top, #1e293b 0, #020617 55%, #020617 100%)";
+    } else if (theme === "sunset") {
+      root.style.setProperty("--bg", "#161022");
+      root.style.setProperty("--card", "#1f1230");
+      root.style.setProperty("--text", "#fdf2f8");
+      root.style.setProperty("--muted", "#f9a8d4");
+      root.style.setProperty("--accent", "#fb7185");
+      root.style.setProperty("--accent-soft", "#fecaca");
+      document.body.style.background =
+        "radial-gradient(circle at top, #4c1d95 0, #161022 55%, #020617 100%)";
+    } else {
+      root.style.setProperty("--bg", "#050816");
+      root.style.setProperty("--card", "#11182b");
+      root.style.setProperty("--text", "#f5f5f5");
+      root.style.setProperty("--muted", "#b3b7c9");
+      root.style.setProperty("--accent", "#ff7a3c");
+      root.style.setProperty("--accent-soft", "#ffd3b8");
+      document.body.style.background =
+        "radial-gradient(circle at top, #11182b 0, #050816 55%, #04030a 100%)";
+    }
+    localStorage.setItem("sparkTheme", theme);
+    themeButtons.forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.theme === theme);
+    });
+  }
+
+  themeButtons.forEach(btn => {
+    btn.addEventListener("click", () => applyTheme(btn.dataset.theme));
+  });
+
+  function savePreferences() {
+    const prefType = document.getElementById("prefType").value.trim();
+    const status = document.getElementById("prefStatus");
+    if (!prefType) {
+      status.textContent = "Tercih kaydedilemedi: alan boş.";
+      return;
+    }
+    localStorage.setItem("sparkPrefType", prefType);
+    status.textContent = "Tercihin kaydedildi: " + prefType;
+  }
+
+  function handleAdRequest(e) {
+    e.preventDefault();
+    const statusEl = document.getElementById("reqStatus");
+
+    if (!currentUser || currentUser.role !== "user") {
+      statusEl.textContent = "Önce kullanıcı olarak giriş yapmalısın.";
+      return false;
+    }
+
+    const brand = document.getElementById("reqBrand").value.trim();
+    const product = document.getElementById("reqProduct").value.trim();
+    const desc = document.getElementById("reqDesc").value.trim();
+
+    if (!brand || !product || !desc) {
+      statusEl.textContent = "Lütfen tüm alanları doldur.";
+      return false;
+    }
+
+    let list = JSON.parse(localStorage.getItem("sparkAdRequests") || "[]");
+    list.push({
+      id: Date.now(),
+      user: currentUser.username,
+      email: currentUser.email,
+      brand,
+      product,
+      desc,
+      status: "pending",
+      adminMessage: "",
+      date: new Date().toLocaleString("tr-TR")
+    });
+    localStorage.setItem("sparkAdRequests", JSON.stringify(list));
+
+    statusEl.textContent = "Reklam isteğin Emir'e gönderildi.";
+    document.getElementById("reqBrand").value = "";
+    document.getElementById("reqProduct").value = "";
+    document.getElementById("reqDesc").value = "";
+    renderNotifications();
+    return false;
+  }
+
+  function handleUserMessage(e) {
+    e.preventDefault();
+    const statusEl = document.getElementById("msgStatus");
+
+    if (!currentUser || currentUser.role !== "user") {
+      statusEl.textContent = "Önce kullanıcı olarak giriş yapmalısın.";
+      return false;
+    }
+
+    const subject = document.getElementById("msgSubject").value.trim();
+    const text = document.getElementById("msgText").value.trim();
+
+    if (!subject || !text) {
+      statusEl.textContent = "Lütfen konu ve mesajı doldur.";
+      return false;
+    }
+
+    let list = JSON.parse(localStorage.getItem("sparkUserMessages") || "[]");
+    list.push({
+      id: Date.now(),
+      fromUser: currentUser.username,
+      email: currentUser.email,
+      subject,
+      text,
+      date: new Date().toLocaleString("tr-TR")
+    });
+    localStorage.setItem("sparkUserMessages", JSON.stringify(list));
+
+    statusEl.textContent = "Mesajın Emir’e iletildi.";
+    document.getElementById("msgSubject").value = "";
+    document.getElementById("msgText").value = "";
+    return false;
+  }
+
+  function renderAdminRequests() {
+    const box = document.getElementById("adminRequests");
+    if (!box) return;
+    let list = JSON.parse(localStorage.getItem("sparkAdRequests") || "[]");
+    if (!list.length) {
+      box.innerHTML = "<div>Henüz reklam isteği yok.</div>";
+      return;
+    }
+    box.innerHTML = list.map(req => {
+      const statusClass =
+        req.status === "approved"
+          ? "status-approved"
+          : req.status === "rejected"
+          ? "status-rejected"
+          : "status-pending";
+      const statusText =
+        req.status === "approved"
+          ? "Onaylandı"
+          : req.status === "rejected"
+          ? "Reddedildi"
+          : "Beklemede";
+      const approvedLocked = req.status === "approved";
+      return `
+        <div class="submission-item">
+          <div class="submission-meta">
+            ${req.date} – <strong>${req.brand}</strong> (${req.product}) |
+            Kullanıcı: ${req.user} (${req.email})
+            <span class="status-pill ${statusClass}">${statusText}</span>
+          </div>
+          <div>${req.desc}</div>
+          ${req.adminMessage ? `<div>Emir'in notu: ${req.adminMessage}</div>` : ""}
+          <div class="admin-actions">
+            <input type="text" id="adminNote-${req.id}" placeholder="Kısa mesaj (opsiyonel)" />
+            <button class="btn-approve" onclick="updateRequestStatus(${req.id}, 'approved')" ${approvedLocked ? "disabled" : ""}>Onayla</button>
+            <button class="btn-reject" onclick="updateRequestStatus(${req.id}, 'rejected')" ${approvedLocked ? "disabled" : ""}>Reddet</button>
+          </div>
+          ${approvedLocked ? `<div style="font-size:11px;color:#4ade80;margin-top:3px;">Bu istek onaylandı, tekrar reddedilemez.</div>` : ""}
+        </div>
+      `;
+    }).join("");
+  }
+
+  function updateRequestStatus(id, newStatus) {
+    let list = JSON.parse(localStorage.getItem("sparkAdRequests") || "[]");
+    const idx = list.findIndex(r => r.id === id);
+    if (idx === -1) return;
+    const req = list[idx];
+
+    if (req.status === "approved" && newStatus === "rejected") {
+      return;
+    }
+
+    const noteInput = document.getElementById("adminNote-" + id);
+    req.status = newStatus;
+    req.adminMessage = noteInput ? noteInput.value.trim() : "";
+    list[idx] = req;
+    localStorage.setItem("sparkAdRequests", JSON.stringify(list));
+    renderAdminRequests();
+    if (currentUser && currentUser.role === "user") {
+      renderNotifications();
+    }
+  }
+
+  function renderAdminMessages() {
+    const box = document.getElementById("adminMessages");
+    if (!box) return;
+    let list = JSON.parse(localStorage.getItem("sparkUserMessages") || "[]");
+    if (!list.length) {
+      box.innerHTML = "<div>Henüz mesaj yok.</div>";
+      return;
+    }
+    box.innerHTML = list.map(m => `
+      <div class="submission-item">
+        <div class="submission-meta">
+          ${m.date} – <strong>${m.fromUser}</strong> (${m.email}) – ${m.subject}
+        </div>
+        <div>${m.text}</div>
+      </div>
+    `).join("");
+  }
+
+  function renderAdminUsers() {
+    const box = document.getElementById("adminUsers");
+    if (!box) return;
+    let users = JSON.parse(localStorage.getItem("sparkUsers") || "[]");
+    if (!users.length) {
+      box.innerHTML = "<div>Henüz üye yok.</div>";
+      return;
+    }
+    box.innerHTML = users.map(u => `
+      <div class="submission-item">
+        <div class="submission-meta">
+          Kullanıcı: <strong>${u.username}</strong> (${u.email})
+        </div>
+        <div>Üyelik tarihi: ${u.createdAt || "-"}</div>
+        <div>Son giriş: ${u.lastLogin || "-"}</div>
+      </div>
+    `).join("");
+  }
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const savedTheme = localStorage.getItem("sparkTheme") || "dark";
+  applyTheme(savedTheme);
+
+  const savedLang = localStorage.getItem("sparkLang") || "tr";
+  document.getElementById("langSelect").value = savedLang;
+  applyLanguage(savedLang);
+
+  (function loadCurrentUser() {
+    const raw = localStorage.getItem("sparkCurrentUser");
+    if (raw) {
+      try { currentUser = JSON.parse(raw); } catch(e){ currentUser = null; }
+    }
+    updateHeader();
+    if (currentUser) {
+      updateWelcome();
       if (currentUser.role === "admin") {
         showScreen("admin");
         renderAdminRequests();
         renderAdminMessages();
+        renderAdminUsers();
       } else {
         showScreen("main");
+        renderNotifications();
       }
+    } else {
+      showScreen("info");
     }
-
-    function navigateSettings() {
-      if (!currentUser) {
-        showScreen("auth");
-        return;
-      }
-      showScreen("settings");
-    }
-
-    function logoutUser() {
-      currentUser = null;
-      localStorage.removeItem("sparkCurrentUser");
-      updateHeader();
-      showScreen("auth");
-    }
-
-    // Doğrulama kodu (DEMO)
-    function sendVerificationCode() {
-      const email = document.getElementById("signupEmail").value.trim();
-      const status = document.getElementById("authStatus");
-      if (!email) {
-        status.textContent = "Önce e-posta adresi gir.";
-        return;
-      }
-      verificationCode = (Math.floor(100000 + Math.random() * 900000)).toString();
-      verificationEmail = email;
-      status.textContent =
-        "Demo: Kodun " + verificationCode +
-        " (gerçek sistemde SMS/e-posta ile gönderilir).";
-    }
-
-    // SIGNUP / LOGIN
-    function signupUser() {
-      const username = document.getElementById("signupUsername").value.trim();
-      const email = document.getElementById("signupEmail").value.trim();
-      const pass = document.getElementById("signupPass").value.trim();
-      const codeInput = document.getElementById("verificationCode").value.trim();
-      const status = document.getElementById("authStatus");
-
-      if (!username || !pass) {
-        status.textContent = "Kullanıcı adı ve şifre zorunlu.";
-        return;
-      }
-
-      if (!email || !codeInput) {
-        status.textContent = "E-posta ve doğrulama kodu gerekli.";
-        return;
-      }
-
-      if (!verificationCode || verificationEmail !== email || codeInput !== verificationCode) {
-        status.textContent = "Doğrulama kodu hatalı veya süresi doldu.";
-        return;
-      }
-
-      let users = JSON.parse(localStorage.getItem("sparkUsers") || "[]");
-      if (users.find(u => u.username === username)) {
-        status.textContent = "Bu kullanıcı adı zaten alınmış.";
-        return;
-      }
-
-      const user = { username, email, pass, role: "user" };
-      users.push(user);
-      localStorage.setItem("sparkUsers", JSON.stringify(users));
-
-      currentUser = user;
-      localStorage.setItem("sparkCurrentUser", JSON.stringify(currentUser));
-      status.textContent = "";
-      updateHeader();
-      updateWelcome();
-      showScreen("main");
-    }
-
-    function loginUser() {
-      const username = document.getElementById("loginUsername").value.trim();
-      const pass = document.getElementById("loginPass").value.trim();
-      const status = document.getElementById("authStatus");
-
-      if (!username || !pass) {
-        status.textContent = "Giriş için kullanıcı adı ve şifre gerekli.";
-        return;
-      }
-
-      // Gizli admin girişi
-      if (username === "admin" && pass === ADMIN_PASSWORD) {
-        currentUser = { username: "admin", role: "admin" };
-        localStorage.setItem("sparkCurrentUser", JSON.stringify(currentUser));
-        status.textContent = "Admin olarak giriş yapıldı.";
-        updateHeader();
-        showScreen("admin");
-        renderAdminRequests();
-        renderAdminMessages();
-        return;
-      }
-
-      let users = JSON.parse(localStorage.getItem("sparkUsers") || "[]");
-      const user = users.find(u => u.username === username && u.pass === pass);
-      if (!user) {
-        status.textContent = "Kullanıcı adı veya şifre hatalı.";
-        return;
-      }
-
-      currentUser = user;
-      localStorage.setItem("sparkCurrentUser", JSON.stringify(currentUser));
-      status.textContent = "Hoş geldin, " + user.username + " 🎉";
-      updateHeader();
-      updateWelcome();
-      showScreen("main");
-    }
-
-    function forgotPassword() {
-      const username = document.getElementById("loginUsername").value.trim();
-      const status = document.getElementById("authStatus");
-
-      if (!username) {
-        status.textContent = "Önce kullanıcı adını yaz.";
-        return;
-      }
-
-      if (username === "admin") {
-        status.textContent = "Demo admin şifresi: " + ADMIN_PASSWORD;
-        return;
-      }
-
-      let users = JSON.parse(localStorage.getItem("sparkUsers") || "[]");
-      const user = users.find(u => u.username === username);
-      if (!user) {
-        status.textContent = "Bu kullanıcı adına ait kayıt bulunamadı.";
-        return;
-      }
-
-      status.textContent = "Demo sistem: Şifren " + user.pass;
-    }
-
-    // ANA EKRAN PANEL
-    function openPanel(which) {
-      const panel = document.getElementById("mainPanel");
-      if (!panel) return;
-      if (which === "projeler") {
-        panel.innerHTML = `
-          <h4>Reklam Projelerim</h4>
-          <p>Buraya ileride gerçek proje listelerini, bağlantıları veya video
-          önizlemelerini koyabilirsin. Şu an için sadece açıklama metni gösteriyor.</p>
-        `;
-      } else if (which === "isbirlikleri") {
-        panel.innerHTML = `
-          <h4>Kulüp & Marka İşbirlikleri</h4>
-          <p>Barter ve sponsorluk anlaşmalarını bu bölümde kartlar halinde
-          listeleyebilirsin.</p>
-        `;
-      } else if (which === "ogrenci") {
-        panel.innerHTML = `
-          <h4>Öğrenci / Okul Projeleri</h4>
-          <p>Projelerini başlık, tarih ve linklerle burada tutabilirsin. Canva'da
-          klasörler gibi düşünebilirsin.</p>
-        `;
-      }
-    }
-
-    // AYARLAR: TEMA
-    const themeButtons = document.querySelectorAll(".theme-btn");
-    const root = document.documentElement;
-
-    function applyTheme(theme) {
-      if (theme === "light") {
-        root.style.setProperty("--bg", "#f5f5f5");
-        root.style.setProperty("--bg-soft", "#ffffff");
-        root.style.setProperty("--card", "#ffffff");
-        root.style.setProperty("--text", "#111827");
-        root.style.setProperty("--muted", "#4b5563");
-        root.style.setProperty("--accent", "#2563eb");
-        root.style.setProperty("--accent-soft", "#93c5fd");
-        document.body.style.background =
-          "radial-gradient(circle at top, #e5e7eb 0, #f5f5f5 60%, #e5e7eb 100%)";
-      } else if (theme === "neon") {
-        root.style.setProperty("--bg", "#020617");
-        root.style.setProperty("--bg-soft", "#020617");
-        root.style.setProperty("--card", "#020617");
-        root.style.setProperty("--text", "#e5e7eb");
-        root.style.setProperty("--muted", "#9ca3af");
-        root.style.setProperty("--accent", "#22c55e");
-        root.style.setProperty("--accent-soft", "#6ee7b7");
-        document.body.style.background =
-          "radial-gradient(circle at top, #1e293b 0, #020617 55%, #020617 100%)";
-      } else {
-        root.style.setProperty("--bg", "#050816");
-        root.style.setProperty("--bg-soft", "#0b1020");
-        root.style.setProperty("--card", "#11182b");
-        root.style.setProperty("--text", "#f5f5f5");
-        root.style.setProperty("--muted", "#b3b7c9");
-        root.style.setProperty("--accent", "#ff7a3c");
-        root.style.setProperty("--accent-soft", "#ffd3b8");
-        document.body.style.background =
-          "radial-gradient(circle at top, #11182b 0, #050816 55%, #04030a 100%)";
-      }
-      localStorage.setItem("sparkTheme", theme);
-      themeButtons.forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.theme === theme);
-      });
-    }
-
-    themeButtons.forEach(btn => {
-      btn.addEventListener("click", () => applyTheme(btn.dataset.theme));
-    });
-
-    // AYARLAR: PREF
-    function savePreferences() {
-      const prefType = document.getElementById("prefType").value.trim();
-      const status = document.getElementById("prefStatus");
-      if (!prefType) {
-        status.textContent = "Tercih kaydedilemedi: alan boş.";
-        return;
-      }
-      localStorage.setItem("sparkPrefType", prefType);
-      status.textContent = "Tercihin kaydedildi: " + prefType;
-    }
-
-    // REKLAM İSTEĞİ
-    function handleAdRequest(source, e) {
-      e.preventDefault();
-      const brand = document.getElementById("reqBrand-" + source).value.trim();
-      const product = document.getElementById("reqProduct-" + source).value.trim();
-      const desc = document.getElementById("reqDesc-" + source).value.trim();
-      const contact = document.getElementById("reqContact-" + source).value.trim();
-      const status = document.getElementById("reqStatus-" + source);
-
-      if (!brand || !product || !desc || !contact) {
-        status.textContent = "Lütfen tüm alanları doldur.";
-        return false;
-      }
-
-      let list = JSON.parse(localStorage.getItem("sparkAdRequests") || "[]");
-      list.push({
-        id: Date.now(),
-        brand,
-        product,
-        desc,
-        contact,
-        status: "pending",
-        adminMessage: "",
-        date: new Date().toLocaleString("tr-TR")
-      });
-      localStorage.setItem("sparkAdRequests", JSON.stringify(list));
-
-      status.textContent = "Reklam isteğin admin’e gönderildi.";
-      e.target.reset();
-      return false;
-    }
-
-    // KULLANICI MESAJLARI
-    function handleUserMessage(source, e) {
-      e.preventDefault();
-      const subject = document.getElementById("msgSubject-" + source).value.trim();
-      const text = document.getElementById("msgText-" + source).value.trim();
-      const status = document.getElementById("msgStatus-" + source);
-
-      if (!subject || !text) {
-        status.textContent = "Lütfen konu ve mesajı doldur.";
-        return false;
-      }
-
-      let list = JSON.parse(localStorage.getItem("sparkUserMessages") || "[]");
-      list.push({
-        id: Date.now(),
-        subject,
-        text,
-        fromUser: currentUser ? currentUser.username : "Misafir",
-        date: new Date().toLocaleString("tr-TR")
-      });
-      localStorage.setItem("sparkUserMessages", JSON.stringify(list));
-
-      status.textContent = "Mesajın admin’e iletildi.";
-      e.target.reset();
-      return false;
-    }
-
-    // ADMIN LISTELER
-    function renderAdminRequests() {
-      const box = document.getElementById("adminRequests");
-      if (!box) return;
-      let list = JSON.parse(localStorage.getItem("sparkAdRequests") || "[]");
-      if (!list.length) {
-        box.innerHTML = "<div>Henüz reklam isteği yok.</div>";
-        return;
-      }
-      box.innerHTML = list.map(req => {
-        const statusClass =
-          req.status === "approved"
-            ? "status-approved"
-            : req.status === "rejected"
-            ? "status-rejected"
-            : "status-pending";
-        const statusText =
-          req.status === "approved"
-            ? "Onaylandı"
-            : req.status === "rejected"
-            ? "Reddedildi"
-            : "Beklemede";
-        return `
-          <div class="submission-item">
-            <div class="submission-meta">
-              ${req.date} – <strong>${req.brand}</strong> (${req.product})
-              <span class="status-pill ${statusClass}">${statusText}</span>
-            </div>
-            <div>${req.desc}</div>
-            <div class="submission-meta">İletişim: ${req.contact}</div>
-            ${req.adminMessage ? `<div>Admin notu: ${req.adminMessage}</div>` : ""}
-            <div class="admin-actions">
-              <input type="text" id="msg-${req.id}" placeholder="Kısa mesaj (opsiyonel)" />
-              <button class="btn-approve" onclick="updateRequestStatus(${req.id}, 'approved')">Onayla</button>
-              <button class="btn-reject" onclick="updateRequestStatus(${req.id}, 'rejected')">Reddet</button>
-            </div>
-          </div>
-        `;
-      }).join("");
-    }
-
-    function updateRequestStatus(id, newStatus) {
-      let list = JSON.parse(localStorage.getItem("sparkAdRequests") || "[]");
-      const req = list.find(r => r.id === id);
-      if (!req) return;
-      const msgInput = document.getElementById("msg-" + id);
-      const msg = msgInput ? msgInput.value.trim() : "";
-      req.status = newStatus;
-      req.adminMessage = msg;
-      localStorage.setItem("sparkAdRequests", JSON.stringify(list));
-      renderAdminRequests();
-    }
-
-    function renderAdminMessages() {
-      const box = document.getElementById("adminMessages");
-      if (!box) return;
-      let list = JSON.parse(localStorage.getItem("sparkUserMessages") || "[]");
-      if (!list.length) {
-        box.innerHTML = "<div>Henüz mesaj yok.</div>";
-        return;
-      }
-      box.innerHTML = list.map(m => `
-        <div class="submission-item">
-          <div class="submission-meta">
-            ${m.date} – <strong>${m.fromUser}</strong> – ${m.subject}
-          </div>
-          <div>${m.text}</div>
-        </div>
-      `).join("");
-    }
-
-    // INIT
-    document.getElementById("year").textContent = new Date().getFullYear();
-
-    const savedTheme = localStorage.getItem("sparkTheme") || "dark";
-    applyTheme(savedTheme);
-
-    const savedLang = localStorage.getItem("sparkLang") || "tr";
-    document.getElementById("langSelect").value = savedLang;
-    applyLanguage(savedLang);
-
-    function loadCurrentUser() {
-      const raw = localStorage.getItem("sparkCurrentUser");
-      if (raw) {
-        try {
-          currentUser = JSON.parse(raw);
-        } catch (e) {
-          currentUser = null;
-        }
-      }
-      updateHeader();
-      if (currentUser) {
-        updateWelcome();
-        if (currentUser.role === "admin") {
-          showScreen("admin");
-          renderAdminRequests();
-          renderAdminMessages();
-        } else {
-          showScreen("main");
-        }
-      } else {
-        showScreen("auth");
-      }
-    }
-
-    loadCurrentUser();
-  </script>
+  })();
+</script>
 </body>
 </html>
+
 
