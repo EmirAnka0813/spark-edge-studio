@@ -18,11 +18,7 @@
       --radius-lg: 18px;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -43,10 +39,7 @@
 
     a { color: inherit; text-decoration: none; }
 
-    .container {
-      width: min(1100px, 92vw);
-      margin: 0 auto;
-    }
+    .container { width: min(1100px, 92vw); margin: 0 auto; }
 
     header {
       position: sticky;
@@ -80,7 +73,7 @@
       width: 40px;
       height: 40px;
       border-radius: 14px;
-      background: radial-gradient(circle at 30% 0, #f97316, #7c2d12);
+      background: radial-gradient(circle at 30% 0, var(--accent), #7c2d12);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -95,17 +88,9 @@
       color: #111827;
     }
 
-    .nav-titles {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
+    .nav-titles { display: flex; flex-direction: column; gap: 2px; }
 
-    .nav-title {
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      font-size: 18px;
-    }
+    .nav-title { font-weight: 700; letter-spacing: 0.03em; font-size: 18px; }
 
     .nav-sub {
       font-size: 11px;
@@ -114,18 +99,9 @@
       letter-spacing: 0.12em;
     }
 
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
+    .nav-right { display: flex; align-items: center; gap: 14px; }
 
-    .nav-links {
-      display: flex;
-      gap: 10px;
-      font-size: 13px;
-      color: var(--muted);
-    }
+    .nav-links { display: flex; gap: 10px; font-size: 13px; color: var(--muted); }
 
     .nav-link {
       border: none;
@@ -136,9 +112,7 @@
       border-radius: 999px;
     }
 
-    .nav-link:hover {
-      color: var(--accent);
-    }
+    .nav-link:hover { color: var(--accent); }
 
     .nav-link.active {
       color: var(--accent);
@@ -152,7 +126,7 @@
       border-radius: 999px;
       font-size: 13px;
       font-weight: 600;
-      background: linear-gradient(135deg, #f97316, #fb7185);
+      background: linear-gradient(135deg, var(--accent), #fb7185);
       color: #111827;
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
     }
@@ -162,20 +136,11 @@
       box-shadow: 0 12px 25px rgba(15, 23, 42, 0.25);
     }
 
-    main {
-      padding-bottom: 40px;
-    }
+    main { padding-bottom: 40px; }
 
-    .screen {
-      display: none;
-      padding: 32px 0;
-    }
+    .screen { display: none; padding: 32px 0; }
+    .screen.active { display: block; }
 
-    .screen.active {
-      display: block;
-    }
-
-    /* INFO / HERO */
     .info-layout {
       display: grid;
       grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
@@ -184,9 +149,7 @@
     }
 
     @media (max-width: 840px) {
-      .info-layout {
-        grid-template-columns: 1fr;
-      }
+      .info-layout { grid-template-columns: 1fr; }
     }
 
     .kicker {
@@ -200,12 +163,7 @@
       margin-bottom: 10px;
     }
 
-    .k-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: var(--accent);
-    }
+    .k-dot { width: 7px; height: 7px; border-radius: 999px; background: var(--accent); }
 
     .hero-title {
       font-size: clamp(30px, 4vw, 36px);
@@ -214,7 +172,7 @@
     }
 
     .hero-title span {
-      background: linear-gradient(135deg, #f97316, #fb7185, #a855f7);
+      background: linear-gradient(135deg, var(--accent), #fb7185, #a855f7);
       -webkit-background-clip: text;
       color: transparent;
     }
@@ -252,7 +210,7 @@
       cursor: pointer;
       padding: 10px 18px;
       border-radius: 999px;
-      background: linear-gradient(135deg, #f97316, #fb7185);
+      background: linear-gradient(135deg, var(--accent), #fb7185);
       color: #111827;
       font-weight: 600;
       font-size: 13px;
@@ -269,26 +227,13 @@
       font-size: 13px;
     }
 
-    body.light .card {
-      box-shadow: 0 12px 26px rgba(15, 23, 42, 0.18);
-    }
+    body.light .card { box-shadow: 0 12px 26px rgba(15, 23, 42, 0.18); }
 
-    .card h3 {
-      font-size: 15px;
-      margin-bottom: 6px;
-    }
+    .card h3 { font-size: 15px; margin-bottom: 6px; }
 
-    /* AUTH */
-    .auth-wrapper {
-      max-width: 420px;
-      margin: 0 auto;
-    }
+    .auth-wrapper { max-width: 420px; margin: 0 auto; }
 
-    .auth-title {
-      font-size: 20px;
-      text-align: center;
-      margin-bottom: 8px;
-    }
+    .auth-title { font-size: 20px; text-align: center; margin-bottom: 8px; }
 
     .auth-sub {
       font-size: 13px;
@@ -305,9 +250,7 @@
       margin-bottom: 12px;
     }
 
-    body.light .auth-tabs {
-      background: rgba(229, 231, 235, 0.9);
-    }
+    body.light .auth-tabs { background: rgba(229, 231, 235, 0.9); }
 
     .auth-tab {
       flex: 1;
@@ -320,7 +263,7 @@
     }
 
     .auth-tab.active {
-      background: linear-gradient(135deg, #f97316, #fb7185);
+      background: linear-gradient(135deg, var(--accent), #fb7185);
       color: #111827;
       font-weight: 600;
     }
@@ -332,10 +275,7 @@
       margin-bottom: 10px;
     }
 
-    .field label {
-      font-size: 12px;
-      color: var(--muted);
-    }
+    .field label { font-size: 12px; color: var(--muted); }
 
     .field input,
     .field textarea,
@@ -357,15 +297,9 @@
       border-color: rgba(148, 163, 184, 0.6);
     }
 
-    .field textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
+    .field textarea { min-height: 90px; resize: vertical; }
 
-    .btn-full {
-      width: 100%;
-      margin-top: 4px;
-    }
+    .btn-full { width: 100%; margin-top: 4px; }
 
     .status-text {
       font-size: 12px;
@@ -374,17 +308,9 @@
       margin-top: 6px;
     }
 
-    /* CONTENT */
-    .section-title {
-      font-size: 20px;
-      margin-bottom: 4px;
-    }
+    .section-title { font-size: 20px; margin-bottom: 4px; }
 
-    .section-sub {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 16px;
-    }
+    .section-sub { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
 
     .notif-list {
       border-radius: 14px;
@@ -394,18 +320,14 @@
       font-size: 13px;
     }
 
-    body.light .notif-list {
-      background: rgba(255, 255, 255, 0.85);
-    }
+    body.light .notif-list { background: rgba(255, 255, 255, 0.85); }
 
     .notif-item {
       padding: 8px 6px;
       border-bottom: 1px solid rgba(148, 163, 184, 0.35);
     }
 
-    .notif-item:last-child {
-      border-bottom: none;
-    }
+    .notif-item:last-child { border-bottom: none; }
 
     .notif-meta {
       font-size: 11px;
@@ -421,20 +343,9 @@
       margin-left: 6px;
     }
 
-    .s-pending {
-      background: rgba(234, 179, 8, 0.15);
-      color: #facc15;
-    }
-
-    .s-approved {
-      background: rgba(22, 163, 74, 0.2);
-      color: #4ade80;
-    }
-
-    .s-rejected {
-      background: rgba(239, 68, 68, 0.18);
-      color: #fca5a5;
-    }
+    .s-pending { background: rgba(234, 179, 8, 0.15); color: #facc15; }
+    .s-approved { background: rgba(22, 163, 74, 0.2); color: #4ade80; }
+    .s-rejected { background: rgba(239, 68, 68, 0.18); color: #fca5a5; }
 
     .grid-two {
       display: grid;
@@ -443,12 +354,9 @@
     }
 
     @media (max-width: 840px) {
-      .grid-two {
-        grid-template-columns: 1fr;
-      }
+      .grid-two { grid-template-columns: 1fr; }
     }
 
-    /* ADMIN */
     .admin-layout {
       display: grid;
       grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
@@ -456,9 +364,7 @@
     }
 
     @media (max-width: 960px) {
-      .admin-layout {
-        grid-template-columns: 1fr;
-      }
+      .admin-layout { grid-template-columns: 1fr; }
     }
 
     .admin-list {
@@ -471,18 +377,14 @@
       background: rgba(15, 23, 42, 0.9);
     }
 
-    body.light .admin-list {
-      background: rgba(255, 255, 255, 0.9);
-    }
+    body.light .admin-list { background: rgba(255, 255, 255, 0.9); }
 
     .admin-item {
       padding: 6px 4px;
       border-bottom: 1px solid rgba(148, 163, 184, 0.35);
     }
 
-    .admin-item:last-child {
-      border-bottom: none;
-    }
+    .admin-item:last-child { border-bottom: none; }
 
     .admin-meta {
       font-size: 11px;
@@ -514,15 +416,8 @@
       cursor: pointer;
     }
 
-    .btn-approve {
-      background: rgba(22, 163, 74, 0.9);
-      color: #e5f9ed;
-    }
-
-    .btn-reject {
-      background: rgba(239, 68, 68, 0.9);
-      color: #fee2e2;
-    }
+    .btn-approve { background: rgba(22, 163, 74, 0.9); color: #e5f9ed; }
+    .btn-reject { background: rgba(239, 68, 68, 0.9); color: #fee2e2; }
 
     footer {
       padding: 18px 0 28px;
@@ -723,9 +618,9 @@
     <section class="screen" id="screen-settings">
       <h2 class="section-title">Ayarlar</h2>
       <p class="section-sub">
-        Tema rengini değiştirebilirsin. Sadece senin cihazında geçerli olur.
+        Tema ve vurgu rengini değiştirebilirsin.
       </p>
-      <div class="card" style="max-width:380px;">
+      <div class="card" style="max-width:420px;">
         <div class="field">
           <label for="theme-select">Tema</label>
           <select id="theme-select">
@@ -733,8 +628,17 @@
             <option value="light">Açık Tema</option>
           </select>
         </div>
+        <div class="field">
+          <label for="accent-select">Vurgu Rengi</label>
+          <select id="accent-select">
+            <option value="orange">Turuncu (Varsayılan)</option>
+            <option value="blue">Mavi</option>
+            <option value="green">Yeşil</option>
+            <option value="purple">Mor</option>
+          </select>
+        </div>
         <p style="font-size:12px; color:var(--muted);">
-          Tema seçimin tarayıcındaki hafızaya kaydedilir. Başka bilgisayarda farklı tema olabilir.
+          Tema ve renk seçimin bu tarayıcıda kaydedilir. Başka bir bilgisayarda farklı ayarlar olabilir.
         </p>
       </div>
     </section>
@@ -793,7 +697,6 @@
     updateDoc
   } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
-  // Bu config SENİN Firebase projen:
   const firebaseConfig = {
     apiKey: "AIzaSyDc6kmOfcRwWLFxPAK0qtB5w_QJkTdHqh8",
     authDomain: "spark-ad-studio.firebaseapp.com",
@@ -863,17 +766,48 @@
 
   function applyThemeFromStorage() {
     const theme = localStorage.getItem("spark_theme") || "dark";
+    const accent = localStorage.getItem("spark_accent") || "orange";
+
     document.getElementById("theme-select").value = theme;
+    document.getElementById("accent-select").value = accent;
+
     if (theme === "light") {
       document.body.classList.add("light");
     } else {
       document.body.classList.remove("light");
     }
+
+    applyAccent(accent);
+  }
+
+  function applyAccent(accentKey) {
+    let accent = "#ff7a3c";
+    let soft = "#ffd2aa";
+
+    if (accentKey === "blue") {
+      accent = "#3b82f6";
+      soft = "#bfdbfe";
+    } else if (accentKey === "green") {
+      accent = "#22c55e";
+      soft = "#bbf7d0";
+    } else if (accentKey === "purple") {
+      accent = "#a855f7";
+      soft = "#e9d5ff";
+    }
+
+    document.documentElement.style.setProperty("--accent", accent);
+    document.documentElement.style.setProperty("--accent-soft", soft);
   }
 
   document.getElementById("theme-select").addEventListener("change", () => {
     const val = document.getElementById("theme-select").value;
     localStorage.setItem("spark_theme", val);
+    applyThemeFromStorage();
+  });
+
+  document.getElementById("accent-select").addEventListener("change", () => {
+    const val = document.getElementById("accent-select").value;
+    localStorage.setItem("spark_accent", val);
     applyThemeFromStorage();
   });
 
@@ -980,7 +914,7 @@
       setActiveScreen("main");
     } catch (err) {
       console.error(err);
-      statusRegister.textContent = "Kayıt sırasında bir hata oluştu (Rules ayarlarını kontrol et).";
+      statusRegister.textContent = "Kayıt sırasında hata oluştu. Firestore Rules ayarını kontrol et.";
     }
   });
 
@@ -994,7 +928,7 @@
       return;
     }
 
-    // Gizli Yönetici girişi (ekranda yazmıyoruz, sadece sen biliyorsun)
+    // Gizli yönetici girişi (ekranda gösterilmiyor)
     if (loginVal === "admin" && pass === "spark123") {
       currentUser = {
         id: "ADMIN",
@@ -1046,7 +980,7 @@
       }
     } catch (err) {
       console.error(err);
-      statusLogin.textContent = "Sunucuya bağlanırken hata oluştu (muhtemelen Firestore Rules engelliyor).";
+      statusLogin.textContent = "Sunucuya bağlanırken hata oluştu. Firestore Rules engelliyor olabilir.";
     }
   });
 
@@ -1232,7 +1166,6 @@
         try {
           const ref = doc(db, "requests", id);
 
-          // Onaylanmış isteği reddetme koruması:
           const allSnap = await getDocs(collection(db, "requests"));
           let current = null;
           allSnap.forEach(d => {
@@ -1288,11 +1221,7 @@
   (function initFromStorage() {
     const raw = localStorage.getItem("spark_current_user");
     if (raw) {
-      try {
-        currentUser = JSON.parse(raw);
-      } catch (e) {
-        currentUser = null;
-      }
+      try { currentUser = JSON.parse(raw); } catch (e) { currentUser = null; }
     }
     updateHeaderState();
     if (currentUser) {
@@ -1308,7 +1237,6 @@
       setActiveScreen("info");
     }
   })();
-
 </script>
 
 </body>
