@@ -5,13 +5,6 @@
   <title>Spark Ad Studio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!--
-    DİKKAT:
-    Bu dosyadaki satın alma sistemi GERÇEK ödeme yapmaz.
-    Sadece Firestore'a "kredi paketi satın aldı" kaydı yazar ve
-    uygulama içinde kredi hakkı verir (demo amaçlı).
-  -->
-
   <style>
     :root {
       --bg: #050816;
@@ -422,6 +415,35 @@
     .btn-approve { background: rgba(22, 163, 74, 0.9); color: #e5f9ed; }
     .btn-reject { background: rgba(239, 68, 68, 0.9); color: #fee2e2; }
 
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 840px) {
+      .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    .stat-card {
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      font-size: 12px;
+    }
+
+    .stat-label { color: var(--muted); font-size: 11px; }
+    .stat-value { font-size: 18px; font-weight: 600; }
+
+    .feed-post {
+      padding: 8px 6px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+    }
+
+    .feed-post:last-child { border-bottom: none; }
+
     footer {
       padding: 18px 0 28px;
       font-size: 12px;
@@ -445,7 +467,7 @@
       <div class="nav-logo">SA</div>
       <div class="nav-titles">
         <div class="nav-title">Spark Ad Studio</div>
-        <div class="nav-sub">kulüpler & markalar için mini stüdyo</div>
+        <div class="nav-sub">mini reklam stüdyosu</div>
       </div>
     </div>
     <div class="nav-right">
@@ -453,6 +475,7 @@
         <button class="nav-link" data-target="info" id="nav-info">Bilgi</button>
         <button class="nav-link" data-target="main" id="nav-main">Ana Sayfa</button>
         <button class="nav-link" data-target="studio" id="nav-studio">Stüdyo</button>
+        <button class="nav-link" data-target="community" id="nav-community">Topluluk</button>
         <button class="nav-link" data-target="settings" id="nav-settings">Ayarlar</button>
         <button class="nav-link" data-target="admin" id="nav-admin" style="display:none;">Yönetici</button>
       </div>
@@ -464,42 +487,41 @@
 <main>
   <div class="container">
 
-    <!-- BİLGİ / LANDING -->
+    <!-- BİLGİ EKRANI -->
     <section class="screen active" id="screen-info">
       <div class="info-layout">
         <div>
           <div class="kicker">
-            <span class="k-dot"></span> GENÇ ZEKÂLAR İÇİN REKLAM STÜDYOSU
+            <span class="k-dot"></span> GENÇ YARATICILAR İÇİN REKLAM STÜDYOSU
           </div>
           <h1 class="hero-title">
-            <span>Spark Ad Studio</span> ile kulüpler ve markalar için eğlenceli reklam fikirleri.
+            <span>Spark Ad Studio</span> kulüpler ve markalar için eğlenceli reklam fikirleri üretir.
           </h1>
           <p class="hero-lead">
-            Reklam isteyen kulüpler kısa bir form dolduruyor, sen de onların istediği şeye göre
-            akılda kalıcı dijital içerik fikirleri üretiyorsun. Yönetici panelinden gelen istekleri
-            görüp takip edebiliyorsun.
+            Kulüpler / markalar form dolduruyor, sen de onlar için akılda kalıcı reklam fikirleri
+            ve video senaryoları üretiyorsun. Sistem hem kullanıcıyı hem yöneticiyi takip ediyor.
           </p>
           <div class="pill-row">
-            <span class="pill">🎯 13–14 yaş odaklı kreatif içerikler</span>
-            <span class="pill">🏟 Kulüpler & markalar</span>
-            <span class="pill">💬 Yöneticiyle doğrudan mesaj</span>
+            <span class="pill">🎯 13–14 yaş odaklı kreatif içerik</span>
+            <span class="pill">🏟 Kulüpler, markalar, şirketler</span>
+            <span class="pill">💬 Direkt yönetici mesajlaşma</span>
           </div>
           <button class="primary-btn" id="btn-info-start">Üye Ol / Giriş Yap</button>
         </div>
         <div class="card">
-          <h3>Nasıl çalışıyor?</h3>
+          <h3>Nasıl çalışır?</h3>
           <p style="color:var(--muted); font-size:13px;">
-            1. Üye ol veya giriş yap.<br>
-            2. Kredi paketi satın al.<br>
-            3. Stüdyo ekranından reklam isteği gönder.<br>
-            4. Yönetici isteğini onaylar veya reddeder.<br>
-            5. Durumu Ana Sayfa & Bildirimler bölümünden takip edersin.
+            • Üye ol veya giriş yap.<br>
+            • Kredi paketi satın al (simülasyon).<br>
+            • Reklam isteğini gönder, Yönetici görsün.<br>
+            • Yönetici istekleri onaylar / reddeder ve mesajla yanıt verir.<br>
+            • Topluluk akışında paylaşım yapabilirsin.
           </p>
         </div>
       </div>
     </section>
 
-    <!-- GİRİŞ / ÜYE OL -->
+    <!-- AUTH -->
     <section class="screen" id="screen-auth">
       <div class="auth-wrapper">
         <div class="auth-title">Hesabına giriş yap veya yeni bir hesap oluştur</div>
@@ -545,14 +567,14 @@
       </div>
     </section>
 
-    <!-- ANA SAYFA / BİLDİRİMLER -->
+    <!-- ANA SAYFA -->
     <section class="screen" id="screen-main">
       <div style="margin-bottom:16px;">
         <div style="font-size:14px; color:var(--accent-soft);" id="welcome-text"></div>
       </div>
       <h2 class="section-title">Bildirimler</h2>
       <p class="section-sub">
-        Gönderdiğin reklam isteklerinin ve satın alma kayıtlarının durumlarını buradan takip edebilirsin.
+        Gönderdiğin reklam istekleri ve satın alma kayıtları burada listelenir.
       </p>
       <div class="notif-list" id="notif-list"></div>
     </section>
@@ -561,7 +583,7 @@
     <section class="screen" id="screen-studio">
       <h2 class="section-title">Stüdyo</h2>
       <p class="section-sub">
-        Profil bilgilerini gör, kredi paketi satın al, reklam isteği gönder ve Yöneticiye mesaj bırak.
+        Profil bilgilerin, kredi paketleri, reklam isteği formu ve Yönetici mesaj alanı burada.
       </p>
 
       <div class="grid-two">
@@ -575,7 +597,8 @@
         <div class="card">
           <h3>Kredi Paketleri</h3>
           <p style="font-size:12px; color:var(--muted); margin-bottom:8px;">
-            Video üretim kredisi satın aldığında reklam isteği formu açılır ve Yöneticiye satın alma kaydı gider.
+            Paketler TL üzerinden tanımlanır. Şu anki sabit kurlar:
+            1 USD = 42.45 TL, 1 EUR = 49.60 TL (demo için).
           </p>
           <div id="plans-list"></div>
           <div class="status-text" id="status-plans"></div>
@@ -585,8 +608,8 @@
         <div class="card" id="card-ads">
           <h3>Reklam İsteği Gönder</h3>
           <p style="font-size:12px; color:var(--muted); margin-bottom:8px;">
-            Hangi kulüp/marka için ne tür bir reklam istediğini kısaca yaz.
-            (Her istek 1 kredi yer.)
+            Reklam istediğin kulüp / marka, ürün ve hedef kitleyi kısaca anlat.
+            (Her istek 1 kredi harcar.)
           </p>
           <div class="field">
             <label for="ad-brand">Kulüp / Marka</label>
@@ -598,18 +621,15 @@
           </div>
           <div class="field">
             <label for="ad-desc">Detay</label>
-            <textarea id="ad-desc" placeholder="Hedef kitle, platform (Instagram, YouTube), tarz (komik, ciddi, vb.)"></textarea>
+            <textarea id="ad-desc" placeholder="Hedef kitle, platform, tarz (komik, ciddi, vb.)"></textarea>
           </div>
           <button class="primary-btn btn-full" id="btn-send-ad">Reklam İsteğini Gönder</button>
           <div class="status-text" id="status-ad"></div>
         </div>
 
-        <!-- MESAJ GÖNDER -->
+        <!-- MESAJ -->
         <div class="card">
           <h3>Yöneticiye Mesaj Gönder</h3>
-          <p style="font-size:12px; color:var(--muted); margin-bottom:8px;">
-            Önerilerini, sorularını veya projelerini buradan Yöneticiye iletebilirsin.
-          </p>
           <div class="field">
             <label for="msg-subject">Konu</label>
             <input id="msg-subject" type="text" placeholder="Konu başlığı" />
@@ -632,9 +652,42 @@
         <div class="card">
           <h3>Bilgi</h3>
           <p style="font-size:13px; color:var(--muted);">
-            Bu stüdyo tamamen eğitim amaçlıdır. Gerçek ödeme sistemi bağlı değildir; kredi paketleri
-            sadece proje içinde simüle edilir. 🎨
+            Bu stüdyo eğitim amaçlıdır. Gerçek ödeme altyapısı yok; satın alma ve kredi işlemleri
+            demo simülasyonu olarak Firestore üzerinde tutulur.
           </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPLULUK -->
+    <section class="screen" id="screen-community">
+      <h2 class="section-title">Topluluk Akışı</h2>
+      <p class="section-sub">
+        Ürettiğin fikirleri, senaryoları veya örnek projelerini buraya yazıp paylaşabilirsin.
+      </p>
+
+      <div class="grid-two">
+        <div class="card">
+          <h3>Yeni Gönderi Oluştur</h3>
+          <div class="field">
+            <label for="post-title">Başlık</label>
+            <input id="post-title" type="text" placeholder="Örn: X Kulübü için komik senaryo" />
+          </div>
+          <div class="field">
+            <label for="post-text">Gönderi Metni</label>
+            <textarea id="post-text" placeholder="Fikrini, senaryonu veya önerini buraya yaz..."></textarea>
+          </div>
+          <div class="field">
+            <label for="post-link">İsteğe Bağlı Bağlantı (YouTube, Drive vb.)</label>
+            <input id="post-link" type="text" placeholder="https://..." />
+          </div>
+          <button class="primary-btn btn-full" id="btn-post">Gönderiyi Paylaş</button>
+          <div class="status-text" id="status-post"></div>
+        </div>
+
+        <div class="card">
+          <h3>Topluluk Gönderileri</h3>
+          <div class="notif-list" id="feed-list" style="max-height:320px; overflow-y:auto;"></div>
         </div>
       </div>
     </section>
@@ -643,7 +696,7 @@
     <section class="screen" id="screen-settings">
       <h2 class="section-title">Ayarlar</h2>
       <p class="section-sub">
-        Tema, vurgu rengi ve dil ayarlarını değiştirebilirsin.
+        Tema, vurgu rengi ve dil ayarlarını buradan değiştirebilirsin.
       </p>
       <div class="card" style="max-width:420px;">
         <div class="field">
@@ -656,14 +709,14 @@
         <div class="field">
           <label for="accent-select">Vurgu Rengi</label>
           <select id="accent-select">
-            <option value="orange">Turuncu (Varsayılan)</option>
+            <option value="orange">Turuncu</option>
             <option value="blue">Mavi</option>
             <option value="green">Yeşil</option>
             <option value="purple">Mor</option>
           </select>
         </div>
         <div class="field">
-          <label for="lang-select">Dil (paket fiyatı gösterimi)</label>
+          <label for="lang-select">Dil (fiyat gösterimi)</label>
           <select id="lang-select">
             <option value="tr">Türkçe – TL</option>
             <option value="en">English – USD</option>
@@ -671,7 +724,7 @@
           </select>
         </div>
         <p style="font-size:12px; color:var(--muted);">
-          Dil, paketlerde kullanılacak para birimini belirler:
+          Dil, paketlerde hangi para biriminin öncelikli gösterileceğini belirler:
           Türkçe → ₺, English → $, Deutsch → €.
         </p>
       </div>
@@ -682,11 +735,40 @@
       <div style="margin-bottom:14px; font-size:14px; color:var(--accent-soft);">
         Yönetici paneline hoş geldin 👑
       </div>
-      <h2 class="section-title">Reklam İstekleri, Satın Almalar, Mesajlar ve Üyeler</h2>
+      <h2 class="section-title">Genel Görünüm</h2>
       <p class="section-sub">
-        Buradan kullanıcıların reklam isteklerini ve satın alma kayıtlarını yönetebilir,
-        mesajlara yanıt verebilir ve paket fiyatlarını düzenleyebilirsin.
+        Buradan reklam istekleri, mesajlar, paketler, üyeler ve topluluk paylaşımlarını yönetebilirsin.
       </p>
+
+      <div class="card" style="margin-bottom:16px;">
+        <h3>İstatistikler</h3>
+        <div class="stats-grid" id="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Toplam Üye</div>
+            <div class="stat-value" id="stat-users">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Reklam İsteği</div>
+            <div class="stat-value" id="stat-requests">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Satın Alma</div>
+            <div class="stat-value" id="stat-purchases">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Mesaj</div>
+            <div class="stat-value" id="stat-messages">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Topluluk Gönderisi</div>
+            <div class="stat-value" id="stat-posts">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Tanımlı Paket</div>
+            <div class="stat-value" id="stat-plans">-</div>
+          </div>
+        </div>
+      </div>
 
       <div class="admin-layout">
         <div>
@@ -699,6 +781,11 @@
             <h3>Kullanıcı Mesajları</h3>
             <div class="admin-list" id="admin-messages"></div>
           </div>
+
+          <div class="card">
+            <h3>Topluluk Gönderileri</h3>
+            <div class="admin-list" id="admin-posts"></div>
+          </div>
         </div>
 
         <div>
@@ -708,8 +795,25 @@
           </div>
 
           <div class="card">
-            <h3>Paket Fiyatları</h3>
+            <h3>Paket Yönetimi</h3>
             <div class="admin-list" id="admin-plans"></div>
+            <div style="margin-top:8px;">
+              <h4 style="font-size:13px; margin-bottom:4px;">Yeni Paket Ekle</h4>
+              <div class="field">
+                <label for="new-plan-name">Paket Adı</label>
+                <input id="new-plan-name" type="text" placeholder="Örn: Standart Paket" />
+              </div>
+              <div class="field">
+                <label for="new-plan-credits">Kredi</label>
+                <input id="new-plan-credits" type="number" min="1" value="3" />
+              </div>
+              <div class="field">
+                <label for="new-plan-tl">Fiyat (TL)</label>
+                <input id="new-plan-tl" type="number" min="1" value="1600" />
+              </div>
+              <button class="btn-small btn-approve" id="btn-add-plan">Paket Ekle</button>
+              <div class="status-text" id="status-add-plan"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -738,7 +842,7 @@
   } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
   const firebaseConfig = {
-    apiKey: "AIzaSyDc6kmOfcRwWLFxPAK0qtB5w_QJkTdHqh8",
+    apiKey: "AIzaSyDc6kmOfcRwWLFxPAKOqtB5w_QJkTdHqh8",
     authDomain: "spark-ad-studio.firebaseapp.com",
     projectId: "spark-ad-studio",
     storageBucket: "spark-ad-studio.firebasestorage.app",
@@ -750,14 +854,20 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
+  // SABİT KURLAR (sen vermiştin)
+  const USD_RATE = 42.45;
+  const EUR_RATE = 49.60;
+
   let currentUser = null;
   let currentLang = "tr";
+  let plans = [];
 
   const screens = {
     info: document.getElementById("screen-info"),
     auth: document.getElementById("screen-auth"),
     main: document.getElementById("screen-main"),
     studio: document.getElementById("screen-studio"),
+    community: document.getElementById("screen-community"),
     settings: document.getElementById("screen-settings"),
     admin: document.getElementById("screen-admin"),
   };
@@ -779,47 +889,24 @@
   const statusRegister = document.getElementById("status-register");
   const statusAd = document.getElementById("status-ad");
   const statusMsg = document.getElementById("status-msg");
+  const statusPost = document.getElementById("status-post");
+  const statusAddPlan = document.getElementById("status-add-plan");
 
   const adminRequestsBox = document.getElementById("admin-requests");
   const adminMessagesBox = document.getElementById("admin-messages");
   const adminUsersBox = document.getElementById("admin-users");
   const adminPlansBox = document.getElementById("admin-plans");
+  const adminPostsBox = document.getElementById("admin-posts");
 
-  // ----- KREDİ PAKETLERİ -----
-  const defaultPlans = [
-    {
-      id: "starter",
-      nameTR: "Başlangıç Paketi",
-      nameEN: "Starter Pack",
-      nameDE: "Starter Paket",
-      credits: 3,
-      priceTRY: 49,
-      priceUSD: 4.9,
-      priceEUR: 4.5
-    },
-    {
-      id: "pro",
-      nameTR: "Pro Paketi",
-      nameEN: "Pro Pack",
-      nameDE: "Pro Paket",
-      credits: 10,
-      priceTRY: 129,
-      priceUSD: 11.9,
-      priceEUR: 10.9
-    },
-    {
-      id: "ultra",
-      nameTR: "Ultra Paketi",
-      nameEN: "Ultra Pack",
-      nameDE: "Ultra Paket",
-      credits: 25,
-      priceTRY: 259,
-      priceUSD: 22.9,
-      priceEUR: 20.9
-    }
-  ];
-
-  let plans = [...defaultPlans];
+  const feedList = document.getElementById("feed-list");
+  const statsEls = {
+    users: document.getElementById("stat-users"),
+    requests: document.getElementById("stat-requests"),
+    purchases: document.getElementById("stat-purchases"),
+    messages: document.getElementById("stat-messages"),
+    posts: document.getElementById("stat-posts"),
+    plans: document.getElementById("stat-plans"),
+  };
 
   function setActiveScreen(key) {
     Object.values(screens).forEach(el => el.classList.remove("active"));
@@ -828,6 +915,15 @@
     document.querySelectorAll(".nav-link").forEach(btn => {
       btn.classList.toggle("active", btn.dataset.target === key);
     });
+  }
+
+  function updateStudioAccess() {
+    if (!cardAds) return;
+    if (currentUser && currentUser.role === "user" && currentUser.credits > 0) {
+      cardAds.style.display = "block";
+    } else {
+      cardAds.style.display = "none";
+    }
   }
 
   function updateHeaderState() {
@@ -848,30 +944,12 @@
     updateStudioAccess();
   }
 
-  function updateStudioAccess() {
-    if (!cardAds) return;
-    if (currentUser && currentUser.role === "user" && currentUser.credits > 0) {
-      cardAds.style.display = "block";
-    } else {
-      cardAds.style.display = "none";
-    }
-  }
-
   function applyAccent(accentKey) {
     let accent = "#ff7a3c";
     let soft = "#ffd2aa";
-
-    if (accentKey === "blue") {
-      accent = "#3b82f6";
-      soft = "#bfdbfe";
-    } else if (accentKey === "green") {
-      accent = "#22c55e";
-      soft = "#bbf7d0";
-    } else if (accentKey === "purple") {
-      accent = "#a855f7";
-      soft = "#e9d5ff";
-    }
-
+    if (accentKey === "blue") { accent = "#3b82f6"; soft = "#bfdbfe"; }
+    else if (accentKey === "green") { accent = "#22c55e"; soft = "#bbf7d0"; }
+    else if (accentKey === "purple") { accent = "#a855f7"; soft = "#e9d5ff"; }
     document.documentElement.style.setProperty("--accent", accent);
     document.documentElement.style.setProperty("--accent-soft", soft);
   }
@@ -885,11 +963,8 @@
     document.getElementById("accent-select").value = accent;
     document.getElementById("lang-select").value = currentLang;
 
-    if (theme === "light") {
-      document.body.classList.add("light");
-    } else {
-      document.body.classList.remove("light");
-    }
+    if (theme === "light") document.body.classList.add("light");
+    else document.body.classList.remove("light");
 
     applyAccent(accent);
     renderPlansUI();
@@ -965,6 +1040,13 @@
         loadUserReplies();
         renderPlansUI();
       }
+      if (target === "community") {
+        loadFeed();
+      }
+      if (target === "admin" && currentUser && currentUser.role === "admin") {
+        refreshStats();
+        renderAdminPlans();
+      }
     });
   });
 
@@ -974,7 +1056,6 @@
     const name = document.getElementById("reg-name").value.trim();
     const email = document.getElementById("reg-email").value.trim();
     const pass = document.getElementById("reg-pass").value.trim();
-
     if (!name || !email || !pass) {
       statusRegister.textContent = "Lütfen tüm alanları doldur.";
       return;
@@ -992,29 +1073,23 @@
         statusRegister.textContent = "Bu e-posta zaten kayıtlı.";
         return;
       }
-
       const now = new Date().toLocaleString("tr-TR");
       const docRef = await addDoc(usersRef, {
-        name,
-        email,
-        pass,
+        name, email, pass,
         role: "user",
         createdAt: now,
         lastLogin: now,
         credits: 0
       });
-
       currentUser = {
         id: docRef.id,
-        name,
-        email,
+        name, email,
         role: "user",
         createdAt: now,
         lastLogin: now,
         credits: 0
       };
       localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
-      statusRegister.textContent = "";
       updateHeaderState();
       welcomeText.textContent = `Hoş geldin, ${currentUser.name} 👋`;
       renderProfile();
@@ -1037,7 +1112,7 @@
       return;
     }
 
-    // Gizli yönetici girişi
+    // Yönetici gizli girişi
     if (loginVal === "admin" && pass === "spark123") {
       currentUser = {
         id: "ADMIN",
@@ -1050,6 +1125,7 @@
       statusLogin.textContent = "Yönetici olarak giriş yapıldı.";
       updateHeaderState();
       renderAdminPlans();
+      refreshStats();
       setActiveScreen("admin");
       return;
     }
@@ -1075,15 +1151,14 @@
         await updateDoc(doc(db, "users", found.id), { lastLogin: now });
       } catch (e) {}
       found.lastLogin = now;
-
       currentUser = found;
       currentUser.credits = currentUser.credits || 0;
       localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
-      statusLogin.textContent = "";
       updateHeaderState();
 
       if (currentUser.role === "admin") {
         renderAdminPlans();
+        refreshStats();
         setActiveScreen("admin");
       } else {
         welcomeText.textContent = `Hoş geldin, ${currentUser.name} 👋`;
@@ -1109,17 +1184,23 @@
     `;
   }
 
-  // ---- KREDİ PAKETLERİ UI ----
-  function getPlanNameByLang(p) {
-    if (currentLang === "en") return p.nameEN;
-    if (currentLang === "de") return p.nameDE;
-    return p.nameTR;
+  // Paketler
+  function getPriceTextTL(p) {
+    return `${p.priceTL.toFixed(2)} ₺`;
+  }
+  function getPriceTextUSD(p) {
+    const usd = p.priceTL / USD_RATE;
+    return `$${usd.toFixed(2)}`;
+  }
+  function getPriceTextEUR(p) {
+    const eur = p.priceTL / EUR_RATE;
+    return `${eur.toFixed(2)} €`;
   }
 
-  function formatPlanPrice(p) {
-    if (currentLang === "en") return `$${p.priceUSD.toFixed(2)}`;
-    if (currentLang === "de") return `${p.priceEUR.toFixed(2)} €`;
-    return `${p.priceTRY.toFixed(2)} ₺`;
+  function getPlanPriceDisplay(p) {
+    if (currentLang === "en") return `${getPriceTextUSD(p)} (~${getPriceTextTL(p)})`;
+    if (currentLang === "de") return `${getPriceTextEUR(p)} (~${getPriceTextTL(p)})`;
+    return getPriceTextTL(p);
   }
 
   function renderPlansUI() {
@@ -1132,7 +1213,7 @@
     plansList.innerHTML = plans.map(p => `
       <div class="admin-item" style="border:none; padding:8px 0;">
         <div class="admin-meta">
-          ${getPlanNameByLang(p)} – ${formatPlanPrice(p)}
+          ${p.name} – ${getPlanPriceDisplay(p)}
         </div>
         <div style="font-size:12px;">
           ${p.credits} video kredisi
@@ -1169,27 +1250,25 @@
         userName: currentUser.name,
         userEmail: currentUser.email,
         planId: plan.id,
+        planName: plan.name,
+        priceTL: plan.priceTL,
         credits: plan.credits,
-        lang: currentLang,
-        priceTRY: plan.priceTRY,
-        priceUSD: plan.priceUSD,
-        priceEUR: plan.priceEUR,
         createdAt: now
       });
 
       const newCredits = (currentUser.credits || 0) + plan.credits;
       currentUser.credits = newCredits;
-
       if (currentUser.id && currentUser.id !== "ADMIN") {
         try {
           await updateDoc(doc(db, "users", currentUser.id), { credits: newCredits });
         } catch (e) { console.warn("credits update error", e); }
       }
-
       localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
       updateStudioAccess();
       renderProfile();
-      statusPlans.textContent = "Satın alma kaydedildi. Reklam isteği formu açıldı ve Yöneticiye bilgi gitti.";
+
+      statusPlans.textContent = "Satın alma kaydedildi. Kredin güncellendi, reklam isteği gönderebilirsin.";
+      loadNotificationsForUser();
     } catch (err) {
       console.error(err);
       statusPlans.textContent = "Satın alma kaydedilirken hata oluştu.";
@@ -1202,25 +1281,30 @@
       const loaded = [];
       snap.forEach(d => loaded.push({ id: d.id, ...d.data() }));
       if (!loaded.length) {
-        // İlk kez: default planları Firestore'a yaz
-        for (const p of defaultPlans) {
-          await setDoc(doc(db, "plans", p.id), p);
-        }
-        plans = [...defaultPlans];
+        // Başlangıçta 1 paket: Standart
+        const defaultPlan = {
+          id: "standard",
+          name: "Standart Paket",
+          credits: 5,
+          priceTL: 1600
+        };
+        await setDoc(doc(db, "plans", defaultPlan.id), defaultPlan);
+        plans = [defaultPlan];
       } else {
         plans = loaded.map(p => ({
-          ...p,
-          priceTRY: Number(p.priceTRY) || 0,
-          priceUSD: Number(p.priceUSD) || 0,
-          priceEUR: Number(p.priceEUR) || 0
+          id: p.id,
+          name: p.name || p.nameTR || "Paket",
+          credits: Number(p.credits) || 1,
+          priceTL: Number(p.priceTL) || 100
         }));
       }
     } catch (e) {
       console.error("Planları yüklerken hata", e);
-      plans = [...defaultPlans];
+      plans = [];
     }
     renderPlansUI();
     renderAdminPlans();
+    refreshStats();
   }
 
   loadPlans();
@@ -1237,35 +1321,13 @@
       ]);
 
       const items = [];
-
       reqSnap.forEach(d => {
         const r = d.data();
-        if (r.userEmail === currentUser.email) {
-          items.push({
-            type: "request",
-            createdAt: r.createdAt || "",
-            brand: r.brand,
-            product: r.product,
-            details: r.details,
-            status: r.status,
-            adminNote: r.adminNote || ""
-          });
-        }
+        if (r.userEmail === currentUser.email) items.push({ type: "request", ...r });
       });
-
       purSnap.forEach(d => {
         const p = d.data();
-        if (p.userEmail === currentUser.email) {
-          items.push({
-            type: "purchase",
-            createdAt: p.createdAt || "",
-            planId: p.planId,
-            credits: p.credits,
-            priceTRY: p.priceTRY,
-            priceUSD: p.priceUSD,
-            priceEUR: p.priceEUR
-          });
-        }
+        if (p.userEmail === currentUser.email) items.push({ type: "purchase", ...p });
       });
 
       if (!items.length) {
@@ -1285,7 +1347,7 @@
           return `
             <div class="notif-item">
               <div class="notif-meta">
-                ${it.createdAt} – <strong>${it.brand}</strong> (${it.product})
+                ${it.createdAt || ""} – <strong>${it.brand}</strong> (${it.product})
                 <span class="pill-status ${cls}">${txt}</span>
               </div>
               <div>${it.details}</div>
@@ -1293,16 +1355,15 @@
             </div>
           `;
         } else {
-          const plan = plans.find(p => p.id === it.planId);
           return `
             <div class="notif-item">
               <div class="notif-meta">
-                ${it.createdAt} – Kredi Paketi Satın Alındı
+                ${it.createdAt || ""} – Kredi Paketi Satın Alındı
               </div>
               <div style="font-size:12px;">
-                Paket: <strong>${plan ? plan.nameTR : it.planId}</strong>,
+                Paket: <strong>${it.planName || it.planId}</strong>,
                 Kredi: ${it.credits},
-                Fiyat: ${it.priceTRY} ₺ / $${it.priceUSD} / €${it.priceEUR}
+                Fiyat: ${it.priceTL} ₺ (~${(it.priceTL / USD_RATE).toFixed(2)} $ / ${(it.priceTL / EUR_RATE).toFixed(2)} €)
               </div>
             </div>
           `;
@@ -1329,7 +1390,6 @@
     const brand = document.getElementById("ad-brand").value.trim();
     const product = document.getElementById("ad-product").value.trim();
     const desc = document.getElementById("ad-desc").value.trim();
-
     if (!brand || !product || !desc) {
       statusAd.textContent = "Lütfen tüm alanları doldur.";
       return;
@@ -1345,10 +1405,9 @@
         details: desc,
         status: "pending",
         adminNote: "",
-        createdAt: now,
+        createdAt: now
       });
 
-      // 1 kredi düş
       const newCredits = (currentUser.credits || 0) - 1;
       currentUser.credits = newCredits < 0 ? 0 : newCredits;
       if (currentUser.id && currentUser.id !== "ADMIN") {
@@ -1414,9 +1473,7 @@
       const mine = [];
       snap.forEach(d => {
         const m = d.data();
-        if (m.fromEmail === currentUser.email && m.reply) {
-          mine.push(m);
-        }
+        if (m.fromEmail === currentUser.email && m.reply) mine.push(m);
       });
       if (!mine.length) {
         userMessagesList.innerHTML = "<div>Henüz yönetici yanıtı yok.</div>";
@@ -1440,24 +1497,146 @@
     }
   }
 
+  // Topluluk gönderisi paylaş
+  document.getElementById("btn-post").addEventListener("click", async () => {
+    statusPost.textContent = "";
+    if (!currentUser) {
+      statusPost.textContent = "Önce giriş yapmalısın.";
+      return;
+    }
+    const title = document.getElementById("post-title").value.trim();
+    const text = document.getElementById("post-text").value.trim();
+    const link = document.getElementById("post-link").value.trim();
+    if (!title || !text) {
+      statusPost.textContent = "Başlık ve metin doldurulmalı.";
+      return;
+    }
+    try {
+      const now = new Date().toLocaleString("tr-TR");
+      await addDoc(collection(db, "communityPosts"), {
+        authorName: currentUser.name,
+        authorEmail: currentUser.email,
+        title,
+        text,
+        link,
+        likes: 0,
+        createdAt: now
+      });
+      document.getElementById("post-title").value = "";
+      document.getElementById("post-text").value = "";
+      document.getElementById("post-link").value = "";
+      statusPost.textContent = "Gönderin topluluk akışına eklendi.";
+      loadFeed();
+      refreshStats();
+    } catch (err) {
+      console.error(err);
+      statusPost.textContent = "Gönderi eklenirken hata oluştu.";
+    }
+  });
+
+  async function loadFeed() {
+    try {
+      const snap = await getDocs(collection(db, "communityPosts"));
+      const list = [];
+      snap.forEach(d => list.push({ id: d.id, ...d.data() }));
+      if (!list.length) {
+        feedList.innerHTML = "<div>Henüz topluluk gönderisi yok.</div>";
+        adminPostsBox.innerHTML = "<div>Henüz topluluk gönderisi yok.</div>";
+        return;
+      }
+      list.sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
+      feedList.innerHTML = list.map(p => `
+        <div class="feed-post">
+          <div class="notif-meta">
+            ${p.createdAt || ""} – <strong>${p.authorName}</strong>
+          </div>
+          <div style="font-weight:600; margin-bottom:3px;">${p.title}</div>
+          <div style="font-size:13px;">${p.text}</div>
+          ${p.link ? `<div style="font-size:12px; margin-top:4px;"><a href="${p.link}" target="_blank">Bağlantıyı aç</a></div>` : ""}
+          <div style="font-size:12px; margin-top:4px;">
+            Beğeni: <span id="like-count-${p.id}">${p.likes || 0}</span>
+            <button class="btn-small" data-like="${p.id}" style="margin-left:6px;">Beğen</button>
+          </div>
+        </div>
+      `).join("");
+
+      feedList.querySelectorAll("button[data-like]").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const id = btn.dataset.like;
+          try {
+            const ref = doc(db, "communityPosts", id);
+            const postsSnap = await getDocs(collection(db, "communityPosts"));
+            let current = null;
+            postsSnap.forEach(d => { if (d.id === id) current = d.data(); });
+            if (!current) return;
+            const newLikes = (current.likes || 0) + 1;
+            await updateDoc(ref, { likes: newLikes });
+          } catch (e) {
+            console.error(e);
+          }
+        });
+      });
+
+      adminPostsBox.innerHTML = list.map(p => `
+        <div class="admin-item">
+          <div class="admin-meta">
+            ${p.createdAt || ""} – ${p.authorName} (${p.authorEmail})
+          </div>
+          <div style="font-weight:600;">${p.title}</div>
+          <div>${p.text}</div>
+          <div style="font-size:12px; margin-top:4px;">Beğeni: ${p.likes || 0}</div>
+          ${p.link ? `<div style="font-size:12px;margin-top:3px;">Link: <a href="${p.link}" target="_blank">${p.link}</a></div>` : ""}
+        </div>
+      `).join("");
+    } catch (e) {
+      console.error(e);
+      feedList.innerHTML = "<div>Topluluk yüklenirken hata oluştu.</div>";
+      adminPostsBox.innerHTML = "<div>Topluluk yüklenirken hata oluştu.</div>";
+    }
+  }
+
   // Admin canlı veriler
   onSnapshot(collection(db, "requests"), (snap) => {
     const list = [];
     snap.forEach(d => list.push({ id: d.id, ...d.data() }));
     renderAdminRequests(list);
+    refreshStats();
   });
 
   onSnapshot(collection(db, "messages"), (snap) => {
     const list = [];
     snap.forEach(d => list.push({ id: d.id, ...d.data() }));
     renderAdminMessages(list);
+    refreshStats();
   });
 
   onSnapshot(collection(db, "users"), (snap) => {
     const list = [];
     snap.forEach(d => list.push({ id: d.id, ...d.data() }));
     renderAdminUsers(list);
+    refreshStats();
   });
+
+  async function refreshStats() {
+    try {
+      const [u, r, p, m, c, pl] = await Promise.all([
+        getDocs(collection(db, "users")),
+        getDocs(collection(db, "requests")),
+        getDocs(collection(db, "purchases")),
+        getDocs(collection(db, "messages")),
+        getDocs(collection(db, "communityPosts")),
+        getDocs(collection(db, "plans"))
+      ]);
+      statsEls.users.textContent = u.size;
+      statsEls.requests.textContent = r.size;
+      statsEls.purchases.textContent = p.size;
+      statsEls.messages.textContent = m.size;
+      statsEls.posts.textContent = c.size;
+      statsEls.plans.textContent = pl.size;
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   function renderAdminRequests(list) {
     if (!list.length) {
@@ -1499,17 +1678,13 @@
         const adminNote = noteInput ? noteInput.value.trim() : "";
         try {
           const ref = doc(db, "requests", id);
-
           const allSnap = await getDocs(collection(db, "requests"));
           let current = null;
-          allSnap.forEach(d => {
-            if (d.id === id) current = d.data();
-          });
+          allSnap.forEach(d => { if (d.id === id) current = d.data(); });
           if (current && current.status === "approved" && newStatus === "rejected") {
             alert("Onaylanan bir istek reddedilemez.");
             return;
           }
-
           await updateDoc(ref, { status: newStatus, adminNote });
         } catch (err) {
           console.error(err);
@@ -1577,18 +1752,17 @@
   }
 
   function renderAdminPlans() {
-    if (!adminPlansBox || !plans || !plans.length) {
-      if (adminPlansBox) adminPlansBox.innerHTML = "<div>Henüz paket yok.</div>";
+    if (!adminPlansBox) return;
+    if (!plans || !plans.length) {
+      adminPlansBox.innerHTML = "<div>Henüz paket yok.</div>";
       return;
     }
     adminPlansBox.innerHTML = plans.map(p => `
       <div class="admin-item">
-        <div class="admin-meta">${p.id} – ${p.nameTR}</div>
+        <div class="admin-meta">${p.id} – ${p.name}</div>
         <div style="font-size:12px;">Kredi: ${p.credits}</div>
         <div class="admin-actions">
-          <input type="number" step="0.01" id="plt-${p.id}-try" value="${p.priceTRY}">
-          <input type="number" step="0.01" id="plt-${p.id}-usd" value="${p.priceUSD}">
-          <input type="number" step="0.01" id="plt-${p.id}-eur" value="${p.priceEUR}">
+          <input type="number" step="0.01" id="plt-${p.id}-tl" value="${p.priceTL}">
           <button class="btn-small btn-approve" data-plan="${p.id}">Kaydet</button>
         </div>
       </div>
@@ -1599,21 +1773,16 @@
         const id = btn.dataset.plan;
         const plan = plans.find(p => p.id === id);
         if (!plan) return;
-        const tryVal = Number(document.getElementById(`plt-${id}-try`).value || plan.priceTRY);
-        const usdVal = Number(document.getElementById(`plt-${id}-usd`).value || plan.priceUSD);
-        const eurVal = Number(document.getElementById(`plt-${id}-eur`).value || plan.priceEUR);
+        const tlVal = Number(document.getElementById(`plt-${id}-tl`).value || plan.priceTL);
         try {
           await setDoc(doc(db, "plans", id), {
             ...plan,
-            priceTRY: tryVal,
-            priceUSD: usdVal,
-            priceEUR: eurVal
+            priceTL: tlVal
           });
-          plan.priceTRY = tryVal;
-          plan.priceUSD = usdVal;
-          plan.priceEUR = eurVal;
+          plan.priceTL = tlVal;
           renderPlansUI();
           alert("Paket güncellendi.");
+          refreshStats();
         } catch (e) {
           console.error(e);
           alert("Paket güncellenirken hata oluştu.");
@@ -1621,6 +1790,35 @@
       });
     });
   }
+
+  // Yeni paket ekle (admin)
+  document.getElementById("btn-add-plan").addEventListener("click", async () => {
+    statusAddPlan.textContent = "";
+    if (!currentUser || currentUser.role !== "admin") {
+      statusAddPlan.textContent = "Bu işlem sadece Yönetici için.";
+      return;
+    }
+    const name = document.getElementById("new-plan-name").value.trim();
+    const creditsVal = Number(document.getElementById("new-plan-credits").value || 1);
+    const tlVal = Number(document.getElementById("new-plan-tl").value || 100);
+    if (!name || creditsVal <= 0 || tlVal <= 0) {
+      statusAddPlan.textContent = "Ad, kredi ve TL fiyatı geçerli olmalı.";
+      return;
+    }
+    try {
+      const id = name.toLowerCase().replace(/[^a-z0-9]+/g, "-") || `plan-${Date.now()}`;
+      const newPlan = { id, name, credits: creditsVal, priceTL: tlVal };
+      await setDoc(doc(db, "plans", id), newPlan);
+      plans.push(newPlan);
+      renderPlansUI();
+      renderAdminPlans();
+      statusAddPlan.textContent = "Paket eklendi.";
+      refreshStats();
+    } catch (e) {
+      console.error(e);
+      statusAddPlan.textContent = "Paket eklenirken hata oluştu.";
+    }
+  });
 
   // LocalStorage'dan kullanıcıyı geri yükle
   (function initFromStorage() {
@@ -1633,6 +1831,8 @@
     if (currentUser) {
       if (currentUser.role === "admin") {
         setActiveScreen("admin");
+        renderAdminPlans();
+        refreshStats();
       } else {
         welcomeText.textContent = `Hoş geldin, ${currentUser.name} 👋`;
         renderProfile();
@@ -1643,6 +1843,7 @@
     } else {
       setActiveScreen("info");
     }
+    loadFeed();
   })();
 
 </script>
