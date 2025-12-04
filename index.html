@@ -5,6 +5,13 @@
   <title>Spark Ad Studio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!--
+    DİKKAT:
+    Bu dosyadaki satın alma sistemi GERÇEK ödeme yapmaz.
+    Sadece Firestore'a "kredi paketi satın aldı" kaydı yazar ve
+    uygulama içinde kredi hakkı verir (demo amaçlı).
+  -->
+
   <style>
     :root {
       --bg: #050816;
@@ -63,11 +70,7 @@
       gap: 16px;
     }
 
-    .nav-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .nav-left { display: flex; align-items: center; gap: 10px; }
 
     .nav-logo {
       width: 40px;
@@ -402,7 +405,7 @@
 
     .admin-actions input {
       flex: 1;
-      min-width: 120px;
+      min-width: 90px;
       font-size: 11px;
       padding: 4px 8px;
       border-radius: 999px;
@@ -487,9 +490,10 @@
           <h3>Nasıl çalışıyor?</h3>
           <p style="color:var(--muted); font-size:13px;">
             1. Üye ol veya giriş yap.<br>
-            2. Stüdyo ekranından reklam isteği gönder.<br>
-            3. Yönetici isteğini onaylar veya reddeder.<br>
-            4. Durumu Ana Sayfa & Bildirimler bölümünden takip edersin.
+            2. Kredi paketi satın al.<br>
+            3. Stüdyo ekranından reklam isteği gönder.<br>
+            4. Yönetici isteğini onaylar veya reddeder.<br>
+            5. Durumu Ana Sayfa & Bildirimler bölümünden takip edersin.
           </p>
         </div>
       </div>
@@ -548,7 +552,7 @@
       </div>
       <h2 class="section-title">Bildirimler</h2>
       <p class="section-sub">
-        Gönderdiğin reklam isteklerinin onay / red durumlarını buradan takip edebilirsin.
+        Gönderdiğin reklam isteklerinin ve satın alma kayıtlarının durumlarını buradan takip edebilirsin.
       </p>
       <div class="notif-list" id="notif-list"></div>
     </section>
@@ -557,19 +561,32 @@
     <section class="screen" id="screen-studio">
       <h2 class="section-title">Stüdyo</h2>
       <p class="section-sub">
-        Profil bilgilerini gör, reklam isteği gönder ve Yöneticiye mesaj bırak.
+        Profil bilgilerini gör, kredi paketi satın al, reklam isteği gönder ve Yöneticiye mesaj bırak.
       </p>
 
       <div class="grid-two">
+        <!-- PROFİL -->
         <div class="card">
           <h3>Profil Bilgilerin</h3>
           <p id="profile-info" style="font-size:13px; color:var(--muted); margin-top:8px;"></p>
         </div>
 
+        <!-- KREDİ PAKETLERİ -->
         <div class="card">
+          <h3>Kredi Paketleri</h3>
+          <p style="font-size:12px; color:var(--muted); margin-bottom:8px;">
+            Video üretim kredisi satın aldığında reklam isteği formu açılır ve Yöneticiye satın alma kaydı gider.
+          </p>
+          <div id="plans-list"></div>
+          <div class="status-text" id="status-plans"></div>
+        </div>
+
+        <!-- REKLAM İSTEĞİ -->
+        <div class="card" id="card-ads">
           <h3>Reklam İsteği Gönder</h3>
           <p style="font-size:12px; color:var(--muted); margin-bottom:8px;">
             Hangi kulüp/marka için ne tür bir reklam istediğini kısaca yaz.
+            (Her istek 1 kredi yer.)
           </p>
           <div class="field">
             <label for="ad-brand">Kulüp / Marka</label>
@@ -587,6 +604,7 @@
           <div class="status-text" id="status-ad"></div>
         </div>
 
+        <!-- MESAJ GÖNDER -->
         <div class="card">
           <h3>Yöneticiye Mesaj Gönder</h3>
           <p style="font-size:12px; color:var(--muted); margin-bottom:8px;">
@@ -604,11 +622,18 @@
           <div class="status-text" id="status-msg"></div>
         </div>
 
+        <!-- YÖNETİCİ YANITLARI -->
+        <div class="card">
+          <h3>Yönetici Yanıtları</h3>
+          <div class="notif-list" id="user-messages-list" style="max-height:220px; overflow-y:auto;"></div>
+        </div>
+
+        <!-- BİLGİ -->
         <div class="card">
           <h3>Bilgi</h3>
           <p style="font-size:13px; color:var(--muted);">
-            Bu stüdyo tamamen eğitim amaçlıdır. Gerçek reklam bütçesi yok ama gerçek bir ajans gibi
-            düşünerek kreatif fikirler üretmeni sağlar. 🎨
+            Bu stüdyo tamamen eğitim amaçlıdır. Gerçek ödeme sistemi bağlı değildir; kredi paketleri
+            sadece proje içinde simüle edilir. 🎨
           </p>
         </div>
       </div>
@@ -618,7 +643,7 @@
     <section class="screen" id="screen-settings">
       <h2 class="section-title">Ayarlar</h2>
       <p class="section-sub">
-        Tema ve vurgu rengini değiştirebilirsin.
+        Tema, vurgu rengi ve dil ayarlarını değiştirebilirsin.
       </p>
       <div class="card" style="max-width:420px;">
         <div class="field">
@@ -637,8 +662,17 @@
             <option value="purple">Mor</option>
           </select>
         </div>
+        <div class="field">
+          <label for="lang-select">Dil (paket fiyatı gösterimi)</label>
+          <select id="lang-select">
+            <option value="tr">Türkçe – TL</option>
+            <option value="en">English – USD</option>
+            <option value="de">Deutsch – EUR</option>
+          </select>
+        </div>
         <p style="font-size:12px; color:var(--muted);">
-          Tema ve renk seçimin bu tarayıcıda kaydedilir. Başka bir bilgisayarda farklı ayarlar olabilir.
+          Dil, paketlerde kullanılacak para birimini belirler:
+          Türkçe → ₺, English → $, Deutsch → €.
         </p>
       </div>
     </section>
@@ -648,10 +682,10 @@
       <div style="margin-bottom:14px; font-size:14px; color:var(--accent-soft);">
         Yönetici paneline hoş geldin 👑
       </div>
-      <h2 class="section-title">Reklam İstekleri, Mesajlar ve Üyeler</h2>
+      <h2 class="section-title">Reklam İstekleri, Satın Almalar, Mesajlar ve Üyeler</h2>
       <p class="section-sub">
-        Buradan kullanıcıların reklam isteklerini onaylayabilir veya reddedebilir,
-        gönderilen mesajları ve üye listesini görüntüleyebilirsin.
+        Buradan kullanıcıların reklam isteklerini ve satın alma kayıtlarını yönetebilir,
+        mesajlara yanıt verebilir ve paket fiyatlarını düzenleyebilirsin.
       </p>
 
       <div class="admin-layout">
@@ -671,6 +705,11 @@
           <div class="card">
             <h3>Üyeler</h3>
             <div class="admin-list" id="admin-users"></div>
+          </div>
+
+          <div class="card">
+            <h3>Paket Fiyatları</h3>
+            <div class="admin-list" id="admin-plans"></div>
           </div>
         </div>
       </div>
@@ -694,7 +733,8 @@
     getDocs,
     onSnapshot,
     doc,
-    updateDoc
+    updateDoc,
+    setDoc
   } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -711,6 +751,7 @@
   const db = getFirestore(app);
 
   let currentUser = null;
+  let currentLang = "tr";
 
   const screens = {
     info: document.getElementById("screen-info"),
@@ -727,6 +768,10 @@
   const welcomeText = document.getElementById("welcome-text");
   const profileInfo = document.getElementById("profile-info");
   const notifList = document.getElementById("notif-list");
+  const userMessagesList = document.getElementById("user-messages-list");
+  const plansList = document.getElementById("plans-list");
+  const statusPlans = document.getElementById("status-plans");
+  const cardAds = document.getElementById("card-ads");
   const yearSpan = document.getElementById("year");
   yearSpan.textContent = new Date().getFullYear();
 
@@ -738,6 +783,43 @@
   const adminRequestsBox = document.getElementById("admin-requests");
   const adminMessagesBox = document.getElementById("admin-messages");
   const adminUsersBox = document.getElementById("admin-users");
+  const adminPlansBox = document.getElementById("admin-plans");
+
+  // ----- KREDİ PAKETLERİ -----
+  const defaultPlans = [
+    {
+      id: "starter",
+      nameTR: "Başlangıç Paketi",
+      nameEN: "Starter Pack",
+      nameDE: "Starter Paket",
+      credits: 3,
+      priceTRY: 49,
+      priceUSD: 4.9,
+      priceEUR: 4.5
+    },
+    {
+      id: "pro",
+      nameTR: "Pro Paketi",
+      nameEN: "Pro Pack",
+      nameDE: "Pro Paket",
+      credits: 10,
+      priceTRY: 129,
+      priceUSD: 11.9,
+      priceEUR: 10.9
+    },
+    {
+      id: "ultra",
+      nameTR: "Ultra Paketi",
+      nameEN: "Ultra Pack",
+      nameDE: "Ultra Paket",
+      credits: 25,
+      priceTRY: 259,
+      priceUSD: 22.9,
+      priceEUR: 20.9
+    }
+  ];
+
+  let plans = [...defaultPlans];
 
   function setActiveScreen(key) {
     Object.values(screens).forEach(el => el.classList.remove("active"));
@@ -762,22 +844,17 @@
     } else {
       navAdmin.style.display = "none";
     }
+
+    updateStudioAccess();
   }
 
-  function applyThemeFromStorage() {
-    const theme = localStorage.getItem("spark_theme") || "dark";
-    const accent = localStorage.getItem("spark_accent") || "orange";
-
-    document.getElementById("theme-select").value = theme;
-    document.getElementById("accent-select").value = accent;
-
-    if (theme === "light") {
-      document.body.classList.add("light");
+  function updateStudioAccess() {
+    if (!cardAds) return;
+    if (currentUser && currentUser.role === "user" && currentUser.credits > 0) {
+      cardAds.style.display = "block";
     } else {
-      document.body.classList.remove("light");
+      cardAds.style.display = "none";
     }
-
-    applyAccent(accent);
   }
 
   function applyAccent(accentKey) {
@@ -799,20 +876,46 @@
     document.documentElement.style.setProperty("--accent-soft", soft);
   }
 
+  function applyThemeAndLangFromStorage() {
+    const theme = localStorage.getItem("spark_theme") || "dark";
+    const accent = localStorage.getItem("spark_accent") || "orange";
+    currentLang = localStorage.getItem("spark_lang") || "tr";
+
+    document.getElementById("theme-select").value = theme;
+    document.getElementById("accent-select").value = accent;
+    document.getElementById("lang-select").value = currentLang;
+
+    if (theme === "light") {
+      document.body.classList.add("light");
+    } else {
+      document.body.classList.remove("light");
+    }
+
+    applyAccent(accent);
+    renderPlansUI();
+  }
+
   document.getElementById("theme-select").addEventListener("change", () => {
     const val = document.getElementById("theme-select").value;
     localStorage.setItem("spark_theme", val);
-    applyThemeFromStorage();
+    applyThemeAndLangFromStorage();
   });
 
   document.getElementById("accent-select").addEventListener("change", () => {
     const val = document.getElementById("accent-select").value;
     localStorage.setItem("spark_accent", val);
-    applyThemeFromStorage();
+    applyThemeAndLangFromStorage();
   });
 
-  applyThemeFromStorage();
+  document.getElementById("lang-select").addEventListener("change", () => {
+    currentLang = document.getElementById("lang-select").value;
+    localStorage.setItem("spark_lang", currentLang);
+    renderPlansUI();
+  });
 
+  applyThemeAndLangFromStorage();
+
+  // Auth tabları
   document.getElementById("tab-login").addEventListener("click", () => {
     document.getElementById("tab-login").classList.add("active");
     document.getElementById("tab-register").classList.remove("active");
@@ -859,10 +962,13 @@
       }
       if (target === "studio" && currentUser && currentUser.role === "user") {
         renderProfile();
+        loadUserReplies();
+        renderPlansUI();
       }
     });
   });
 
+  // Üye ol
   document.getElementById("btn-register").addEventListener("click", async () => {
     statusRegister.textContent = "";
     const name = document.getElementById("reg-name").value.trim();
@@ -895,6 +1001,7 @@
         role: "user",
         createdAt: now,
         lastLogin: now,
+        credits: 0
       });
 
       currentUser = {
@@ -904,6 +1011,7 @@
         role: "user",
         createdAt: now,
         lastLogin: now,
+        credits: 0
       };
       localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
       statusRegister.textContent = "";
@@ -918,6 +1026,7 @@
     }
   });
 
+  // Giriş
   document.getElementById("btn-login").addEventListener("click", async () => {
     statusLogin.textContent = "";
     const loginVal = document.getElementById("login-email").value.trim();
@@ -928,17 +1037,19 @@
       return;
     }
 
-    // Gizli yönetici girişi (ekranda gösterilmiyor)
+    // Gizli yönetici girişi
     if (loginVal === "admin" && pass === "spark123") {
       currentUser = {
         id: "ADMIN",
         name: "Yönetici",
         email: "admin@sparkad.studio",
         role: "admin",
+        credits: 0
       };
       localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
       statusLogin.textContent = "Yönetici olarak giriş yapıldı.";
       updateHeaderState();
+      renderAdminPlans();
       setActiveScreen("admin");
       return;
     }
@@ -966,16 +1077,19 @@
       found.lastLogin = now;
 
       currentUser = found;
+      currentUser.credits = currentUser.credits || 0;
       localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
       statusLogin.textContent = "";
       updateHeaderState();
 
       if (currentUser.role === "admin") {
+        renderAdminPlans();
         setActiveScreen("admin");
       } else {
         welcomeText.textContent = `Hoş geldin, ${currentUser.name} 👋`;
         renderProfile();
         loadNotificationsForUser();
+        loadUserReplies();
         setActiveScreen("main");
       }
     } catch (err) {
@@ -990,47 +1104,209 @@
       Ad: <strong>${currentUser.name}</strong><br>
       E-posta: ${currentUser.email}<br>
       Üyelik: ${currentUser.createdAt || "-"}<br>
-      Son giriş: ${currentUser.lastLogin || "-"}
+      Son giriş: ${currentUser.lastLogin || "-"}<br>
+      Kalan kredi: <strong>${currentUser.credits || 0}</strong>
     `;
   }
 
+  // ---- KREDİ PAKETLERİ UI ----
+  function getPlanNameByLang(p) {
+    if (currentLang === "en") return p.nameEN;
+    if (currentLang === "de") return p.nameDE;
+    return p.nameTR;
+  }
+
+  function formatPlanPrice(p) {
+    if (currentLang === "en") return `$${p.priceUSD.toFixed(2)}`;
+    if (currentLang === "de") return `${p.priceEUR.toFixed(2)} €`;
+    return `${p.priceTRY.toFixed(2)} ₺`;
+  }
+
+  function renderPlansUI() {
+    if (!plansList) return;
+    if (!plans || !plans.length) {
+      plansList.innerHTML = "<div>Şu anda tanımlı paket yok.</div>";
+      return;
+    }
+
+    plansList.innerHTML = plans.map(p => `
+      <div class="admin-item" style="border:none; padding:8px 0;">
+        <div class="admin-meta">
+          ${getPlanNameByLang(p)} – ${formatPlanPrice(p)}
+        </div>
+        <div style="font-size:12px;">
+          ${p.credits} video kredisi
+        </div>
+        <button class="primary-btn" data-buy="${p.id}" style="margin-top:6px; padding:6px 12px; font-size:12px;">
+          ${
+            currentLang === "en" ? "Buy" :
+            currentLang === "de" ? "Kaufen" :
+            "Satın Al"
+          }
+        </button>
+      </div>
+    `).join("");
+
+    plansList.querySelectorAll("button[data-buy]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.buy;
+        const plan = plans.find(p => p.id === id);
+        if (plan) handleBuyPlan(plan);
+      });
+    });
+  }
+
+  async function handleBuyPlan(plan) {
+    statusPlans.textContent = "";
+    if (!currentUser || currentUser.role !== "user") {
+      statusPlans.textContent = "Önce üye girişi yapmalısın.";
+      return;
+    }
+
+    try {
+      const now = new Date().toLocaleString("tr-TR");
+      await addDoc(collection(db, "purchases"), {
+        userName: currentUser.name,
+        userEmail: currentUser.email,
+        planId: plan.id,
+        credits: plan.credits,
+        lang: currentLang,
+        priceTRY: plan.priceTRY,
+        priceUSD: plan.priceUSD,
+        priceEUR: plan.priceEUR,
+        createdAt: now
+      });
+
+      const newCredits = (currentUser.credits || 0) + plan.credits;
+      currentUser.credits = newCredits;
+
+      if (currentUser.id && currentUser.id !== "ADMIN") {
+        try {
+          await updateDoc(doc(db, "users", currentUser.id), { credits: newCredits });
+        } catch (e) { console.warn("credits update error", e); }
+      }
+
+      localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
+      updateStudioAccess();
+      renderProfile();
+      statusPlans.textContent = "Satın alma kaydedildi. Reklam isteği formu açıldı ve Yöneticiye bilgi gitti.";
+    } catch (err) {
+      console.error(err);
+      statusPlans.textContent = "Satın alma kaydedilirken hata oluştu.";
+    }
+  }
+
+  async function loadPlans() {
+    try {
+      const snap = await getDocs(collection(db, "plans"));
+      const loaded = [];
+      snap.forEach(d => loaded.push({ id: d.id, ...d.data() }));
+      if (!loaded.length) {
+        // İlk kez: default planları Firestore'a yaz
+        for (const p of defaultPlans) {
+          await setDoc(doc(db, "plans", p.id), p);
+        }
+        plans = [...defaultPlans];
+      } else {
+        plans = loaded.map(p => ({
+          ...p,
+          priceTRY: Number(p.priceTRY) || 0,
+          priceUSD: Number(p.priceUSD) || 0,
+          priceEUR: Number(p.priceEUR) || 0
+        }));
+      }
+    } catch (e) {
+      console.error("Planları yüklerken hata", e);
+      plans = [...defaultPlans];
+    }
+    renderPlansUI();
+    renderAdminPlans();
+  }
+
+  loadPlans();
+
+  // Bildirimler
   async function loadNotificationsForUser() {
     if (!currentUser || currentUser.role !== "user") return;
     try {
       const reqRef = collection(db, "requests");
-      const snap = await getDocs(reqRef);
-      const my = [];
-      snap.forEach(d => {
+      const purRef = collection(db, "purchases");
+      const [reqSnap, purSnap] = await Promise.all([
+        getDocs(reqRef),
+        getDocs(purRef)
+      ]);
+
+      const items = [];
+
+      reqSnap.forEach(d => {
         const r = d.data();
-        if (r.userEmail === currentUser.email) my.push(r);
+        if (r.userEmail === currentUser.email) {
+          items.push({
+            type: "request",
+            createdAt: r.createdAt || "",
+            brand: r.brand,
+            product: r.product,
+            details: r.details,
+            status: r.status,
+            adminNote: r.adminNote || ""
+          });
+        }
       });
 
-      if (!my.length) {
-        notifList.innerHTML = `<div>Henüz reklam isteğin yok. Stüdyo ekranından yeni bir istek gönderebilirsin.</div>`;
+      purSnap.forEach(d => {
+        const p = d.data();
+        if (p.userEmail === currentUser.email) {
+          items.push({
+            type: "purchase",
+            createdAt: p.createdAt || "",
+            planId: p.planId,
+            credits: p.credits,
+            priceTRY: p.priceTRY,
+            priceUSD: p.priceUSD,
+            priceEUR: p.priceEUR
+          });
+        }
+      });
+
+      if (!items.length) {
+        notifList.innerHTML = "<div>Henüz bildirim yok.</div>";
         return;
       }
 
-      my.sort((a, b) => (a.createdAt || "").localeCompare(b.createdAt || ""));
-      notifList.innerHTML = my.map(r => {
-        let cls = "s-pending";
-        let txt = "Beklemede";
-        if (r.status === "approved") {
-          cls = "s-approved";
-          txt = "Onaylandı";
-        } else if (r.status === "rejected") {
-          cls = "s-rejected";
-          txt = "Reddedildi";
-        }
-        return `
-          <div class="notif-item">
-            <div class="notif-meta">
-              ${r.createdAt || ""} – <strong>${r.brand}</strong> (${r.product})
-              <span class="pill-status ${cls}">${txt}</span>
+      items.sort((a, b) => (a.createdAt || "").localeCompare(b.createdAt || ""));
+
+      notifList.innerHTML = items.map(it => {
+        if (it.type === "request") {
+          let cls = "s-pending";
+          let txt = "Beklemede";
+          if (it.status === "approved") { cls = "s-approved"; txt = "Onaylandı"; }
+          else if (it.status === "rejected") { cls = "s-rejected"; txt = "Reddedildi"; }
+
+          return `
+            <div class="notif-item">
+              <div class="notif-meta">
+                ${it.createdAt} – <strong>${it.brand}</strong> (${it.product})
+                <span class="pill-status ${cls}">${txt}</span>
+              </div>
+              <div>${it.details}</div>
+              ${it.adminNote ? `<div style="font-size:12px; margin-top:4px;">Yönetici notu: ${it.adminNote}</div>` : ""}
             </div>
-            <div>${r.details}</div>
-            ${r.adminNote ? `<div style="font-size:12px; margin-top:4px;">Yönetici notu: ${r.adminNote}</div>` : ""}
-          </div>
-        `;
+          `;
+        } else {
+          const plan = plans.find(p => p.id === it.planId);
+          return `
+            <div class="notif-item">
+              <div class="notif-meta">
+                ${it.createdAt} – Kredi Paketi Satın Alındı
+              </div>
+              <div style="font-size:12px;">
+                Paket: <strong>${plan ? plan.nameTR : it.planId}</strong>,
+                Kredi: ${it.credits},
+                Fiyat: ${it.priceTRY} ₺ / $${it.priceUSD} / €${it.priceEUR}
+              </div>
+            </div>
+          `;
+        }
       }).join("");
     } catch (err) {
       console.error(err);
@@ -1038,12 +1314,18 @@
     }
   }
 
+  // Reklam isteği
   document.getElementById("btn-send-ad").addEventListener("click", async () => {
     statusAd.textContent = "";
     if (!currentUser || currentUser.role !== "user") {
       statusAd.textContent = "Önce kullanıcı olarak giriş yapmalısın.";
       return;
     }
+    if (!currentUser.credits || currentUser.credits <= 0) {
+      statusAd.textContent = "Reklam isteği göndermek için önce kredi paketi satın al.";
+      return;
+    }
+
     const brand = document.getElementById("ad-brand").value.trim();
     const product = document.getElementById("ad-product").value.trim();
     const desc = document.getElementById("ad-desc").value.trim();
@@ -1066,10 +1348,22 @@
         createdAt: now,
       });
 
+      // 1 kredi düş
+      const newCredits = (currentUser.credits || 0) - 1;
+      currentUser.credits = newCredits < 0 ? 0 : newCredits;
+      if (currentUser.id && currentUser.id !== "ADMIN") {
+        try {
+          await updateDoc(doc(db, "users", currentUser.id), { credits: currentUser.credits });
+        } catch (e) {}
+      }
+      localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
+      updateStudioAccess();
+      renderProfile();
+
       document.getElementById("ad-brand").value = "";
       document.getElementById("ad-product").value = "";
       document.getElementById("ad-desc").value = "";
-      statusAd.textContent = "Reklam isteğin Yöneticiye gönderildi.";
+      statusAd.textContent = "Reklam isteğin Yöneticiye gönderildi. 1 kredi kullanıldı.";
       loadNotificationsForUser();
     } catch (err) {
       console.error(err);
@@ -1077,6 +1371,7 @@
     }
   });
 
+  // Mesaj gönder
   document.getElementById("btn-send-msg").addEventListener("click", async () => {
     statusMsg.textContent = "";
     if (!currentUser || currentUser.role !== "user") {
@@ -1097,16 +1392,55 @@
         subject,
         body,
         createdAt: now,
+        reply: "",
+        replyAt: ""
       });
       document.getElementById("msg-subject").value = "";
       document.getElementById("msg-body").value = "";
       statusMsg.textContent = "Mesajın Yöneticiye iletildi.";
+      loadUserReplies();
     } catch (err) {
       console.error(err);
       statusMsg.textContent = "Mesaj gönderilirken hata oluştu.";
     }
   });
 
+  // Kullanıcı tarafında yönetici yanıtlarını göster
+  async function loadUserReplies() {
+    if (!currentUser || currentUser.role !== "user") return;
+    if (!userMessagesList) return;
+    try {
+      const snap = await getDocs(collection(db, "messages"));
+      const mine = [];
+      snap.forEach(d => {
+        const m = d.data();
+        if (m.fromEmail === currentUser.email && m.reply) {
+          mine.push(m);
+        }
+      });
+      if (!mine.length) {
+        userMessagesList.innerHTML = "<div>Henüz yönetici yanıtı yok.</div>";
+        return;
+      }
+      mine.sort((a, b) => (a.createdAt || "").localeCompare(b.createdAt || ""));
+      userMessagesList.innerHTML = mine.map(m => `
+        <div class="notif-item">
+          <div class="notif-meta">
+            ${m.createdAt || ""} – ${m.subject}
+          </div>
+          <div>${m.body}</div>
+          <div style="font-size:12px; margin-top:4px; color:#bbf7d0;">
+            Yönetici yanıtı (${m.replyAt || ""}): ${m.reply}
+          </div>
+        </div>
+      `).join("");
+    } catch (e) {
+      console.error(e);
+      userMessagesList.innerHTML = "<div>Yanıtlar yüklenirken hata oluştu.</div>";
+    }
+  }
+
+  // Admin canlı veriler
   onSnapshot(collection(db, "requests"), (snap) => {
     const list = [];
     snap.forEach(d => list.push({ id: d.id, ...d.data() }));
@@ -1197,8 +1531,31 @@
           ${m.createdAt || ""} – <strong>${m.fromName}</strong> (${m.fromEmail}) – ${m.subject}
         </div>
         <div>${m.body}</div>
+        ${m.reply ? `<div style="font-size:12px; margin-top:4px; color:#bbf7d0;">Yanıt: ${m.reply} (${m.replyAt || ""})</div>` : ""}
+        <div class="admin-actions">
+          <input type="text" id="reply-${m.id}" placeholder="Yanıt yaz..." value="${m.reply || ""}" />
+          <button class="btn-small btn-approve" data-reply-id="${m.id}">Yanıtı Kaydet</button>
+        </div>
       </div>
     `).join("");
+
+    adminMessagesBox.querySelectorAll("button[data-reply-id]").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        if (!currentUser || currentUser.role !== "admin") return;
+        const id = btn.dataset.replyId;
+        const replyInput = document.getElementById(`reply-${id}`);
+        const replyText = replyInput ? replyInput.value.trim() : "";
+        try {
+          await updateDoc(doc(db, "messages", id), {
+            reply: replyText,
+            replyAt: new Date().toLocaleString("tr-TR")
+          });
+        } catch (e) {
+          console.error(e);
+          alert("Yanıt kaydedilirken hata oluştu.");
+        }
+      });
+    });
   }
 
   function renderAdminUsers(list) {
@@ -1214,15 +1571,64 @@
         </div>
         <div>Üyelik: ${u.createdAt || "-"}</div>
         <div>Son giriş: ${u.lastLogin || "-"}</div>
+        <div>Kredi: ${u.credits || 0}</div>
       </div>
     `).join("");
   }
 
+  function renderAdminPlans() {
+    if (!adminPlansBox || !plans || !plans.length) {
+      if (adminPlansBox) adminPlansBox.innerHTML = "<div>Henüz paket yok.</div>";
+      return;
+    }
+    adminPlansBox.innerHTML = plans.map(p => `
+      <div class="admin-item">
+        <div class="admin-meta">${p.id} – ${p.nameTR}</div>
+        <div style="font-size:12px;">Kredi: ${p.credits}</div>
+        <div class="admin-actions">
+          <input type="number" step="0.01" id="plt-${p.id}-try" value="${p.priceTRY}">
+          <input type="number" step="0.01" id="plt-${p.id}-usd" value="${p.priceUSD}">
+          <input type="number" step="0.01" id="plt-${p.id}-eur" value="${p.priceEUR}">
+          <button class="btn-small btn-approve" data-plan="${p.id}">Kaydet</button>
+        </div>
+      </div>
+    `).join("");
+
+    adminPlansBox.querySelectorAll("button[data-plan]").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const id = btn.dataset.plan;
+        const plan = plans.find(p => p.id === id);
+        if (!plan) return;
+        const tryVal = Number(document.getElementById(`plt-${id}-try`).value || plan.priceTRY);
+        const usdVal = Number(document.getElementById(`plt-${id}-usd`).value || plan.priceUSD);
+        const eurVal = Number(document.getElementById(`plt-${id}-eur`).value || plan.priceEUR);
+        try {
+          await setDoc(doc(db, "plans", id), {
+            ...plan,
+            priceTRY: tryVal,
+            priceUSD: usdVal,
+            priceEUR: eurVal
+          });
+          plan.priceTRY = tryVal;
+          plan.priceUSD = usdVal;
+          plan.priceEUR = eurVal;
+          renderPlansUI();
+          alert("Paket güncellendi.");
+        } catch (e) {
+          console.error(e);
+          alert("Paket güncellenirken hata oluştu.");
+        }
+      });
+    });
+  }
+
+  // LocalStorage'dan kullanıcıyı geri yükle
   (function initFromStorage() {
     const raw = localStorage.getItem("spark_current_user");
     if (raw) {
       try { currentUser = JSON.parse(raw); } catch (e) { currentUser = null; }
     }
+    if (currentUser) currentUser.credits = currentUser.credits || 0;
     updateHeaderState();
     if (currentUser) {
       if (currentUser.role === "admin") {
@@ -1231,12 +1637,14 @@
         welcomeText.textContent = `Hoş geldin, ${currentUser.name} 👋`;
         renderProfile();
         loadNotificationsForUser();
+        loadUserReplies();
         setActiveScreen("main");
       }
     } else {
       setActiveScreen("info");
     }
   })();
+
 </script>
 
 </body>
