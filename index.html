@@ -142,10 +142,11 @@
       grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
       gap: 24px;
       align-items: center;
+      min-height: calc(100vh - 80px);
     }
 
     @media (max-width: 840px) {
-      .info-layout { grid-template-columns: 1fr; }
+      .info-layout { grid-template-columns: 1fr; padding-top: 20px; }
     }
 
     .kicker {
@@ -353,6 +354,19 @@
       .grid-two { grid-template-columns: 1fr; }
     }
 
+    .grid-three {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .grid-three { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .grid-three { grid-template-columns: 1fr; }
+    }
+
     .admin-layout {
       display: grid;
       grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
@@ -444,6 +458,38 @@
 
     .feed-post:last-child { border-bottom: none; }
 
+    .assistant-chat {
+      border-radius: 14px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(15, 23, 42, 0.9);
+      padding: 10px;
+      max-height: 320px;
+      overflow-y: auto;
+      font-size: 13px;
+    }
+
+    body.light .assistant-chat { background: rgba(255, 255, 255, 0.9); }
+
+    .chat-row { margin-bottom: 8px; }
+    .chat-row.me { text-align: right; }
+    .chat-bubble {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      max-width: 80%;
+      text-align: left;
+    }
+    .chat-row.me .chat-bubble {
+      background: linear-gradient(135deg, var(--accent), #fb7185);
+      color: #111827;
+      border-bottom-right-radius: 4px;
+    }
+    .chat-row.ai .chat-bubble {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--border-subtle);
+      border-bottom-left-radius: 4px;
+    }
+
     footer {
       padding: 18px 0 28px;
       font-size: 12px;
@@ -476,6 +522,8 @@
         <button class="nav-link" data-target="main" id="nav-main">Ana Sayfa</button>
         <button class="nav-link" data-target="studio" id="nav-studio">Stüdyo</button>
         <button class="nav-link" data-target="community" id="nav-community">Topluluk</button>
+        <button class="nav-link" data-target="assistant" id="nav-assistant">Asistan</button>
+        <button class="nav-link" data-target="pricing" id="nav-pricing">Fiyatlandırma</button>
         <button class="nav-link" data-target="settings" id="nav-settings">Ayarlar</button>
         <button class="nav-link" data-target="admin" id="nav-admin" style="display:none;">Yönetici</button>
       </div>
@@ -487,35 +535,36 @@
 <main>
   <div class="container">
 
-    <!-- BİLGİ EKRANI -->
+    <!-- LANDING / BİLGİ -->
     <section class="screen active" id="screen-info">
       <div class="info-layout">
         <div>
           <div class="kicker">
-            <span class="k-dot"></span> GENÇ YARATICILAR İÇİN REKLAM STÜDYOSU
+            <span class="k-dot"></span> KULÜPLER VE MARKALAR İÇİN MİNİ STÜDYO
           </div>
           <h1 class="hero-title">
-            <span>Spark Ad Studio</span> kulüpler ve markalar için eğlenceli reklam fikirleri üretir.
+            <span>Spark Ad Studio</span> kulüpler ve markalar için akılda kalıcı reklam fikirleri üretir.
           </h1>
           <p class="hero-lead">
-            Kulüpler / markalar form dolduruyor, sen de onlar için akılda kalıcı reklam fikirleri
-            ve video senaryoları üretiyorsun. Sistem hem kullanıcıyı hem yöneticiyi takip ediyor.
+            Kulüpler, okullar ve küçük markalar için basit bir panelden reklam fikri, slogan, kampanya
+            ve iletişim taslakları üretmeni sağlar. Sen fikri verirsin, onlar seni duyurur.
           </p>
           <div class="pill-row">
-            <span class="pill">🎯 13–14 yaş odaklı kreatif içerik</span>
-            <span class="pill">🏟 Kulüpler, markalar, şirketler</span>
-            <span class="pill">💬 Direkt yönetici mesajlaşma</span>
+            <span class="pill">🎯 Kulübüne özel reklam stratejisi</span>
+            <span class="pill">🤝 Karşılıklı tanıtım modeli</span>
+            <span class="pill">🧠 Akıllı Asistan ile fikir üretimi</span>
+            <span class="pill">📊 Yönetici paneli ve istatistikler</span>
           </div>
-          <button class="primary-btn" id="btn-info-start">Üye Ol / Giriş Yap</button>
+          <button class="primary-btn" id="btn-info-start">Hemen Başla (Üye Ol / Giriş Yap)</button>
         </div>
         <div class="card">
-          <h3>Nasıl çalışır?</h3>
+          <h3>Sistem Nasıl Çalışır?</h3>
           <p style="color:var(--muted); font-size:13px;">
-            • Üye ol veya giriş yap.<br>
-            • Kredi paketi satın al (simülasyon).<br>
-            • Reklam isteğini gönder, Yönetici görsün.<br>
-            • Yönetici istekleri onaylar / reddeder ve mesajla yanıt verir.<br>
-            • Topluluk akışında paylaşım yapabilirsin.
+            • Kulüp / marka hesabı açar veya bireysel üye olursun.<br>
+            • İstersen Spark Pro aboneliği alırsın (daha detaylı reklam desteği).<br>
+            • Reklam isteği formunu doldurursun, Yönetici paneline düşer.<br>
+            • Yönetici isteği onaylar, mesajla geri bildirim verir.<br>
+            • Topluluk alanında fikirlerini paylaşabilir, rozet ve istatistik görebilirsin.
           </p>
         </div>
       </div>
@@ -583,7 +632,7 @@
     <section class="screen" id="screen-studio">
       <h2 class="section-title">Stüdyo</h2>
       <p class="section-sub">
-        Profil bilgilerin, kredi paketleri, reklam isteği formu ve Yönetici mesaj alanı burada.
+        Profil bilgilerin, Spark Pro aboneliğin, kredi paketleri ve reklam isteği alanları burada.
       </p>
 
       <div class="grid-two">
@@ -593,12 +642,12 @@
           <p id="profile-info" style="font-size:13px; color:var(--muted); margin-top:8px;"></p>
         </div>
 
-        <!-- KREDİ PAKETLERİ -->
+        <!-- KREDİ / ABONELİK PAKETLERİ -->
         <div class="card">
-          <h3>Kredi Paketleri</h3>
+          <h3>Paketler ve Abonelikler</h3>
           <p style="font-size:12px; color:var(--muted); margin-bottom:8px;">
-            Paketler TL üzerinden tanımlanır. Şu anki sabit kurlar:
-            1 USD = 42.45 TL, 1 EUR = 49.60 TL (demo için).
+            Paketler TL üzerinden tanımlanır. Admin sadece TL fiyatı girer, sistem otomatik
+            olarak USD / EUR karşılığını hesaplar.
           </p>
           <div id="plans-list"></div>
           <div class="status-text" id="status-plans"></div>
@@ -609,7 +658,7 @@
           <h3>Reklam İsteği Gönder</h3>
           <p style="font-size:12px; color:var(--muted); margin-bottom:8px;">
             Reklam istediğin kulüp / marka, ürün ve hedef kitleyi kısaca anlat.
-            (Her istek 1 kredi harcar.)
+            (Her istek 1 kredi harcar. Spark Pro kullanıcıları için daha detaylı değerlendirme yapılır.)
           </p>
           <div class="field">
             <label for="ad-brand">Kulüp / Marka</label>
@@ -659,6 +708,39 @@
       </div>
     </section>
 
+    <!-- ASİSTAN -->
+    <section class="screen" id="screen-assistant">
+      <h2 class="section-title">AI Reklam Asistanı</h2>
+      <p class="section-sub">
+        Kulübün, okulun veya markan için “Nasıl bir reklam yapabiliriz?” gibi sorular sor.
+        Asistan sana slogan, kampanya ve fikir önerileri verir.
+      </p>
+
+      <div class="grid-two">
+        <div class="card">
+          <h3>Sohbet</h3>
+          <div class="assistant-chat" id="assistant-chat"></div>
+          <div style="display:flex; gap:8px; margin-top:8px;">
+            <input id="assistant-input" type="text" placeholder="Örn: Basketbol kulübümüz için nasıl reklam yapabiliriz?" style="flex:1; padding:8px 10px; border-radius:999px; border:1px solid var(--border-subtle); background:rgba(15,23,42,.9); color:var(--text); font-size:13px;" />
+            <button class="primary-btn" id="assistant-send" style="padding:8px 14px; font-size:12px;">Gönder</button>
+          </div>
+          <div style="font-size:11px; color:var(--muted); margin-top:6px;">
+            Not: Bu asistan tarayıcı içinde basit kurallarla çalışır, gerçek zamanlı ChatGPT bağlantısı kullanmaz.
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Hazır Sorular</h3>
+          <ul style="font-size:13px; color:var(--muted); padding-left:16px; line-height:1.6;">
+            <li>“Bizim futbol kulübü için sosyal medyada nasıl reklam yapabiliriz?”</li>
+            <li>“Okulumuzun bilim şenliği için akılda kalıcı bir slogan önerir misin?”</li>
+            <li>“Kahve dükkanımız için eğlenceli bir kampanya fikri verir misin?”</li>
+            <li>“Yeni açılan spor salonu için gençlere hitap eden reklam cümleleri lazım.”</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
     <!-- TOPLULUK -->
     <section class="screen" id="screen-community">
       <h2 class="section-title">Topluluk Akışı</h2>
@@ -689,6 +771,18 @@
           <h3>Topluluk Gönderileri</h3>
           <div class="notif-list" id="feed-list" style="max-height:320px; overflow-y:auto;"></div>
         </div>
+      </div>
+    </section>
+
+    <!-- FİYATLANDIRMA -->
+    <section class="screen" id="screen-pricing">
+      <h2 class="section-title">Fiyatlandırma</h2>
+      <p class="section-sub">
+        Spark Free ile başla, Spark Pro veya Spark Business aboneliğiyle daha detaylı reklam desteği al.
+        Fiyatlar TL üzerinden tanımlanır; USD / EUR karşılıkları otomatik hesaplanır.
+      </p>
+      <div class="grid-three" id="pricing-list">
+        <!-- JS dolduracak -->
       </div>
     </section>
 
@@ -764,7 +858,7 @@
             <div class="stat-value" id="stat-posts">-</div>
           </div>
           <div class="stat-card">
-            <div class="stat-label">Tanımlı Paket</div>
+            <div class="stat-label">Tanımlı Paket / Abonelik</div>
             <div class="stat-value" id="stat-plans">-</div>
           </div>
         </div>
@@ -795,23 +889,23 @@
           </div>
 
           <div class="card">
-            <h3>Paket Yönetimi</h3>
+            <h3>Paket / Abonelik Fiyatlandırma</h3>
             <div class="admin-list" id="admin-plans"></div>
             <div style="margin-top:8px;">
-              <h4 style="font-size:13px; margin-bottom:4px;">Yeni Paket Ekle</h4>
+              <h4 style="font-size:13px; margin-bottom:4px;">Yeni Paket / Abonelik Ekle</h4>
               <div class="field">
-                <label for="new-plan-name">Paket Adı</label>
-                <input id="new-plan-name" type="text" placeholder="Örn: Standart Paket" />
+                <label for="new-plan-name">Adı (Örn: Spark Pro)</label>
+                <input id="new-plan-name" type="text" placeholder="Örn: Spark Pro" />
               </div>
               <div class="field">
-                <label for="new-plan-credits">Kredi</label>
-                <input id="new-plan-credits" type="number" min="1" value="3" />
+                <label for="new-plan-credits">Kredi (istersen 0 bırak)</label>
+                <input id="new-plan-credits" type="number" min="0" value="0" />
               </div>
               <div class="field">
                 <label for="new-plan-tl">Fiyat (TL)</label>
-                <input id="new-plan-tl" type="number" min="1" value="1600" />
+                <input id="new-plan-tl" type="number" min="0" value="1450" />
               </div>
-              <button class="btn-small btn-approve" id="btn-add-plan">Paket Ekle</button>
+              <button class="btn-small btn-approve" id="btn-add-plan">Paket / Abonelik Ekle</button>
               <div class="status-text" id="status-add-plan"></div>
             </div>
           </div>
@@ -854,7 +948,7 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // SABİT KURLAR (sen vermiştin)
+  // Sabit kurlar (sen verdin)
   const USD_RATE = 42.45;
   const EUR_RATE = 49.60;
 
@@ -867,13 +961,16 @@
     auth: document.getElementById("screen-auth"),
     main: document.getElementById("screen-main"),
     studio: document.getElementById("screen-studio"),
+    assistant: document.getElementById("screen-assistant"),
     community: document.getElementById("screen-community"),
+    pricing: document.getElementById("screen-pricing"),
     settings: document.getElementById("screen-settings"),
     admin: document.getElementById("screen-admin"),
   };
 
   const navLinksContainer = document.getElementById("nav-links");
   const navAdmin = document.getElementById("nav-admin");
+  const navInfo = document.getElementById("nav-info");
   const btnAuth = document.getElementById("btn-auth");
   const welcomeText = document.getElementById("welcome-text");
   const profileInfo = document.getElementById("profile-info");
@@ -884,6 +981,8 @@
   const cardAds = document.getElementById("card-ads");
   const yearSpan = document.getElementById("year");
   yearSpan.textContent = new Date().getFullYear();
+
+  const pricingList = document.getElementById("pricing-list");
 
   const statusLogin = document.getElementById("status-login");
   const statusRegister = document.getElementById("status-register");
@@ -897,8 +996,8 @@
   const adminUsersBox = document.getElementById("admin-users");
   const adminPlansBox = document.getElementById("admin-plans");
   const adminPostsBox = document.getElementById("admin-posts");
-
   const feedList = document.getElementById("feed-list");
+
   const statsEls = {
     users: document.getElementById("stat-users"),
     requests: document.getElementById("stat-requests"),
@@ -907,6 +1006,10 @@
     posts: document.getElementById("stat-posts"),
     plans: document.getElementById("stat-plans"),
   };
+
+  const assistantChat = document.getElementById("assistant-chat");
+  const assistantInput = document.getElementById("assistant-input");
+  const assistantSend = document.getElementById("assistant-send");
 
   function setActiveScreen(key) {
     Object.values(screens).forEach(el => el.classList.remove("active"));
@@ -930,9 +1033,12 @@
     if (!currentUser) {
       navLinksContainer.style.display = "none";
       btnAuth.textContent = "Üye Ol / Giriş Yap";
+      if (navInfo) navInfo.style.display = "inline-block";
     } else {
       navLinksContainer.style.display = "flex";
       btnAuth.textContent = "Çıkış Yap";
+      // Giriş yaptıktan sonra Bilgi menüsünü gizle
+      if (navInfo) navInfo.style.display = "none";
     }
 
     if (currentUser && currentUser.role === "admin") {
@@ -968,6 +1074,7 @@
 
     applyAccent(accent);
     renderPlansUI();
+    renderPricingUI();
   }
 
   document.getElementById("theme-select").addEventListener("change", () => {
@@ -986,6 +1093,7 @@
     currentLang = document.getElementById("lang-select").value;
     localStorage.setItem("spark_lang", currentLang);
     renderPlansUI();
+    renderPricingUI();
   });
 
   applyThemeAndLangFromStorage();
@@ -1023,7 +1131,7 @@
   document.querySelectorAll(".nav-link").forEach(btn => {
     btn.addEventListener("click", () => {
       const target = btn.dataset.target;
-      if (!currentUser && target !== "info") {
+      if (!currentUser && target !== "info" && target !== "auth") {
         setActiveScreen("auth");
         return;
       }
@@ -1042,6 +1150,9 @@
       }
       if (target === "community") {
         loadFeed();
+      }
+      if (target === "pricing") {
+        renderPricingUI();
       }
       if (target === "admin" && currentUser && currentUser.role === "admin") {
         refreshStats();
@@ -1206,7 +1317,7 @@
   function renderPlansUI() {
     if (!plansList) return;
     if (!plans || !plans.length) {
-      plansList.innerHTML = "<div>Şu anda tanımlı paket yok.</div>";
+      plansList.innerHTML = "<div>Şu anda tanımlı paket / abonelik yok.</div>";
       return;
     }
 
@@ -1216,13 +1327,15 @@
           ${p.name} – ${getPlanPriceDisplay(p)}
         </div>
         <div style="font-size:12px;">
-          ${p.credits} video kredisi
+          ${p.credits > 0
+            ? `${p.credits} kredi içerir (reklam isteği için kullanılabilir).`
+            : `Abonelik / özellik paketi. Kredi içermeyebilir.`}
         </div>
         <button class="primary-btn" data-buy="${p.id}" style="margin-top:6px; padding:6px 12px; font-size:12px;">
           ${
-            currentLang === "en" ? "Buy" :
-            currentLang === "de" ? "Kaufen" :
-            "Satın Al"
+            currentLang === "en" ? "Select" :
+            currentLang === "de" ? "Auswählen" :
+            "Satın Al / Aktif Et"
           }
         </button>
       </div>
@@ -1235,6 +1348,59 @@
         if (plan) handleBuyPlan(plan);
       });
     });
+  }
+
+  function renderPricingUI() {
+    if (!pricingList) return;
+    if (!plans || !plans.length) {
+      pricingList.innerHTML = "<div>Henüz fiyatlandırma tanımlı değil.</div>";
+      return;
+    }
+
+    pricingList.innerHTML = plans.map(p => {
+      let badge = "Standart";
+      if (p.name.toLowerCase().includes("pro")) badge = "Pro";
+      else if (p.name.toLowerCase().includes("business")) badge = "Business";
+
+      let advantages = "";
+      if (badge === "Pro") {
+        advantages = `
+          • Daha detaylı reklam analizi<br>
+          • Öncelikli değerlendirme<br>
+          • Kulüp / marka için ek öneriler
+        `;
+      } else if (badge === "Business") {
+        advantages = `
+          • Pro'nun tüm avantajları<br>
+          • Birden fazla şube / takım<br>
+          • Özel kampanya planlama
+        `;
+      } else {
+        advantages = `
+          • Başlangıç için ideal<br>
+          • Temel reklam isteği gönderme<br>
+          • Topluluk alanına erişim
+        `;
+      }
+
+      return `
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.18em; color:var(--accent-soft); margin-bottom:4px;">
+            ${badge} plan
+          </div>
+          <h3>${p.name}</h3>
+          <div style="font-size:22px; font-weight:700; margin:6px 0;">
+            ${getPriceTextTL(p)}
+            <span style="font-size:11px; font-weight:400; color:var(--muted);">
+              / ay (yaklaşık ${getPriceTextUSD(p)} • ${getPriceTextEUR(p)})
+            </span>
+          </div>
+          <div style="font-size:12px; color:var(--muted); margin-bottom:8px;">
+            ${advantages}
+          </div>
+        </div>
+      `;
+    }).join("");
   }
 
   async function handleBuyPlan(plan) {
@@ -1256,7 +1422,7 @@
         createdAt: now
       });
 
-      const newCredits = (currentUser.credits || 0) + plan.credits;
+      const newCredits = (currentUser.credits || 0) + (plan.credits || 0);
       currentUser.credits = newCredits;
       if (currentUser.id && currentUser.id !== "ADMIN") {
         try {
@@ -1267,8 +1433,9 @@
       updateStudioAccess();
       renderProfile();
 
-      statusPlans.textContent = "Satın alma kaydedildi. Kredin güncellendi, reklam isteği gönderebilirsin.";
+      statusPlans.textContent = "Satın alma kaydedildi. Kredin/aboneliğin güncellendi.";
       loadNotificationsForUser();
+      refreshStats();
     } catch (err) {
       console.error(err);
       statusPlans.textContent = "Satın alma kaydedilirken hata oluştu.";
@@ -1281,21 +1448,37 @@
       const loaded = [];
       snap.forEach(d => loaded.push({ id: d.id, ...d.data() }));
       if (!loaded.length) {
-        // Başlangıçta 1 paket: Standart
-        const defaultPlan = {
-          id: "standard",
-          name: "Standart Paket",
-          credits: 5,
-          priceTL: 1600
-        };
-        await setDoc(doc(db, "plans", defaultPlan.id), defaultPlan);
-        plans = [defaultPlan];
+        // Başlangıçta 3 plan oluştur: Free, Pro, Business
+        const defaultPlans = [
+          {
+            id: "spark-free",
+            name: "Spark Free",
+            credits: 0,
+            priceTL: 0
+          },
+          {
+            id: "spark-pro",
+            name: "Spark Pro",
+            credits: 10,
+            priceTL: 1450
+          },
+          {
+            id: "spark-business",
+            name: "Spark Business",
+            credits: 30,
+            priceTL: 3200
+          }
+        ];
+        for (const p of defaultPlans) {
+          await setDoc(doc(db, "plans", p.id), p);
+        }
+        plans = defaultPlans;
       } else {
         plans = loaded.map(p => ({
           id: p.id,
-          name: p.name || p.nameTR || "Paket",
-          credits: Number(p.credits) || 1,
-          priceTL: Number(p.priceTL) || 100
+          name: p.name || "Paket",
+          credits: Number(p.credits) || 0,
+          priceTL: Number(p.priceTL) || 0
         }));
       }
     } catch (e) {
@@ -1304,6 +1487,7 @@
     }
     renderPlansUI();
     renderAdminPlans();
+    renderPricingUI();
     refreshStats();
   }
 
@@ -1358,7 +1542,7 @@
           return `
             <div class="notif-item">
               <div class="notif-meta">
-                ${it.createdAt || ""} – Kredi Paketi Satın Alındı
+                ${it.createdAt || ""} – Paket / Abonelik Satın Alındı
               </div>
               <div style="font-size:12px;">
                 Paket: <strong>${it.planName || it.planId}</strong>,
@@ -1383,7 +1567,7 @@
       return;
     }
     if (!currentUser.credits || currentUser.credits <= 0) {
-      statusAd.textContent = "Reklam isteği göndermek için önce kredi paketi satın al.";
+      statusAd.textContent = "Reklam isteği göndermek için önce bir paket / abonelik satın al.";
       return;
     }
 
@@ -1458,6 +1642,7 @@
       document.getElementById("msg-body").value = "";
       statusMsg.textContent = "Mesajın Yöneticiye iletildi.";
       loadUserReplies();
+      refreshStats();
     } catch (err) {
       console.error(err);
       statusMsg.textContent = "Mesaj gönderilirken hata oluştu.";
@@ -1754,7 +1939,7 @@
   function renderAdminPlans() {
     if (!adminPlansBox) return;
     if (!plans || !plans.length) {
-      adminPlansBox.innerHTML = "<div>Henüz paket yok.</div>";
+      adminPlansBox.innerHTML = "<div>Henüz paket / abonelik yok.</div>";
       return;
     }
     adminPlansBox.innerHTML = plans.map(p => `
@@ -1763,7 +1948,7 @@
         <div style="font-size:12px;">Kredi: ${p.credits}</div>
         <div class="admin-actions">
           <input type="number" step="0.01" id="plt-${p.id}-tl" value="${p.priceTL}">
-          <button class="btn-small btn-approve" data-plan="${p.id}">Kaydet</button>
+          <button class="btn-small btn-approve" data-plan="${p.id}">TL Fiyatı Kaydet</button>
         </div>
       </div>
     `).join("");
@@ -1781,7 +1966,8 @@
           });
           plan.priceTL = tlVal;
           renderPlansUI();
-          alert("Paket güncellendi.");
+          renderPricingUI();
+          alert("Paket / abonelik güncellendi.");
           refreshStats();
         } catch (e) {
           console.error(e);
@@ -1799,9 +1985,9 @@
       return;
     }
     const name = document.getElementById("new-plan-name").value.trim();
-    const creditsVal = Number(document.getElementById("new-plan-credits").value || 1);
-    const tlVal = Number(document.getElementById("new-plan-tl").value || 100);
-    if (!name || creditsVal <= 0 || tlVal <= 0) {
+    const creditsVal = Number(document.getElementById("new-plan-credits").value || 0);
+    const tlVal = Number(document.getElementById("new-plan-tl").value || 0);
+    if (!name || creditsVal < 0 || tlVal < 0) {
       statusAddPlan.textContent = "Ad, kredi ve TL fiyatı geçerli olmalı.";
       return;
     }
@@ -1812,13 +1998,122 @@
       plans.push(newPlan);
       renderPlansUI();
       renderAdminPlans();
-      statusAddPlan.textContent = "Paket eklendi.";
+      renderPricingUI();
+      statusAddPlan.textContent = "Paket / abonelik eklendi.";
       refreshStats();
     } catch (e) {
       console.error(e);
       statusAddPlan.textContent = "Paket eklenirken hata oluştu.";
     }
   });
+
+  // AI Reklam Asistanı (basit kural tabanlı)
+  const chatState = [];
+  function addChatMessage(sender, text) {
+    chatState.push({ sender, text });
+    renderAssistantChat();
+  }
+
+  function renderAssistantChat() {
+    if (!assistantChat) return;
+    if (!chatState.length) {
+      assistantChat.innerHTML = `
+        <div style="font-size:12px; color:var(--muted);">
+          İlk sorunla başla: Örneğin “Bizim kulüp için Instagram'da nasıl reklam yapabiliriz?”
+        </div>
+      `;
+      return;
+    }
+    assistantChat.innerHTML = chatState.map(msg => `
+      <div class="chat-row ${msg.sender === "me" ? "me" : "ai"}">
+        <div class="chat-bubble">${msg.text}</div>
+      </div>
+    `).join("");
+    assistantChat.scrollTop = assistantChat.scrollHeight;
+  }
+
+  function getAssistantReply(question) {
+    const q = question.toLowerCase();
+
+    if (q.includes("kulüp") || q.includes("kulub") || q.includes("spor")) {
+      if (q.includes("reklam") || q.includes("tanıtım")) {
+        return `Kulübün için basit bir reklam planı şöyle olabilir:
+1) Hedef kitleyi seç: öğrenciler mi, veliler mi, mahalle halkı mı?
+2) 1 cümlelik güçlü mesaj yaz: “Bizim kulüp, ${"gençlere disiplin ve takım ruhu kazandırıyor"}” gibi.
+3) 3 görsel fikri belirle: maçtan fotoğraf, antrenmandan kare, takımın toplu fotoğrafı.
+4) Instagram / WhatsApp durumu için kısa bir slogan ekle:
+   • “Takıma katıl, tribüne değil sahaya çık!”
+   • “Kulübümüzle hedefi 12'den vur!”
+Bu fikirler üzerinden senin kulübüne özel cümleler de üretebilirim; bana spor branşını ve yaş grubunu da yaz.`;
+      }
+    }
+
+    if (q.includes("slogan")) {
+      return `Slogan üretmek için önce kulübün / markanın tarzını bilmek iyi olur ama örnek olarak:
+• “Her maç yeni bir hikâye.”
+• “Sahaya çıktığında, gerisi detaydır.”
+• “Biz sadece oynatmıyoruz, geliştiyoruz.”
+İstersen kulübünün adını ve spor branşını yaz, ona göre 5 farklı özel slogan üreteyim.`;
+    }
+
+    if (q.includes("okul") || q.includes("kampüs") || q.includes("bilim şenliği")) {
+      return `Okul veya kampüs için reklam fikri:
+1) Etkinliğe özel bir isim bul: “Bilim Patlaması Günü” gibi.
+2) 1-2 cümlelik açıklama: “Deneyler, atölyeler ve sürpriz gösterilerle dolu bir gün.”
+3) Öğrencilerin ilgisini çekecek bir çağrı ekle:
+   • “Arkadaşını da getir, deneyleri birlikte patlatalım!”
+4) Afiş veya duyuru metninde tarih, saat, yer ve kısa bir QR kod alanı bırak.
+İstersen etkinliğin detaylarını yaz, sana hazır duyuru metni de çıkarabilirim.`;
+    }
+
+    if (q.includes("kahve") || q.includes("kafe") || q.includes("coffee")) {
+      return `Bir kahve dükkanı için basit reklam fikri:
+• Hedef: Yakındaki ofis çalışanları ve öğrenciler.
+• Mesaj: “Ders / iş molanda 10 dakikada mutluluk.”
+• Kampanya: “Öğrenci kartını göster, 2. kahve %50 indirimli.”
+• Slogan örnekleri:
+   - “Uykunu değil, gününü aç.”
+   - “Bir yudum sakinlik, bir yudum enerji.”
+Bu tarz bir kampanya için sosyal medya yazısını da birlikte yazabiliriz.`;
+    }
+
+    if (q.includes("instagram") || q.includes("tiktok") || q.includes("reels") || q.includes("shorts")) {
+      return `Sosyal medya için genel reklam önerisi:
+1) Çok uzun yazılardan kaçın, 1–2 cümle yeterli.
+2) 1 tane güçlü “hook” (ilk cümle) kullan:
+   • “Bu kulüpte sadece maç sonucu yok, gerçek arkadaşlık var.”
+3) En sona net bir çağrı yaz:
+   • “Mesaj at, takıma katıl.”
+4) Haftada en az 3 paylaşım planla: 1 maç, 1 antrenman, 1 eğlenceli an.
+İstersen sana direkt kopyala-yapıştır yapabileceğin metinler üreteyim; sadece branşı yaz.`;
+    }
+
+    return `Güzel bir soru sordun, temel bir reklam planı şöyle ilerleyebilir:
+1) Hedefi netleştir: Daha çok üye mi, daha çok izleyici mi, daha çok satış mı?
+2) Hedef kitleyi seç: Yaş grubu, il/ilçe, öğrenci / veli / yetişkin.
+3) 1 ana mesaj yaz: “Bizim ${"kulüp / marka"} neyi farklı yapıyor?” sorusuna cevap ver.
+4) 3 kısa slogan üret ve en sevdiğini seç.
+5) Son olarak net bir çağrı ekle: “Kayıt için DM at”, “Deneme antrenmanına gel” gibi.
+İstersen bana kulübünün / markanın adını, ne yaptığını ve hedefini yaz; direkt hazır metinler önereyim.`;
+  }
+
+  assistantSend.addEventListener("click", () => {
+    const text = assistantInput.value.trim();
+    if (!text) return;
+    addChatMessage("me", text);
+    const reply = getAssistantReply(text);
+    addChatMessage("ai", reply);
+    assistantInput.value = "";
+  });
+
+  assistantInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      assistantSend.click();
+    }
+  });
+
+  renderAssistantChat();
 
   // LocalStorage'dan kullanıcıyı geri yükle
   (function initFromStorage() {
