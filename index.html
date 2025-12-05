@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <title>Spark Ad Studio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <style>
     :root {
       --bg: #050816;
@@ -18,495 +17,247 @@
       --radius-lg: 18px;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin:0; padding:0; }
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #1f2937 0, #050816 55%, #020617 100%);
+      font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background: radial-gradient(circle at top,#1f2937 0,#050816 55%,#020617 100%);
       color: var(--text);
       min-height: 100vh;
     }
-
     body.light {
-      --bg: #f3f4f6;
-      --bg-alt: #e5e7eb;
-      --card: #ffffff;
-      --text: #111827;
-      --muted: #6b7280;
-      --border-subtle: rgba(148, 163, 184, 0.5);
-      background: linear-gradient(to bottom, #e5e7eb, #f9fafb);
+      --bg:#f3f4f6; --bg-alt:#e5e7eb; --card:#ffffff; --text:#111827; --muted:#6b7280;
+      --border-subtle:rgba(148,163,184,.6);
+      background: linear-gradient(to bottom,#e5e7eb,#f9fafb);
     }
 
-    a { color: inherit; text-decoration: none; }
+    a { color:inherit; text-decoration:none; }
 
-    .container { width: min(1100px, 92vw); margin: 0 auto; }
+    .container { width:min(1100px,92vw); margin:0 auto; }
 
     header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      backdrop-filter: blur(18px);
-      background: linear-gradient(to bottom, rgba(5, 8, 22, 0.95), transparent);
-      border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+      position:sticky; top:0; z-index:40;
+      backdrop-filter:blur(18px);
+      background:linear-gradient(to bottom,rgba(5,8,22,.95),transparent);
+      border-bottom:1px solid rgba(148,163,184,.25);
     }
-
     body.light header {
-      background: linear-gradient(to bottom, rgba(243, 244, 246, 0.95), transparent);
-      border-bottom-color: rgba(209, 213, 219, 0.9);
+      background:linear-gradient(to bottom,rgba(243,244,246,.95),transparent);
+      border-bottom-color:rgba(209,213,219,.9);
     }
 
     .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 0;
-      gap: 16px;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:10px 0; gap:16px;
     }
-
-    .nav-left { display: flex; align-items: center; gap: 10px; }
-
+    .nav-left { display:flex; align-items:center; gap:10px; }
     .nav-logo {
-      width: 40px;
-      height: 40px;
-      border-radius: 14px;
-      background: radial-gradient(circle at 30% 0, var(--accent), #7c2d12);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 16px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
-      color: #111827;
+      width:40px; height:40px; border-radius:14px;
+      background:radial-gradient(circle at 30% 0,var(--accent),#7c2d12);
+      display:flex; align-items:center; justify-content:center;
+      font-weight:800; font-size:16px; color:#111827;
+      box-shadow:0 10px 25px rgba(0,0,0,.6);
     }
+    body.light .nav-logo { box-shadow:0 10px 25px rgba(15,23,42,.25); }
 
-    body.light .nav-logo {
-      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.25);
-      color: #111827;
-    }
-
-    .nav-titles { display: flex; flex-direction: column; gap: 2px; }
-
-    .nav-title { font-weight: 700; letter-spacing: 0.03em; font-size: 18px; }
-
+    .nav-titles { display:flex; flex-direction:column; gap:2px; }
+    .nav-title { font-weight:700; letter-spacing:.03em; font-size:18px; }
     .nav-sub {
-      font-size: 11px;
-      text-transform: uppercase;
-      color: var(--muted);
-      letter-spacing: 0.12em;
+      font-size:11px; text-transform:uppercase; letter-spacing:.12em; color:var(--muted);
     }
 
-    .nav-right { display: flex; align-items: center; gap: 14px; }
-
-    .nav-links { display: flex; gap: 10px; font-size: 13px; color: var(--muted); }
+    .nav-right { display:flex; align-items:center; gap:14px; }
+    .nav-links { display:flex; gap:10px; font-size:13px; color:var(--muted); flex-wrap:wrap; }
 
     .nav-link {
-      border: none;
-      background: transparent;
-      color: var(--muted);
-      cursor: pointer;
-      padding: 4px 6px;
-      border-radius: 999px;
+      border:none; background:transparent; color:var(--muted);
+      cursor:pointer; padding:4px 6px; border-radius:999px;
     }
-
-    .nav-link:hover { color: var(--accent); }
-
-    .nav-link.active {
-      color: var(--accent);
-      font-weight: 600;
-    }
+    .nav-link:hover { color:var(--accent); }
+    .nav-link.active { color:var(--accent); font-weight:600; }
 
     .nav-cta {
-      border: none;
-      cursor: pointer;
-      padding: 7px 14px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 600;
-      background: linear-gradient(135deg, var(--accent), #fb7185);
-      color: #111827;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
+      border:none; cursor:pointer; padding:7px 14px; border-radius:999px;
+      font-size:13px; font-weight:600;
+      background:linear-gradient(135deg,var(--accent),#fb7185);
+      color:#111827; box-shadow:0 12px 28px rgba(0,0,0,.6);
     }
+    body.light .nav-cta { box-shadow:0 12px 25px rgba(15,23,42,.25); }
 
-    body.light .nav-cta {
-      color: #111827;
-      box-shadow: 0 12px 25px rgba(15, 23, 42, 0.25);
-    }
-
-    main { padding-bottom: 40px; }
-
-    .screen { display: none; padding: 32px 0; }
-    .screen.active { display: block; }
+    main { padding-bottom:40px; }
+    .screen { display:none; padding:32px 0; }
+    .screen.active { display:block; }
 
     .info-layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-      gap: 24px;
-      align-items: center;
-      min-height: calc(100vh - 80px);
+      display:grid;
+      grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);
+      gap:24px; align-items:center;
+      min-height:calc(100vh - 80px);
     }
-
-    @media (max-width: 840px) {
-      .info-layout { grid-template-columns: 1fr; padding-top: 20px; }
+    @media (max-width:840px){
+      .info-layout{grid-template-columns:1fr; padding-top:20px;}
     }
 
     .kicker {
-      font-size: 11px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--accent-soft);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 10px;
+      font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+      color:var(--accent-soft); display:inline-flex; align-items:center; gap:8px;
+      margin-bottom:10px;
+    }
+    .k-dot{width:7px;height:7px;border-radius:999px;background:var(--accent);}
+    .hero-title{font-size:clamp(30px,4vw,36px);font-weight:700;margin-bottom:8px;}
+    .hero-title span{
+      background:linear-gradient(135deg,var(--accent),#fb7185,#a855f7);
+      -webkit-background-clip:text;color:transparent;
+    }
+    .hero-lead{
+      font-size:14px;color:var(--muted);max-width:520px;margin-bottom:18px;
+    }
+    .pill-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;font-size:11px;}
+    .pill{
+      padding:4px 9px;border-radius:999px;
+      border:1px solid var(--border-subtle);
+      color:var(--accent-soft);background:rgba(15,23,42,.8);
+    }
+    body.light .pill{background:#fff;color:#7c2d12;}
+
+    .primary-btn{
+      border:none;cursor:pointer;padding:10px 18px;border-radius:999px;
+      background:linear-gradient(135deg,var(--accent),#fb7185);
+      color:#111827;font-weight:600;font-size:13px;
+      box-shadow:0 16px 36px rgba(0,0,0,.6);
     }
 
-    .k-dot { width: 7px; height: 7px; border-radius: 999px; background: var(--accent); }
+    .card{
+      background:radial-gradient(circle at top left,rgba(248,250,252,.08),transparent 55%),var(--card);
+      border-radius:var(--radius-lg);
+      padding:16px 16px 14px;
+      border:1px solid var(--border-subtle);
+      box-shadow:0 16px 40px rgba(0,0,0,.6);
+      font-size:13px;
+    }
+    body.light .card{box-shadow:0 12px 26px rgba(15,23,42,.18);}
 
-    .hero-title {
-      font-size: clamp(30px, 4vw, 36px);
-      font-weight: 700;
-      margin-bottom: 8px;
+    .auth-wrapper{max-width:420px;margin:0 auto;}
+    .auth-title{font-size:20px;text-align:center;margin-bottom:8px;}
+    .auth-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:18px;}
+
+    .auth-tabs{
+      display:flex;background:rgba(15,23,42,.9);padding:3px;border-radius:999px;margin-bottom:12px;
+    }
+    body.light .auth-tabs{background:rgba(229,231,235,.9);}
+    .auth-tab{
+      flex:1;text-align:center;padding:6px 0;font-size:13px;border-radius:999px;
+      cursor:pointer;color:var(--muted);
+    }
+    .auth-tab.active{
+      background:linear-gradient(135deg,var(--accent),#fb7185);
+      color:#111827;font-weight:600;
     }
 
-    .hero-title span {
-      background: linear-gradient(135deg, var(--accent), #fb7185, #a855f7);
-      -webkit-background-clip: text;
-      color: transparent;
+    .field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px;}
+    .field label{font-size:12px;color:var(--muted);}
+    .field input,.field textarea,.field select{
+      border-radius:10px;border:1px solid rgba(148,163,184,.35);
+      padding:8px 10px;font-size:13px;background:rgba(15,23,42,.8);
+      color:var(--text);outline:none;
+    }
+    body.light .field input,body.light .field textarea,body.light .field select{
+      background:#f9fafb;color:#111827;border-color:rgba(148,163,184,.6);
+    }
+    .field textarea{min-height:90px;resize:vertical;}
+    .btn-full{width:100%;margin-top:4px;}
+    .status-text{font-size:12px;color:var(--accent-soft);min-height:16px;margin-top:6px;}
+
+    .section-title{font-size:20px;margin-bottom:4px;}
+    .section-sub{font-size:13px;color:var(--muted);margin-bottom:16px;}
+
+    .notif-list{
+      border-radius:14px;border:1px solid var(--border-subtle);
+      background:rgba(15,23,42,.9);padding:10px;font-size:13px;
+    }
+    body.light .notif-list{background:rgba(255,255,255,.9);}
+    .notif-item{padding:8px 6px;border-bottom:1px solid rgba(148,163,184,.35);}
+    .notif-item:last-child{border-bottom:none;}
+    .notif-meta{font-size:11px;color:var(--accent-soft);margin-bottom:2px;}
+
+    .pill-status{
+      display:inline-block;padding:2px 7px;border-radius:999px;font-size:10px;margin-left:6px;
+    }
+    .s-pending{background:rgba(234,179,8,.15);color:#facc15;}
+    .s-approved{background:rgba(22,163,74,.2);color:#4ade80;}
+    .s-rejected{background:rgba(239,68,68,.18);color:#fca5a5;}
+
+    .grid-two{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.1fr);gap:16px;}
+    @media (max-width:840px){.grid-two{grid-template-columns:1fr;}}
+
+    .grid-three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+    @media (max-width:900px){.grid-three{grid-template-columns:repeat(2,minmax(0,1fr));}}
+    @media (max-width:640px){.grid-three{grid-template-columns:1fr;}}
+
+    .admin-layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;}
+    @media (max-width:960px){.admin-layout{grid-template-columns:1fr;}}
+
+    .admin-list{
+      max-height:260px;overflow-y:auto;border-radius:12px;
+      border:1px solid var(--border-subtle);padding:8px;font-size:12px;
+      background:rgba(15,23,42,.9);
+    }
+    body.light .admin-list{background:rgba(255,255,255,.9);}
+    .admin-item{padding:6px 4px;border-bottom:1px solid rgba(148,163,184,.35);}
+    .admin-item:last-child{border-bottom:none;}
+    .admin-meta{font-size:11px;color:var(--accent-soft);margin-bottom:2px;}
+    .admin-actions{margin-top:4px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+    .admin-actions input{flex:1;min-width:90px;font-size:11px;padding:4px 8px;border-radius:999px;}
+
+    .btn-small{
+      border:none;border-radius:999px;font-size:11px;padding:4px 9px;cursor:pointer;
+    }
+    .btn-approve{background:rgba(22,163,74,.9);color:#e5f9ed;}
+    .btn-reject{background:rgba(239,68,68,.9);color:#fee2e2;}
+    .btn-ghost{
+      background:transparent;color:var(--muted);
+      border:1px dashed rgba(148,163,184,.6);
     }
 
-    .hero-lead {
-      font-size: 14px;
-      color: var(--muted);
-      max-width: 520px;
-      margin-bottom: 18px;
+    .stats-grid{
+      display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:10px;
+    }
+    @media (max-width:840px){.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+    .stat-card{
+      padding:8px 10px;border-radius:12px;background:rgba(15,23,42,.9);
+      border:1px solid rgba(148,163,184,.4);font-size:12px;
+    }
+    .stat-label{color:var(--muted);font-size:11px;}
+    .stat-value{font-size:18px;font-weight:600;}
+
+    .feed-post{padding:8px 6px;border-bottom:1px solid rgba(148,163,184,.3);}
+    .feed-post:last-child{border-bottom:none;}
+
+    .assistant-chat{
+      border-radius:14px;border:1px solid var(--border-subtle);
+      background:rgba(15,23,42,.9);padding:10px;max-height:320px;overflow-y:auto;font-size:13px;
+    }
+    body.light .assistant-chat{background:rgba(255,255,255,.9);}
+    .chat-row{margin-bottom:8px;}
+    .chat-row.me{text-align:right;}
+    .chat-bubble{
+      display:inline-block;padding:6px 10px;border-radius:999px;
+      max-width:80%;text-align:left;
+    }
+    .chat-row.me .chat-bubble{
+      background:linear-gradient(135deg,var(--accent),#fb7185);
+      color:#111827;border-bottom-right-radius:4px;
+    }
+    .chat-row.ai .chat-bubble{
+      background:rgba(15,23,42,.9);border:1px solid var(--border-subtle);
+      border-bottom-left-radius:4px;
     }
 
-    .pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 18px;
-      font-size: 11px;
-    }
-
-    .pill {
-      padding: 4px 9px;
-      border-radius: 999px;
-      border: 1px solid var(--border-subtle);
-      color: var(--accent-soft);
-      background: rgba(15, 23, 42, 0.8);
-    }
-
-    body.light .pill {
-      background: rgba(255, 255, 255, 0.8);
-      color: #7c2d12;
-    }
-
-    .primary-btn {
-      border: none;
-      cursor: pointer;
-      padding: 10px 18px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--accent), #fb7185);
-      color: #111827;
-      font-weight: 600;
-      font-size: 13px;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
-    }
-
-    .card {
-      background: radial-gradient(circle at top left, rgba(248, 250, 252, 0.08), transparent 55%),
-                  var(--card);
-      border-radius: var(--radius-lg);
-      padding: 16px 16px 14px;
-      border: 1px solid var(--border-subtle);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
-      font-size: 13px;
-    }
-
-    body.light .card { box-shadow: 0 12px 26px rgba(15, 23, 42, 0.18); }
-
-    .card h3 { font-size: 15px; margin-bottom: 6px; }
-
-    .auth-wrapper { max-width: 420px; margin: 0 auto; }
-
-    .auth-title { font-size: 20px; text-align: center; margin-bottom: 8px; }
-
-    .auth-sub {
-      font-size: 13px;
-      color: var(--muted);
-      text-align: center;
-      margin-bottom: 18px;
-    }
-
-    .auth-tabs {
-      display: flex;
-      background: rgba(15, 23, 42, 0.9);
-      padding: 3px;
-      border-radius: 999px;
-      margin-bottom: 12px;
-    }
-
-    body.light .auth-tabs { background: rgba(229, 231, 235, 0.9); }
-
-    .auth-tab {
-      flex: 1;
-      text-align: center;
-      padding: 6px 0;
-      font-size: 13px;
-      border-radius: 999px;
-      cursor: pointer;
-      color: var(--muted);
-    }
-
-    .auth-tab.active {
-      background: linear-gradient(135deg, var(--accent), #fb7185);
-      color: #111827;
-      font-weight: 600;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin-bottom: 10px;
-    }
-
-    .field label { font-size: 12px; color: var(--muted); }
-
-    .field input,
-    .field textarea,
-    .field select {
-      border-radius: 10px;
-      border: 1px solid rgba(148, 163, 184, 0.35);
-      padding: 8px 10px;
-      font-size: 13px;
-      background: rgba(15, 23, 42, 0.8);
-      color: var(--text);
-      outline: none;
-    }
-
-    body.light .field input,
-    body.light .field textarea,
-    body.light .field select {
-      background: #f9fafb;
-      color: #111827;
-      border-color: rgba(148, 163, 184, 0.6);
-    }
-
-    .field textarea { min-height: 90px; resize: vertical; }
-
-    .btn-full { width: 100%; margin-top: 4px; }
-
-    .status-text {
-      font-size: 12px;
-      color: var(--accent-soft);
-      min-height: 16px;
-      margin-top: 6px;
-    }
-
-    .section-title { font-size: 20px; margin-bottom: 4px; }
-
-    .section-sub { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
-
-    .notif-list {
-      border-radius: 14px;
-      border: 1px solid var(--border-subtle);
-      background: rgba(15, 23, 42, 0.9);
-      padding: 10px;
-      font-size: 13px;
-    }
-
-    body.light .notif-list { background: rgba(255, 255, 255, 0.85); }
-
-    .notif-item {
-      padding: 8px 6px;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.35);
-    }
-
-    .notif-item:last-child { border-bottom: none; }
-
-    .notif-meta {
-      font-size: 11px;
-      color: var(--accent-soft);
-      margin-bottom: 2px;
-    }
-
-    .pill-status {
-      display: inline-block;
-      padding: 2px 7px;
-      border-radius: 999px;
-      font-size: 10px;
-      margin-left: 6px;
-    }
-
-    .s-pending { background: rgba(234, 179, 8, 0.15); color: #facc15; }
-    .s-approved { background: rgba(22, 163, 74, 0.2); color: #4ade80; }
-    .s-rejected { background: rgba(239, 68, 68, 0.18); color: #fca5a5; }
-
-    .grid-two {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
-      gap: 16px;
-    }
-
-    @media (max-width: 840px) {
-      .grid-two { grid-template-columns: 1fr; }
-    }
-
-    .grid-three {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    @media (max-width: 900px) {
-      .grid-three { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-    @media (max-width: 640px) {
-      .grid-three { grid-template-columns: 1fr; }
-    }
-
-    .admin-layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-      gap: 16px;
-    }
-
-    @media (max-width: 960px) {
-      .admin-layout { grid-template-columns: 1fr; }
-    }
-
-    .admin-list {
-      max-height: 260px;
-      overflow-y: auto;
-      border-radius: 12px;
-      border: 1px solid var(--border-subtle);
-      padding: 8px;
-      font-size: 12px;
-      background: rgba(15, 23, 42, 0.9);
-    }
-
-    body.light .admin-list { background: rgba(255, 255, 255, 0.9); }
-
-    .admin-item {
-      padding: 6px 4px;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.35);
-    }
-
-    .admin-item:last-child { border-bottom: none; }
-
-    .admin-meta {
-      font-size: 11px;
-      color: var(--accent-soft);
-      margin-bottom: 2px;
-    }
-
-    .admin-actions {
-      margin-top: 4px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      align-items: center;
-    }
-
-    .admin-actions input {
-      flex: 1;
-      min-width: 90px;
-      font-size: 11px;
-      padding: 4px 8px;
-      border-radius: 999px;
-    }
-
-    .btn-small {
-      border-radius: 999px;
-      border: none;
-      font-size: 11px;
-      padding: 4px 9px;
-      cursor: pointer;
-    }
-
-    .btn-approve { background: rgba(22, 163, 74, 0.9); color: #e5f9ed; }
-    .btn-reject { background: rgba(239, 68, 68, 0.9); color: #fee2e2; }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    @media (max-width: 840px) {
-      .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-
-    .stat-card {
-      padding: 8px 10px;
-      border-radius: 12px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      font-size: 12px;
-    }
-
-    .stat-label { color: var(--muted); font-size: 11px; }
-    .stat-value { font-size: 18px; font-weight: 600; }
-
-    .feed-post {
-      padding: 8px 6px;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.3);
-    }
-
-    .feed-post:last-child { border-bottom: none; }
-
-    .assistant-chat {
-      border-radius: 14px;
-      border: 1px solid var(--border-subtle);
-      background: rgba(15, 23, 42, 0.9);
-      padding: 10px;
-      max-height: 320px;
-      overflow-y: auto;
-      font-size: 13px;
-    }
-
-    body.light .assistant-chat { background: rgba(255, 255, 255, 0.9); }
-
-    .chat-row { margin-bottom: 8px; }
-    .chat-row.me { text-align: right; }
-    .chat-bubble {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 999px;
-      max-width: 80%;
-      text-align: left;
-    }
-    .chat-row.me .chat-bubble {
-      background: linear-gradient(135deg, var(--accent), #fb7185);
-      color: #111827;
-      border-bottom-right-radius: 4px;
-    }
-    .chat-row.ai .chat-bubble {
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid var(--border-subtle);
-      border-bottom-left-radius: 4px;
-    }
-
-    footer {
-      padding: 18px 0 28px;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    footer .row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
+    footer{padding:18px 0 28px;font-size:12px;color:var(--muted);}
+    footer .row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
   </style>
 </head>
 <body>
-
 <header>
   <div class="container nav">
     <div class="nav-left">
@@ -518,7 +269,7 @@
     </div>
     <div class="nav-right">
       <div class="nav-links" id="nav-links" style="display:none;">
-        <button class="nav-link" data-target="info" id="nav-info">Bilgi</button>
+        <button class="nav-link active" data-target="info" id="nav-info">Bilgi</button>
         <button class="nav-link" data-target="main" id="nav-main">Ana Sayfa</button>
         <button class="nav-link" data-target="studio" id="nav-studio">Stüdyo</button>
         <button class="nav-link" data-target="community" id="nav-community">Topluluk</button>
@@ -534,14 +285,11 @@
 
 <main>
   <div class="container">
-
-    <!-- LANDING / BİLGİ -->
+    <!-- LANDING -->
     <section class="screen active" id="screen-info">
       <div class="info-layout">
         <div>
-          <div class="kicker">
-            <span class="k-dot"></span> KULÜPLER VE MARKALAR İÇİN MİNİ STÜDYO
-          </div>
+          <div class="kicker"><span class="k-dot"></span> KULÜPLER VE MARKALAR İÇİN MİNİ STÜDYO</div>
           <h1 class="hero-title">
             <span>Spark Ad Studio</span> kulüpler ve markalar için akılda kalıcı reklam fikirleri üretir.
           </h1>
@@ -559,12 +307,12 @@
         </div>
         <div class="card">
           <h3>Sistem Nasıl Çalışır?</h3>
-          <p style="color:var(--muted); font-size:13px;">
-            • Kulüp / marka hesabı açar veya bireysel üye olursun.<br>
-            • İstersen Spark Pro aboneliği alırsın (daha detaylı reklam desteği).<br>
-            • Reklam isteği formunu doldurursun, Yönetici paneline düşer.<br>
+          <p style="color:var(--muted);font-size:13px;">
+            • Kulüp/marka hesabı açarsın.<br>
+            • Kredi paketleri veya Spark Pro / Influencer gibi abonelikler alırsın.<br>
+            • Reklam isteği formunu doldurursun, yönetici paneline düşer.<br>
             • Yönetici isteği onaylar, mesajla geri bildirim verir.<br>
-            • Topluluk alanında fikirlerini paylaşabilir, rozet ve istatistik görebilirsin.
+            • Topluluk alanında fikirlerini paylaşır, asistanla senaryo üretebilirsin.
           </p>
         </div>
       </div>
@@ -575,7 +323,7 @@
       <div class="auth-wrapper">
         <div class="auth-title">Hesabına giriş yap veya yeni bir hesap oluştur</div>
         <div class="auth-sub">
-          Hesabınla giriş yapabilir veya yeni bir üyelik oluşturup stüdyoyu kullanmaya başlayabilirsin.
+          Hesabınla giriş yapabilir veya yeni üyelik oluşturup stüdyoyu kullanmaya başlayabilirsin.
         </div>
         <div class="card">
           <div class="auth-tabs">
@@ -616,49 +364,44 @@
       </div>
     </section>
 
-    <!-- ANA SAYFA -->
+    <!-- MAIN -->
     <section class="screen" id="screen-main">
       <div style="margin-bottom:16px;">
-        <div style="font-size:14px; color:var(--accent-soft);" id="welcome-text"></div>
+        <div style="font-size:14px;color:var(--accent-soft);" id="welcome-text"></div>
       </div>
       <h2 class="section-title">Bildirimler</h2>
       <p class="section-sub">
-        Gönderdiğin reklam istekleri ve satın alma kayıtları burada listelenir.
+        Reklam isteklerinin durumu, satın almalar ve yönetici yanıtları burada.
       </p>
       <div class="notif-list" id="notif-list"></div>
     </section>
 
-    <!-- STÜDYO -->
+    <!-- STUDIO -->
     <section class="screen" id="screen-studio">
       <h2 class="section-title">Stüdyo</h2>
       <p class="section-sub">
-        Profil bilgilerin, Spark Pro aboneliğin, kredi paketleri ve reklam isteği alanları burada.
+        Profilin, reklam istekleri ve yönetici ile mesajlaşma alanın.
       </p>
 
       <div class="grid-two">
-        <!-- PROFİL -->
         <div class="card">
           <h3>Profil Bilgilerin</h3>
-          <p id="profile-info" style="font-size:13px; color:var(--muted); margin-top:8px;"></p>
+          <p id="profile-info" style="font-size:13px;color:var(--muted);margin-top:8px;"></p>
         </div>
 
-        <!-- KREDİ / ABONELİK PAKETLERİ -->
         <div class="card">
-          <h3>Paketler ve Abonelikler</h3>
-          <p style="font-size:12px; color:var(--muted); margin-bottom:8px;">
-            Paketler TL üzerinden tanımlanır. Admin sadece TL fiyatı girer, sistem otomatik
-            olarak USD / EUR karşılığını hesaplar.
+          <h3>Stüdyo Özeti</h3>
+          <p style="font-size:13px;color:var(--muted);">
+            • Kredi paketleri ve abonelikler: <strong>Fiyatlandırma</strong> menüsünde.<br>
+            • Her reklam isteği 1 kredi tüketir.<br>
+            • Spark Pro ve Influencer aboneliklerinde isteklere öncelik verilir.<br>
           </p>
-          <div id="plans-list"></div>
-          <div class="status-text" id="status-plans"></div>
         </div>
 
-        <!-- REKLAM İSTEĞİ -->
         <div class="card" id="card-ads">
           <h3>Reklam İsteği Gönder</h3>
-          <p style="font-size:12px; color:var(--muted); margin-bottom:8px;">
-            Reklam istediğin kulüp / marka, ürün ve hedef kitleyi kısaca anlat.
-            (Her istek 1 kredi harcar. Spark Pro kullanıcıları için daha detaylı değerlendirme yapılır.)
+          <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">
+            Reklam istediğin kulüp/marka, ürün ve hedef kitleyi kısaca anlat.
           </p>
           <div class="field">
             <label for="ad-brand">Kulüp / Marka</label>
@@ -672,11 +415,10 @@
             <label for="ad-desc">Detay</label>
             <textarea id="ad-desc" placeholder="Hedef kitle, platform, tarz (komik, ciddi, vb.)"></textarea>
           </div>
-          <button class="primary-btn btn-full" id="btn-send-ad">Reklam İsteğini Gönder</button>
+          <button class="primary-btn btn-full" id="btn-send-ad">Reklam İsteğini Gönder (1 kredi)</button>
           <div class="status-text" id="status-ad"></div>
         </div>
 
-        <!-- MESAJ -->
         <div class="card">
           <h3>Yöneticiye Mesaj Gönder</h3>
           <div class="field">
@@ -691,63 +433,60 @@
           <div class="status-text" id="status-msg"></div>
         </div>
 
-        <!-- YÖNETİCİ YANITLARI -->
         <div class="card">
           <h3>Yönetici Yanıtları</h3>
-          <div class="notif-list" id="user-messages-list" style="max-height:220px; overflow-y:auto;"></div>
+          <div class="notif-list" id="user-messages-list" style="max-height:220px;overflow-y:auto;"></div>
         </div>
 
-        <!-- BİLGİ -->
         <div class="card">
-          <h3>Bilgi</h3>
-          <p style="font-size:13px; color:var(--muted);">
-            Bu stüdyo eğitim amaçlıdır. Gerçek ödeme altyapısı yok; satın alma ve kredi işlemleri
-            demo simülasyonu olarak Firestore üzerinde tutulur.
+          <h3>Not</h3>
+          <p style="font-size:13px;color:var(--muted);">
+            Bu stüdyo eğitim amaçlıdır. Ödeme işlemleri simülasyon olarak Firestore üzerinde tutulur.
           </p>
         </div>
       </div>
     </section>
 
-    <!-- ASİSTAN -->
+    <!-- ASSISTANT -->
     <section class="screen" id="screen-assistant">
       <h2 class="section-title">AI Reklam Asistanı</h2>
       <p class="section-sub">
         Kulübün, okulun veya markan için “Nasıl bir reklam yapabiliriz?” gibi sorular sor.
-        Asistan sana slogan, kampanya ve fikir önerileri verir.
+        Asistan, hazır şablonlarla akıllı öneriler üretir.
       </p>
-
       <div class="grid-two">
         <div class="card">
           <h3>Sohbet</h3>
           <div class="assistant-chat" id="assistant-chat"></div>
-          <div style="display:flex; gap:8px; margin-top:8px;">
-            <input id="assistant-input" type="text" placeholder="Örn: Basketbol kulübümüz için nasıl reklam yapabiliriz?" style="flex:1; padding:8px 10px; border-radius:999px; border:1px solid var(--border-subtle); background:rgba(15,23,42,.9); color:var(--text); font-size:13px;" />
-            <button class="primary-btn" id="assistant-send" style="padding:8px 14px; font-size:12px;">Gönder</button>
+          <div style="display:flex;gap:8px;margin-top:8px;">
+            <input id="assistant-input" type="text"
+                   placeholder="Örn: Basketbol kulübümüz için TikTok reklamı fikri verir misin?"
+                   style="flex:1;padding:8px 10px;border-radius:999px;border:1px solid var(--border-subtle);
+                          background:rgba(15,23,42,.9);color:var(--text);font-size:13px;">
+            <button class="primary-btn" id="assistant-send" style="padding:8px 14px;font-size:12px;">Gönder</button>
           </div>
-          <div style="font-size:11px; color:var(--muted); margin-top:6px;">
-            Not: Bu asistan tarayıcı içinde basit kurallarla çalışır, gerçek zamanlı ChatGPT bağlantısı kullanmaz.
+          <div style="font-size:11px;color:var(--muted);margin-top:6px;">
+            Not: Bu asistan tarayıcı içinde hazır kurallarla çalışır, internetten veri çekmez.
           </div>
         </div>
-
         <div class="card">
           <h3>Hazır Sorular</h3>
-          <ul style="font-size:13px; color:var(--muted); padding-left:16px; line-height:1.6;">
-            <li>“Bizim futbol kulübü için sosyal medyada nasıl reklam yapabiliriz?”</li>
+          <ul style="font-size:13px;color:var(--muted);padding-left:16px;line-height:1.6;">
+            <li>“Bizim futbol kulübü için Instagram’da nasıl reklam yapabiliriz?”</li>
             <li>“Okulumuzun bilim şenliği için akılda kalıcı bir slogan önerir misin?”</li>
-            <li>“Kahve dükkanımız için eğlenceli bir kampanya fikri verir misin?”</li>
-            <li>“Yeni açılan spor salonu için gençlere hitap eden reklam cümleleri lazım.”</li>
+            <li>“Kahve dükkanımız için esprili bir kampanya fikri verir misin?”</li>
+            <li>“Yeni açtığımız YouTube kanalı için tanıtım videosu fikri üretir misin?”</li>
           </ul>
         </div>
       </div>
     </section>
 
-    <!-- TOPLULUK -->
+    <!-- COMMUNITY -->
     <section class="screen" id="screen-community">
       <h2 class="section-title">Topluluk Akışı</h2>
       <p class="section-sub">
-        Ürettiğin fikirleri, senaryoları veya örnek projelerini buraya yazıp paylaşabilirsin.
+        Ürettiğin fikirleri, senaryoları veya örnek projelerini paylaş.
       </p>
-
       <div class="grid-two">
         <div class="card">
           <h3>Yeni Gönderi Oluştur</h3>
@@ -766,27 +505,35 @@
           <button class="primary-btn btn-full" id="btn-post">Gönderiyi Paylaş</button>
           <div class="status-text" id="status-post"></div>
         </div>
-
         <div class="card">
           <h3>Topluluk Gönderileri</h3>
-          <div class="notif-list" id="feed-list" style="max-height:320px; overflow-y:auto;"></div>
+          <div class="notif-list" id="feed-list" style="max-height:320px;overflow-y:auto;"></div>
         </div>
       </div>
     </section>
 
-    <!-- FİYATLANDIRMA -->
+    <!-- PRICING -->
     <section class="screen" id="screen-pricing">
       <h2 class="section-title">Fiyatlandırma</h2>
       <p class="section-sub">
-        Spark Free ile başla, Spark Pro veya Spark Business aboneliğiyle daha detaylı reklam desteği al.
-        Fiyatlar TL üzerinden tanımlanır; USD / EUR karşılıkları otomatik hesaplanır.
+        Spark Free ile başla, kredi paketleriyle isteğe bağlı kredi al veya Spark Pro / Influencer abonelikleriyle
+        daha fazla destek al. Fiyatlar TL üzerinden tanımlanır, sistem otomatik USD ve EUR hesaplar.
       </p>
-      <div class="grid-three" id="pricing-list">
-        <!-- JS dolduracak -->
+      <div class="grid-two">
+        <div class="card">
+          <h3>Satın Alma</h3>
+          <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">
+            Aşağıdan kredi paketlerini ve abonelikleri görebilirsin. Satın alma demo amaçlıdır;
+            Firestore’a kayıt bırakılır ve kredin artar.
+          </p>
+          <div id="plans-list"></div>
+          <div class="status-text" id="status-plans"></div>
+        </div>
+        <div class="card" id="pricing-list"></div>
       </div>
     </section>
 
-    <!-- AYARLAR -->
+    <!-- SETTINGS -->
     <section class="screen" id="screen-settings">
       <h2 class="section-title">Ayarlar</h2>
       <p class="section-sub">
@@ -817,26 +564,26 @@
             <option value="de">Deutsch – EUR</option>
           </select>
         </div>
-        <p style="font-size:12px; color:var(--muted);">
+        <p style="font-size:12px;color:var(--muted);">
           Dil, paketlerde hangi para biriminin öncelikli gösterileceğini belirler:
           Türkçe → ₺, English → $, Deutsch → €.
         </p>
       </div>
     </section>
 
-    <!-- YÖNETİCİ PANELİ -->
+    <!-- ADMIN -->
     <section class="screen" id="screen-admin">
-      <div style="margin-bottom:14px; font-size:14px; color:var(--accent-soft);">
+      <div style="margin-bottom:14px;font-size:14px;color:var(--accent-soft);">
         Yönetici paneline hoş geldin 👑
       </div>
       <h2 class="section-title">Genel Görünüm</h2>
       <p class="section-sub">
-        Buradan reklam istekleri, mesajlar, paketler, üyeler ve topluluk paylaşımlarını yönetebilirsin.
+        Buradan reklam istekleri, mesajlar, paketler, abonelikler, üyeler ve topluluk paylaşımlarını yönetebilirsin.
       </p>
 
       <div class="card" style="margin-bottom:16px;">
         <h3>İstatistikler</h3>
-        <div class="stats-grid" id="stats-grid">
+        <div class="stats-grid">
           <div class="stat-card">
             <div class="stat-label">Toplam Üye</div>
             <div class="stat-value" id="stat-users">-</div>
@@ -858,7 +605,7 @@
             <div class="stat-value" id="stat-posts">-</div>
           </div>
           <div class="stat-card">
-            <div class="stat-label">Tanımlı Paket / Abonelik</div>
+            <div class="stat-label">Paket / Abonelik</div>
             <div class="stat-value" id="stat-plans">-</div>
           </div>
         </div>
@@ -867,12 +614,18 @@
       <div class="admin-layout">
         <div>
           <div class="card">
-            <h3>Reklam İstekleri</h3>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <h3>Reklam İstekleri</h3>
+              <button class="btn-small btn-ghost" id="btn-clear-requests">Geçmişi Sil</button>
+            </div>
             <div class="admin-list" id="admin-requests"></div>
           </div>
 
           <div class="card">
-            <h3>Kullanıcı Mesajları</h3>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <h3>Kullanıcı Mesajları</h3>
+              <button class="btn-small btn-ghost" id="btn-clear-messages">Geçmişi Sil</button>
+            </div>
             <div class="admin-list" id="admin-messages"></div>
           </div>
 
@@ -892,10 +645,17 @@
             <h3>Paket / Abonelik Fiyatlandırma</h3>
             <div class="admin-list" id="admin-plans"></div>
             <div style="margin-top:8px;">
-              <h4 style="font-size:13px; margin-bottom:4px;">Yeni Paket / Abonelik Ekle</h4>
+              <h4 style="font-size:13px;margin-bottom:4px;">Yeni Paket / Abonelik Ekle</h4>
               <div class="field">
                 <label for="new-plan-name">Adı (Örn: Spark Pro)</label>
                 <input id="new-plan-name" type="text" placeholder="Örn: Spark Pro" />
+              </div>
+              <div class="field">
+                <label for="new-plan-type">Tür</label>
+                <select id="new-plan-type">
+                  <option value="credits">Kredi Paketi</option>
+                  <option value="subscription">Abonelik</option>
+                </select>
               </div>
               <div class="field">
                 <label for="new-plan-credits">Kredi (istersen 0 bırak)</label>
@@ -932,7 +692,8 @@
     onSnapshot,
     doc,
     updateDoc,
-    setDoc
+    setDoc,
+    deleteDoc
   } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -948,7 +709,6 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // Sabit kurlar (sen verdin)
   const USD_RATE = 42.45;
   const EUR_RATE = 49.60;
 
@@ -965,7 +725,7 @@
     community: document.getElementById("screen-community"),
     pricing: document.getElementById("screen-pricing"),
     settings: document.getElementById("screen-settings"),
-    admin: document.getElementById("screen-admin"),
+    admin: document.getElementById("screen-admin")
   };
 
   const navLinksContainer = document.getElementById("nav-links");
@@ -978,11 +738,9 @@
   const userMessagesList = document.getElementById("user-messages-list");
   const plansList = document.getElementById("plans-list");
   const statusPlans = document.getElementById("status-plans");
-  const cardAds = document.getElementById("card-ads");
+  const pricingList = document.getElementById("pricing-list");
   const yearSpan = document.getElementById("year");
   yearSpan.textContent = new Date().getFullYear();
-
-  const pricingList = document.getElementById("pricing-list");
 
   const statusLogin = document.getElementById("status-login");
   const statusRegister = document.getElementById("status-register");
@@ -1004,7 +762,7 @@
     purchases: document.getElementById("stat-purchases"),
     messages: document.getElementById("stat-messages"),
     posts: document.getElementById("stat-posts"),
-    plans: document.getElementById("stat-plans"),
+    plans: document.getElementById("stat-plans")
   };
 
   const assistantChat = document.getElementById("assistant-chat");
@@ -1014,15 +772,15 @@
   function setActiveScreen(key) {
     Object.values(screens).forEach(el => el.classList.remove("active"));
     if (screens[key]) screens[key].classList.add("active");
-
     document.querySelectorAll(".nav-link").forEach(btn => {
       btn.classList.toggle("active", btn.dataset.target === key);
     });
   }
 
   function updateStudioAccess() {
+    const cardAds = document.getElementById("card-ads");
     if (!cardAds) return;
-    if (currentUser && currentUser.role === "user" && currentUser.credits > 0) {
+    if (currentUser && currentUser.role === "user" && (currentUser.credits || 0) > 0) {
       cardAds.style.display = "block";
     } else {
       cardAds.style.display = "none";
@@ -1033,29 +791,25 @@
     if (!currentUser) {
       navLinksContainer.style.display = "none";
       btnAuth.textContent = "Üye Ol / Giriş Yap";
-      if (navInfo) navInfo.style.display = "inline-block";
+      navInfo.style.display = "inline-block";
     } else {
       navLinksContainer.style.display = "flex";
       btnAuth.textContent = "Çıkış Yap";
-      // Giriş yaptıktan sonra Bilgi menüsünü gizle
-      if (navInfo) navInfo.style.display = "none";
+      navInfo.style.display = "none";
     }
-
     if (currentUser && currentUser.role === "admin") {
       navAdmin.style.display = "inline-block";
     } else {
       navAdmin.style.display = "none";
     }
-
     updateStudioAccess();
   }
 
-  function applyAccent(accentKey) {
-    let accent = "#ff7a3c";
-    let soft = "#ffd2aa";
-    if (accentKey === "blue") { accent = "#3b82f6"; soft = "#bfdbfe"; }
-    else if (accentKey === "green") { accent = "#22c55e"; soft = "#bbf7d0"; }
-    else if (accentKey === "purple") { accent = "#a855f7"; soft = "#e9d5ff"; }
+  function applyAccent(key) {
+    let accent = "#ff7a3c", soft = "#ffd2aa";
+    if (key === "blue") { accent="#3b82f6"; soft="#bfdbfe"; }
+    else if (key === "green") { accent="#22c55e"; soft="#bbf7d0"; }
+    else if (key === "purple") { accent="#a855f7"; soft="#e9d5ff"; }
     document.documentElement.style.setProperty("--accent", accent);
     document.documentElement.style.setProperty("--accent-soft", soft);
   }
@@ -1078,34 +832,29 @@
   }
 
   document.getElementById("theme-select").addEventListener("change", () => {
-    const val = document.getElementById("theme-select").value;
-    localStorage.setItem("spark_theme", val);
+    const v = document.getElementById("theme-select").value;
+    localStorage.setItem("spark_theme", v);
     applyThemeAndLangFromStorage();
   });
-
   document.getElementById("accent-select").addEventListener("change", () => {
-    const val = document.getElementById("accent-select").value;
-    localStorage.setItem("spark_accent", val);
+    const v = document.getElementById("accent-select").value;
+    localStorage.setItem("spark_accent", v);
     applyThemeAndLangFromStorage();
   });
-
   document.getElementById("lang-select").addEventListener("change", () => {
     currentLang = document.getElementById("lang-select").value;
     localStorage.setItem("spark_lang", currentLang);
     renderPlansUI();
     renderPricingUI();
   });
-
   applyThemeAndLangFromStorage();
 
-  // Auth tabları
   document.getElementById("tab-login").addEventListener("click", () => {
     document.getElementById("tab-login").classList.add("active");
     document.getElementById("tab-register").classList.remove("active");
     document.getElementById("auth-login").style.display = "block";
     document.getElementById("auth-register").style.display = "none";
   });
-
   document.getElementById("tab-register").addEventListener("click", () => {
     document.getElementById("tab-login").classList.remove("active");
     document.getElementById("tab-register").classList.add("active");
@@ -1125,6 +874,9 @@
       localStorage.removeItem("spark_current_user");
       updateHeaderState();
       setActiveScreen("info");
+      notifList.innerHTML = "";
+      profileInfo.textContent = "";
+      userMessagesList.innerHTML = "";
     }
   });
 
@@ -1146,13 +898,13 @@
       if (target === "studio" && currentUser && currentUser.role === "user") {
         renderProfile();
         loadUserReplies();
+      }
+      if (target === "pricing") {
         renderPlansUI();
+        renderPricingUI();
       }
       if (target === "community") {
         loadFeed();
-      }
-      if (target === "pricing") {
-        renderPricingUI();
       }
       if (target === "admin" && currentUser && currentUser.role === "admin") {
         refreshStats();
@@ -1161,7 +913,6 @@
     });
   });
 
-  // Üye ol
   document.getElementById("btn-register").addEventListener("click", async () => {
     statusRegister.textContent = "";
     const name = document.getElementById("reg-name").value.trim();
@@ -1171,15 +922,11 @@
       statusRegister.textContent = "Lütfen tüm alanları doldur.";
       return;
     }
-
     try {
       const usersRef = collection(db, "users");
       const snap = await getDocs(usersRef);
       let exists = false;
-      snap.forEach(d => {
-        const u = d.data();
-        if (u.email === email) exists = true;
-      });
+      snap.forEach(d => { if (d.data().email === email) exists = true; });
       if (exists) {
         statusRegister.textContent = "Bu e-posta zaten kayıtlı.";
         return;
@@ -1192,38 +939,28 @@
         lastLogin: now,
         credits: 0
       });
-      currentUser = {
-        id: docRef.id,
-        name, email,
-        role: "user",
-        createdAt: now,
-        lastLogin: now,
-        credits: 0
-      };
+      currentUser = { id: docRef.id, name, email, role:"user", createdAt:now, lastLogin:now, credits:0 };
       localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
       updateHeaderState();
       welcomeText.textContent = `Hoş geldin, ${currentUser.name} 👋`;
       renderProfile();
       loadNotificationsForUser();
       setActiveScreen("main");
-    } catch (err) {
-      console.error(err);
-      statusRegister.textContent = "Kayıt sırasında hata oluştu. Firestore Rules ayarını kontrol et.";
+    } catch (e) {
+      console.error(e);
+      statusRegister.textContent = "Kayıt sırasında hata oluştu (Rules ayarlarını kontrol et).";
     }
   });
 
-  // Giriş
   document.getElementById("btn-login").addEventListener("click", async () => {
     statusLogin.textContent = "";
     const loginVal = document.getElementById("login-email").value.trim();
     const pass = document.getElementById("login-pass").value.trim();
-
     if (!loginVal || !pass) {
       statusLogin.textContent = "Lütfen kullanıcı adı/e-posta ve şifre gir.";
       return;
     }
 
-    // Yönetici gizli girişi
     if (loginVal === "admin" && pass === "spark123") {
       currentUser = {
         id: "ADMIN",
@@ -1251,22 +988,17 @@
           found = { id: d.id, ...u };
         }
       });
-
       if (!found) {
         statusLogin.textContent = "Kullanıcı bulunamadı veya şifre hatalı.";
         return;
       }
-
       const now = new Date().toLocaleString("tr-TR");
-      try {
-        await updateDoc(doc(db, "users", found.id), { lastLogin: now });
-      } catch (e) {}
+      try { await updateDoc(doc(db, "users", found.id), { lastLogin: now }); } catch(e){}
       found.lastLogin = now;
+      found.credits = found.credits || 0;
       currentUser = found;
-      currentUser.credits = currentUser.credits || 0;
       localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
       updateHeaderState();
-
       if (currentUser.role === "admin") {
         renderAdminPlans();
         refreshStats();
@@ -1278,299 +1010,149 @@
         loadUserReplies();
         setActiveScreen("main");
       }
-    } catch (err) {
-      console.error(err);
-      statusLogin.textContent = "Sunucuya bağlanırken hata oluştu. Firestore Rules engelliyor olabilir.";
+    } catch (e) {
+      console.error(e);
+      statusLogin.textContent = "Giriş sırasında bir hata oluştu.";
     }
   });
 
+  const savedUser = localStorage.getItem("spark_current_user");
+  if (savedUser) {
+    try {
+      currentUser = JSON.parse(savedUser);
+      updateHeaderState();
+      if (currentUser.role === "admin") {
+        setActiveScreen("admin");
+        renderAdminPlans();
+        refreshStats();
+      } else {
+        welcomeText.textContent = `Hoş geldin, ${currentUser.name} 👋`;
+        renderProfile();
+        loadNotificationsForUser();
+        setActiveScreen("main");
+      }
+    } catch(e){ currentUser = null; }
+  }
+
   function renderProfile() {
     if (!currentUser || currentUser.role !== "user") return;
-    profileInfo.innerHTML = `
-      Ad: <strong>${currentUser.name}</strong><br>
-      E-posta: ${currentUser.email}<br>
-      Üyelik: ${currentUser.createdAt || "-"}<br>
-      Son giriş: ${currentUser.lastLogin || "-"}<br>
-      Kalan kredi: <strong>${currentUser.credits || 0}</strong>
-    `;
+    profileInfo.innerHTML =
+      `<strong>Ad:</strong> ${currentUser.name}<br>` +
+      `<strong>E-posta:</strong> ${currentUser.email}<br>` +
+      `<strong>Üyelik Tarihi:</strong> ${currentUser.createdAt || "-"}<br>` +
+      `<strong>Son Giriş:</strong> ${currentUser.lastLogin || "-"}<br>` +
+      `<strong>Kredi:</strong> ${currentUser.credits || 0}`;
+    updateStudioAccess();
   }
 
-  // Paketler
-  function getPriceTextTL(p) {
-    return `${p.priceTL.toFixed(2)} ₺`;
-  }
-  function getPriceTextUSD(p) {
-    const usd = p.priceTL / USD_RATE;
-    return `$${usd.toFixed(2)}`;
-  }
-  function getPriceTextEUR(p) {
-    const eur = p.priceTL / EUR_RATE;
-    return `${eur.toFixed(2)} €`;
-  }
-
-  function getPlanPriceDisplay(p) {
-    if (currentLang === "en") return `${getPriceTextUSD(p)} (~${getPriceTextTL(p)})`;
-    if (currentLang === "de") return `${getPriceTextEUR(p)} (~${getPriceTextTL(p)})`;
-    return getPriceTextTL(p);
-  }
-
-  function renderPlansUI() {
-    if (!plansList) return;
-    if (!plans || !plans.length) {
-      plansList.innerHTML = "<div>Şu anda tanımlı paket / abonelik yok.</div>";
-      return;
-    }
-
-    plansList.innerHTML = plans.map(p => `
-      <div class="admin-item" style="border:none; padding:8px 0;">
-        <div class="admin-meta">
-          ${p.name} – ${getPlanPriceDisplay(p)}
-        </div>
-        <div style="font-size:12px;">
-          ${p.credits > 0
-            ? `${p.credits} kredi içerir (reklam isteği için kullanılabilir).`
-            : `Abonelik / özellik paketi. Kredi içermeyebilir.`}
-        </div>
-        <button class="primary-btn" data-buy="${p.id}" style="margin-top:6px; padding:6px 12px; font-size:12px;">
-          ${
-            currentLang === "en" ? "Select" :
-            currentLang === "de" ? "Auswählen" :
-            "Satın Al / Aktif Et"
-          }
-        </button>
-      </div>
-    `).join("");
-
-    plansList.querySelectorAll("button[data-buy]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const id = btn.dataset.buy;
-        const plan = plans.find(p => p.id === id);
-        if (plan) handleBuyPlan(plan);
-      });
-    });
-  }
-
-  function renderPricingUI() {
-    if (!pricingList) return;
-    if (!plans || !plans.length) {
-      pricingList.innerHTML = "<div>Henüz fiyatlandırma tanımlı değil.</div>";
-      return;
-    }
-
-    pricingList.innerHTML = plans.map(p => {
-      let badge = "Standart";
-      if (p.name.toLowerCase().includes("pro")) badge = "Pro";
-      else if (p.name.toLowerCase().includes("business")) badge = "Business";
-
-      let advantages = "";
-      if (badge === "Pro") {
-        advantages = `
-          • Daha detaylı reklam analizi<br>
-          • Öncelikli değerlendirme<br>
-          • Kulüp / marka için ek öneriler
-        `;
-      } else if (badge === "Business") {
-        advantages = `
-          • Pro'nun tüm avantajları<br>
-          • Birden fazla şube / takım<br>
-          • Özel kampanya planlama
-        `;
-      } else {
-        advantages = `
-          • Başlangıç için ideal<br>
-          • Temel reklam isteği gönderme<br>
-          • Topluluk alanına erişim
-        `;
-      }
-
-      return `
-        <div class="card">
-          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.18em; color:var(--accent-soft); margin-bottom:4px;">
-            ${badge} plan
-          </div>
-          <h3>${p.name}</h3>
-          <div style="font-size:22px; font-weight:700; margin:6px 0;">
-            ${getPriceTextTL(p)}
-            <span style="font-size:11px; font-weight:400; color:var(--muted);">
-              / ay (yaklaşık ${getPriceTextUSD(p)} • ${getPriceTextEUR(p)})
-            </span>
-          </div>
-          <div style="font-size:12px; color:var(--muted); margin-bottom:8px;">
-            ${advantages}
-          </div>
-        </div>
-      `;
-    }).join("");
-  }
-
-  async function handleBuyPlan(plan) {
-    statusPlans.textContent = "";
-    if (!currentUser || currentUser.role !== "user") {
-      statusPlans.textContent = "Önce üye girişi yapmalısın.";
-      return;
-    }
-
-    try {
-      const now = new Date().toLocaleString("tr-TR");
-      await addDoc(collection(db, "purchases"), {
-        userName: currentUser.name,
-        userEmail: currentUser.email,
-        planId: plan.id,
-        planName: plan.name,
-        priceTL: plan.priceTL,
-        credits: plan.credits,
-        createdAt: now
-      });
-
-      const newCredits = (currentUser.credits || 0) + (plan.credits || 0);
-      currentUser.credits = newCredits;
-      if (currentUser.id && currentUser.id !== "ADMIN") {
-        try {
-          await updateDoc(doc(db, "users", currentUser.id), { credits: newCredits });
-        } catch (e) { console.warn("credits update error", e); }
-      }
-      localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
-      updateStudioAccess();
-      renderProfile();
-
-      statusPlans.textContent = "Satın alma kaydedildi. Kredin/aboneliğin güncellendi.";
-      loadNotificationsForUser();
-      refreshStats();
-    } catch (err) {
-      console.error(err);
-      statusPlans.textContent = "Satın alma kaydedilirken hata oluştu.";
-    }
-  }
-
-  async function loadPlans() {
-    try {
-      const snap = await getDocs(collection(db, "plans"));
-      const loaded = [];
-      snap.forEach(d => loaded.push({ id: d.id, ...d.data() }));
-      if (!loaded.length) {
-        // Başlangıçta 3 plan oluştur: Free, Pro, Business
-        const defaultPlans = [
-          {
-            id: "spark-free",
-            name: "Spark Free",
-            credits: 0,
-            priceTL: 0
-          },
-          {
-            id: "spark-pro",
-            name: "Spark Pro",
-            credits: 10,
-            priceTL: 1450
-          },
-          {
-            id: "spark-business",
-            name: "Spark Business",
-            credits: 30,
-            priceTL: 3200
-          }
-        ];
-        for (const p of defaultPlans) {
-          await setDoc(doc(db, "plans", p.id), p);
-        }
-        plans = defaultPlans;
-      } else {
-        plans = loaded.map(p => ({
-          id: p.id,
-          name: p.name || "Paket",
-          credits: Number(p.credits) || 0,
-          priceTL: Number(p.priceTL) || 0
-        }));
-      }
-    } catch (e) {
-      console.error("Planları yüklerken hata", e);
-      plans = [];
-    }
-    renderPlansUI();
-    renderAdminPlans();
-    renderPricingUI();
-    refreshStats();
-  }
-
-  loadPlans();
-
-  // Bildirimler
   async function loadNotificationsForUser() {
     if (!currentUser || currentUser.role !== "user") return;
+    notifList.innerHTML = "Yükleniyor...";
+    const items = [];
     try {
-      const reqRef = collection(db, "requests");
-      const purRef = collection(db, "purchases");
-      const [reqSnap, purSnap] = await Promise.all([
-        getDocs(reqRef),
-        getDocs(purRef)
-      ]);
-
-      const items = [];
+      const reqSnap = await getDocs(collection(db,"requests"));
       reqSnap.forEach(d => {
         const r = d.data();
-        if (r.userEmail === currentUser.email) items.push({ type: "request", ...r });
+        if (r.userId === currentUser.id) {
+          items.push({
+            type:"request",
+            createdAt:r.createdAt,
+            status:r.status || "pending",
+            text:`Reklam isteğin: ${r.brand || "-"} / ${r.product || "-"}`,
+            adminNote:r.adminNote || ""
+          });
+        }
       });
+      const purSnap = await getDocs(collection(db,"purchases"));
       purSnap.forEach(d => {
         const p = d.data();
-        if (p.userEmail === currentUser.email) items.push({ type: "purchase", ...p });
+        if (p.userId === currentUser.id) {
+          items.push({
+            type:"purchase",
+            createdAt:p.createdAt,
+            status:"done",
+            text:`${p.planName} satın alındı (${p.priceTL}₺)`,
+            adminNote:""
+          });
+        }
       });
-
+      const msgSnap = await getDocs(collection(db,"messages"));
+      msgSnap.forEach(d => {
+        const m = d.data();
+        if (m.userId === currentUser.id && m.adminReply) {
+          items.push({
+            type:"msg",
+            createdAt:m.adminRepliedAt || m.createdAt,
+            status:"reply",
+            text:`Mesajına yönetici yanıtı: ${m.subject || "-"}`,
+            adminNote:m.adminReply
+          });
+        }
+      });
+      items.sort((a,b)=> (b.createdAt||"").localeCompare(a.createdAt||""));
       if (!items.length) {
-        notifList.innerHTML = "<div>Henüz bildirim yok.</div>";
+        notifList.innerHTML = "<div class='notif-item'>Henüz bildirimin yok.</div>";
         return;
       }
-
-      items.sort((a, b) => (a.createdAt || "").localeCompare(b.createdAt || ""));
-
-      notifList.innerHTML = items.map(it => {
-        if (it.type === "request") {
-          let cls = "s-pending";
-          let txt = "Beklemede";
-          if (it.status === "approved") { cls = "s-approved"; txt = "Onaylandı"; }
-          else if (it.status === "rejected") { cls = "s-rejected"; txt = "Reddedildi"; }
-
-          return `
-            <div class="notif-item">
-              <div class="notif-meta">
-                ${it.createdAt || ""} – <strong>${it.brand}</strong> (${it.product})
-                <span class="pill-status ${cls}">${txt}</span>
-              </div>
-              <div>${it.details}</div>
-              ${it.adminNote ? `<div style="font-size:12px; margin-top:4px;">Yönetici notu: ${it.adminNote}</div>` : ""}
-            </div>
-          `;
-        } else {
-          return `
-            <div class="notif-item">
-              <div class="notif-meta">
-                ${it.createdAt || ""} – Paket / Abonelik Satın Alındı
-              </div>
-              <div style="font-size:12px;">
-                Paket: <strong>${it.planName || it.planId}</strong>,
-                Kredi: ${it.credits},
-                Fiyat: ${it.priceTL} ₺ (~${(it.priceTL / USD_RATE).toFixed(2)} $ / ${(it.priceTL / EUR_RATE).toFixed(2)} €)
-              </div>
-            </div>
-          `;
+      notifList.innerHTML = items.map(i=>{
+        let statusHtml="";
+        if (i.type==="request"){
+          if (i.status==="approved") statusHtml="<span class='pill-status s-approved'>Onaylandı</span>";
+          else if (i.status==="rejected") statusHtml="<span class='pill-status s-rejected'>Reddedildi</span>";
+          else statusHtml="<span class='pill-status s-pending'>Beklemede</span>";
+        } else if (i.type==="purchase"){
+          statusHtml="<span class='pill-status s-approved'>Satın alma</span>";
+        } else if (i.type==="msg"){
+          statusHtml="<span class='pill-status s-approved'>Yanıtlandı</span>";
         }
+        return `<div class="notif-item">
+          <div class="notif-meta">${i.createdAt || ""} ${statusHtml}</div>
+          <div>${i.text}</div>
+          ${i.adminNote ? `<div style="font-size:12px;color:var(--muted);margin-top:4px;">Yönetici notu: ${i.adminNote}</div>`:""}
+        </div>`;
       }).join("");
-    } catch (err) {
-      console.error(err);
-      notifList.innerHTML = "<div>Bildirimler yüklenirken hata oluştu.</div>";
+    } catch(e){
+      console.error(e);
+      notifList.innerHTML="<div class='notif-item'>Bildirimler yüklenemedi.</div>";
     }
   }
 
-  // Reklam isteği
+  async function loadUserReplies() {
+    if (!currentUser || currentUser.role !== "user") return;
+    userMessagesList.innerHTML = "";
+    const snap = await getDocs(collection(db,"messages"));
+    const arr = [];
+    snap.forEach(d=>{
+      const m = d.data();
+      if (m.userId === currentUser.id && m.adminReply){
+        arr.push(m);
+      }
+    });
+    arr.sort((a,b)=>(b.adminRepliedAt||"").localeCompare(a.adminRepliedAt||""));
+    if (!arr.length){
+      userMessagesList.innerHTML="<div class='notif-item'>Henüz yönetici yanıtı yok.</div>";
+      return;
+    }
+    userMessagesList.innerHTML = arr.map(m=>`
+      <div class="notif-item">
+        <div class="notif-meta">${m.adminRepliedAt || ""}</div>
+        <div><strong>Sen:</strong> ${m.subject || ""}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px;">${m.body || ""}</div>
+        <div style="margin-top:4px;"><strong>Yönetici:</strong> ${m.adminReply}</div>
+      </div>
+    `).join("");
+  }
+
   document.getElementById("btn-send-ad").addEventListener("click", async () => {
     statusAd.textContent = "";
     if (!currentUser || currentUser.role !== "user") {
-      statusAd.textContent = "Önce kullanıcı olarak giriş yapmalısın.";
+      statusAd.textContent = "Önce giriş yapmalısın.";
       return;
     }
-    if (!currentUser.credits || currentUser.credits <= 0) {
-      statusAd.textContent = "Reklam isteği göndermek için önce bir paket / abonelik satın al.";
+    if ((currentUser.credits || 0) <= 0) {
+      statusAd.textContent = "Yeterli kredin yok. Fiyatlandırma bölümünden kredi al.";
       return;
     }
-
     const brand = document.getElementById("ad-brand").value.trim();
     const product = document.getElementById("ad-product").value.trim();
     const desc = document.getElementById("ad-desc").value.trim();
@@ -1578,570 +1160,549 @@
       statusAd.textContent = "Lütfen tüm alanları doldur.";
       return;
     }
-
     try {
       const now = new Date().toLocaleString("tr-TR");
-      await addDoc(collection(db, "requests"), {
+      await addDoc(collection(db,"requests"),{
+        userId: currentUser.id,
         userName: currentUser.name,
-        userEmail: currentUser.email,
-        brand,
-        product,
-        details: desc,
+        brand, product, desc,
         status: "pending",
         adminNote: "",
         createdAt: now
       });
-
       const newCredits = (currentUser.credits || 0) - 1;
-      currentUser.credits = newCredits < 0 ? 0 : newCredits;
-      if (currentUser.id && currentUser.id !== "ADMIN") {
-        try {
-          await updateDoc(doc(db, "users", currentUser.id), { credits: currentUser.credits });
-        } catch (e) {}
-      }
+      currentUser.credits = newCredits;
+      await updateDoc(doc(db,"users",currentUser.id),{credits:newCredits});
       localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
-      updateStudioAccess();
       renderProfile();
-
-      document.getElementById("ad-brand").value = "";
-      document.getElementById("ad-product").value = "";
-      document.getElementById("ad-desc").value = "";
-      statusAd.textContent = "Reklam isteğin Yöneticiye gönderildi. 1 kredi kullanıldı.";
       loadNotificationsForUser();
-    } catch (err) {
-      console.error(err);
-      statusAd.textContent = "Reklam isteği gönderilirken hata oluştu.";
+      statusAd.textContent = "Reklam isteğin gönderildi. Kalan kredi: " + newCredits;
+      document.getElementById("ad-desc").value="";
+    } catch(e){
+      console.error(e);
+      statusAd.textContent="İstek gönderilirken hata oluştu.";
     }
   });
 
-  // Mesaj gönder
   document.getElementById("btn-send-msg").addEventListener("click", async () => {
-    statusMsg.textContent = "";
-    if (!currentUser || currentUser.role !== "user") {
-      statusMsg.textContent = "Önce kullanıcı olarak giriş yapmalısın.";
+    statusMsg.textContent="";
+    if (!currentUser || currentUser.role !== "user"){
+      statusMsg.textContent="Önce giriş yapmalısın.";
       return;
     }
     const subject = document.getElementById("msg-subject").value.trim();
     const body = document.getElementById("msg-body").value.trim();
-    if (!subject || !body) {
-      statusMsg.textContent = "Konu ve mesaj dolu olmalı.";
+    if (!subject || !body){
+      statusMsg.textContent="Lütfen konu ve mesajı doldur.";
       return;
     }
-    try {
+    try{
       const now = new Date().toLocaleString("tr-TR");
-      await addDoc(collection(db, "messages"), {
-        fromName: currentUser.name,
-        fromEmail: currentUser.email,
-        subject,
-        body,
+      await addDoc(collection(db,"messages"),{
+        userId: currentUser.id,
+        userName: currentUser.name,
+        subject, body,
         createdAt: now,
-        reply: "",
-        replyAt: ""
+        adminReply:"",
+        adminRepliedAt:""
       });
-      document.getElementById("msg-subject").value = "";
-      document.getElementById("msg-body").value = "";
-      statusMsg.textContent = "Mesajın Yöneticiye iletildi.";
-      loadUserReplies();
-      refreshStats();
-    } catch (err) {
-      console.error(err);
-      statusMsg.textContent = "Mesaj gönderilirken hata oluştu.";
+      statusMsg.textContent="Mesajın yöneticiye gönderildi.";
+      document.getElementById("msg-subject").value="";
+      document.getElementById("msg-body").value="";
+      loadNotificationsForUser();
+    }catch(e){
+      console.error(e);
+      statusMsg.textContent="Mesaj gönderilirken hata oluştu.";
     }
   });
 
-  // Kullanıcı tarafında yönetici yanıtlarını göster
-  async function loadUserReplies() {
-    if (!currentUser || currentUser.role !== "user") return;
-    if (!userMessagesList) return;
-    try {
-      const snap = await getDocs(collection(db, "messages"));
-      const mine = [];
-      snap.forEach(d => {
-        const m = d.data();
-        if (m.fromEmail === currentUser.email && m.reply) mine.push(m);
-      });
-      if (!mine.length) {
-        userMessagesList.innerHTML = "<div>Henüz yönetici yanıtı yok.</div>";
-        return;
-      }
-      mine.sort((a, b) => (a.createdAt || "").localeCompare(b.createdAt || ""));
-      userMessagesList.innerHTML = mine.map(m => `
-        <div class="notif-item">
-          <div class="notif-meta">
-            ${m.createdAt || ""} – ${m.subject}
-          </div>
-          <div>${m.body}</div>
-          <div style="font-size:12px; margin-top:4px; color:#bbf7d0;">
-            Yönetici yanıtı (${m.replyAt || ""}): ${m.reply}
-          </div>
-        </div>
-      `).join("");
-    } catch (e) {
-      console.error(e);
-      userMessagesList.innerHTML = "<div>Yanıtlar yüklenirken hata oluştu.</div>";
-    }
-  }
-
-  // Topluluk gönderisi paylaş
   document.getElementById("btn-post").addEventListener("click", async () => {
-    statusPost.textContent = "";
-    if (!currentUser) {
-      statusPost.textContent = "Önce giriş yapmalısın.";
+    statusPost.textContent="";
+    if (!currentUser){
+      statusPost.textContent="Önce giriş yapmalısın.";
       return;
     }
     const title = document.getElementById("post-title").value.trim();
     const text = document.getElementById("post-text").value.trim();
     const link = document.getElementById("post-link").value.trim();
-    if (!title || !text) {
-      statusPost.textContent = "Başlık ve metin doldurulmalı.";
+    if (!title || !text){
+      statusPost.textContent="Başlık ve metin zorunludur.";
       return;
     }
-    try {
+    try{
       const now = new Date().toLocaleString("tr-TR");
-      await addDoc(collection(db, "communityPosts"), {
-        authorName: currentUser.name,
-        authorEmail: currentUser.email,
-        title,
-        text,
-        link,
-        likes: 0,
+      await addDoc(collection(db,"posts"),{
+        userId: currentUser.id,
+        userName: currentUser.name,
+        title,text,link,
         createdAt: now
       });
-      document.getElementById("post-title").value = "";
-      document.getElementById("post-text").value = "";
-      document.getElementById("post-link").value = "";
-      statusPost.textContent = "Gönderin topluluk akışına eklendi.";
+      statusPost.textContent="Gönderi toplulukta paylaşıldı.";
+      document.getElementById("post-title").value="";
+      document.getElementById("post-text").value="";
+      document.getElementById("post-link").value="";
       loadFeed();
-      refreshStats();
-    } catch (err) {
-      console.error(err);
-      statusPost.textContent = "Gönderi eklenirken hata oluştu.";
+    }catch(e){
+      console.error(e);
+      statusPost.textContent="Gönderi kaydedilirken hata oluştu.";
     }
   });
 
   async function loadFeed() {
-    try {
-      const snap = await getDocs(collection(db, "communityPosts"));
-      const list = [];
-      snap.forEach(d => list.push({ id: d.id, ...d.data() }));
-      if (!list.length) {
-        feedList.innerHTML = "<div>Henüz topluluk gönderisi yok.</div>";
-        adminPostsBox.innerHTML = "<div>Henüz topluluk gönderisi yok.</div>";
+    feedList.innerHTML="Yükleniyor...";
+    try{
+      const snap = await getDocs(collection(db,"posts"));
+      const arr=[];
+      snap.forEach(d=> arr.push({id:d.id,...d.data()}));
+      arr.sort((a,b)=>(b.createdAt||"").localeCompare(a.createdAt||""));
+      if (!arr.length){
+        feedList.innerHTML="<div class='feed-post'>Henüz topluluk gönderisi yok.</div>";
         return;
       }
-      list.sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
-      feedList.innerHTML = list.map(p => `
+      feedList.innerHTML = arr.map(p=>`
         <div class="feed-post">
-          <div class="notif-meta">
-            ${p.createdAt || ""} – <strong>${p.authorName}</strong>
-          </div>
-          <div style="font-weight:600; margin-bottom:3px;">${p.title}</div>
-          <div style="font-size:13px;">${p.text}</div>
-          ${p.link ? `<div style="font-size:12px; margin-top:4px;"><a href="${p.link}" target="_blank">Bağlantıyı aç</a></div>` : ""}
-          <div style="font-size:12px; margin-top:4px;">
-            Beğeni: <span id="like-count-${p.id}">${p.likes || 0}</span>
-            <button class="btn-small" data-like="${p.id}" style="margin-left:6px;">Beğen</button>
-          </div>
+          <div class="notif-meta">${p.createdAt || ""} – ${p.userName || ""}</div>
+          <div><strong>${p.title || ""}</strong></div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">${p.text || ""}</div>
+          ${p.link ? `<div style="margin-top:4px;font-size:12px;"><a href="${p.link}" target="_blank">Bağlantı</a></div>`:""}
         </div>
       `).join("");
-
-      feedList.querySelectorAll("button[data-like]").forEach(btn => {
-        btn.addEventListener("click", async () => {
-          const id = btn.dataset.like;
-          try {
-            const ref = doc(db, "communityPosts", id);
-            const postsSnap = await getDocs(collection(db, "communityPosts"));
-            let current = null;
-            postsSnap.forEach(d => { if (d.id === id) current = d.data(); });
-            if (!current) return;
-            const newLikes = (current.likes || 0) + 1;
-            await updateDoc(ref, { likes: newLikes });
-          } catch (e) {
-            console.error(e);
-          }
-        });
-      });
-
-      adminPostsBox.innerHTML = list.map(p => `
-        <div class="admin-item">
-          <div class="admin-meta">
-            ${p.createdAt || ""} – ${p.authorName} (${p.authorEmail})
-          </div>
-          <div style="font-weight:600;">${p.title}</div>
-          <div>${p.text}</div>
-          <div style="font-size:12px; margin-top:4px;">Beğeni: ${p.likes || 0}</div>
-          ${p.link ? `<div style="font-size:12px;margin-top:3px;">Link: <a href="${p.link}" target="_blank">${p.link}</a></div>` : ""}
-        </div>
-      `).join("");
-    } catch (e) {
+    }catch(e){
       console.error(e);
-      feedList.innerHTML = "<div>Topluluk yüklenirken hata oluştu.</div>";
-      adminPostsBox.innerHTML = "<div>Topluluk yüklenirken hata oluştu.</div>";
+      feedList.innerHTML="<div class='feed-post'>Gönderiler yüklenemedi.</div>";
     }
   }
 
-  // Admin canlı veriler
-  onSnapshot(collection(db, "requests"), (snap) => {
-    const list = [];
-    snap.forEach(d => list.push({ id: d.id, ...d.data() }));
-    renderAdminRequests(list);
-    refreshStats();
-  });
+  function ensureDefaultPlans() {
+    onSnapshot(collection(db,"plans"), async snap => {
+      if (snap.empty) {
+        const now = new Date().toLocaleString("tr-TR");
+        await addDoc(collection(db,"plans"),{name:"Starter",type:"credits",credits:3,priceTL:250,createdAt:now});
+        await addDoc(collection(db,"plans"),{name:"Pro",type:"credits",credits:10,priceTL:1100,createdAt:now});
+        await addDoc(collection(db,"plans"),{name:"Ultra",type:"credits",credits:25,priceTL:1750,createdAt:now});
+        await addDoc(collection(db,"plans"),{name:"Spark Pro",type:"subscription",credits:0,priceTL:1450,createdAt:now});
+        await addDoc(collection(db,"plans"),{name:"Influencer",type:"subscription",credits:0,priceTL:2500,createdAt:now});
+      }
+    });
+  }
+  ensureDefaultPlans();
 
-  onSnapshot(collection(db, "messages"), (snap) => {
-    const list = [];
-    snap.forEach(d => list.push({ id: d.id, ...d.data() }));
-    renderAdminMessages(list);
-    refreshStats();
-  });
+  async function fetchPlans() {
+    const snap = await getDocs(collection(db,"plans"));
+    plans=[];
+    snap.forEach(d=> plans.push({id:d.id,...d.data()}));
+    plans.sort((a,b)=>(a.type||"").localeCompare(b.type||"") || (a.priceTL||0)-(b.priceTL||0));
+  }
 
-  onSnapshot(collection(db, "users"), (snap) => {
-    const list = [];
-    snap.forEach(d => list.push({ id: d.id, ...d.data() }));
-    renderAdminUsers(list);
-    refreshStats();
-  });
+  function formatPrice(p) {
+    const tl = p.priceTL || 0;
+    const usd = (tl / USD_RATE).toFixed(2);
+    const eur = (tl / EUR_RATE).toFixed(2);
+    if (currentLang === "en") return `$${usd} (≈ ${tl}₺ / €${eur})`;
+    if (currentLang === "de") return `€${eur} (≈ ${tl}₺ / $${usd})`;
+    return `${tl}₺ (≈ $${usd} / €${eur})`;
+  }
+
+  async function renderPlansUI() {
+    await fetchPlans();
+    const creditPlans = plans.filter(p=>p.type==="credits");
+    const subs = plans.filter(p=>p.type==="subscription");
+    let html = "";
+    if (creditPlans.length){
+      html += "<h4 style='margin-bottom:6px;'>Kredi Paketleri</h4>";
+      creditPlans.forEach(p=>{
+        html += `<div class="notif-item">
+          <div class="notif-meta">${p.name} – ${p.credits} kredi</div>
+          <div>${formatPrice(p)}</div>
+          <button class="btn-small btn-approve" data-buy="${p.id}" style="margin-top:6px;">Bu paketi al</button>
+        </div>`;
+      });
+    }
+    if (subs.length){
+      html += "<h4 style='margin:10px 0 6px;'>Abonelikler</h4>";
+      subs.forEach(p=>{
+        html += `<div class="notif-item">
+          <div class="notif-meta">${p.name} – abonelik</div>
+          <div>${formatPrice(p)}</div>
+          <button class="btn-small btn-approve" data-buy="${p.id}" style="margin-top:6px;">Aboneliği başlat</button>
+        </div>`;
+      });
+    }
+    plansList.innerHTML = html || "<div class='notif-item'>Henüz tanımlı paket yok.</div>";
+    plansList.querySelectorAll("button[data-buy]").forEach(btn=>{
+      btn.addEventListener("click", ()=> buyPlan(btn.dataset.buy));
+    });
+  }
+
+  async function buyPlan(planId) {
+    statusPlans.textContent="";
+    if (!currentUser || currentUser.role!=="user"){
+      statusPlans.textContent="Satın almak için giriş yapmalısın.";
+      return;
+    }
+    const plan = plans.find(p=>p.id===planId);
+    if (!plan){ statusPlans.textContent="Paket bulunamadı."; return; }
+    try{
+      const tl = plan.priceTL || 0;
+      const usd = parseFloat((tl / USD_RATE).toFixed(2));
+      const eur = parseFloat((tl / EUR_RATE).toFixed(2));
+      const now = new Date().toLocaleString("tr-TR");
+      await addDoc(collection(db,"purchases"),{
+        userId: currentUser.id,
+        userName: currentUser.name,
+        planId: plan.id,
+        planName: plan.name,
+        type: plan.type,
+        priceTL: tl,
+        priceUSD: usd,
+        priceEUR: eur,
+        createdAt: now
+      });
+      if (plan.type === "credits") {
+        const addCredits = plan.credits || 0;
+        const newCredits = (currentUser.credits || 0) + addCredits;
+        currentUser.credits = newCredits;
+        await updateDoc(doc(db,"users",currentUser.id),{credits:newCredits});
+        localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
+        renderProfile();
+        updateStudioAccess();
+      }
+      statusPlans.textContent = `${plan.name} satın alındı.`;
+      loadNotificationsForUser();
+    }catch(e){
+      console.error(e);
+      statusPlans.textContent="Satın alma kaydedilirken hata oluştu.";
+    }
+  }
+
+  function renderPricingUI() {
+    fetchPlans().then(()=>{
+      if (!plans.length){
+        pricingList.innerHTML="<p style='font-size:13px;color:var(--muted);'>Paket bulunamadı.</p>";
+        return;
+      }
+      const creditPlans = plans.filter(p=>p.type==="credits");
+      const subs = plans.filter(p=>p.type==="subscription");
+      let html="<h3 style='margin-bottom:8px;'>Genel Fiyat Tablosu (Demo)</h3>";
+      if (creditPlans.length){
+        html+="<h4 style='margin-bottom:4px;'>Kredi Paketleri</h4><ul style='font-size:13px;color:var(--muted);padding-left:16px;'>";
+        creditPlans.forEach(p=>{
+          html+=`<li>${p.name}: ${p.credits} kredi – ${formatPrice(p)}</li>`;
+        });
+        html+="</ul>";
+      }
+      if (subs.length){
+        html+="<h4 style='margin:10px 0 4px;'>Abonelikler</h4><ul style='font-size:13px;color:var(--muted);padding-left:16px;'>";
+        subs.forEach(p=>{
+          html+=`<li>${p.name} aboneliği – ${formatPrice(p)}</li>`;
+        });
+        html+="</ul>";
+      }
+      pricingList.innerHTML=html;
+    });
+  }
 
   async function refreshStats() {
-    try {
-      const [u, r, p, m, c, pl] = await Promise.all([
-        getDocs(collection(db, "users")),
-        getDocs(collection(db, "requests")),
-        getDocs(collection(db, "purchases")),
-        getDocs(collection(db, "messages")),
-        getDocs(collection(db, "communityPosts")),
-        getDocs(collection(db, "plans"))
-      ]);
+    try{
+      const u = await getDocs(collection(db,"users"));
+      const r = await getDocs(collection(db,"requests"));
+      const m = await getDocs(collection(db,"messages"));
+      const p = await getDocs(collection(db,"purchases"));
+      const posts = await getDocs(collection(db,"posts"));
+      const pl = await getDocs(collection(db,"plans"));
       statsEls.users.textContent = u.size;
       statsEls.requests.textContent = r.size;
-      statsEls.purchases.textContent = p.size;
       statsEls.messages.textContent = m.size;
-      statsEls.posts.textContent = c.size;
+      statsEls.purchases.textContent = p.size;
+      statsEls.posts.textContent = posts.size;
       statsEls.plans.textContent = pl.size;
-    } catch (e) {
+    }catch(e){
       console.error(e);
     }
-  }
-
-  function renderAdminRequests(list) {
-    if (!list.length) {
-      adminRequestsBox.innerHTML = "<div>Henüz reklam isteği yok.</div>";
-      return;
-    }
-    list.sort((a, b) => (a.createdAt || "").localeCompare(b.createdAt || ""));
-    adminRequestsBox.innerHTML = list.map(r => {
-      let cls = "s-pending";
-      let txt = "Beklemede";
-      if (r.status === "approved") { cls = "s-approved"; txt = "Onaylandı"; }
-      else if (r.status === "rejected") { cls = "s-rejected"; txt = "Reddedildi"; }
-      const approvedLocked = r.status === "approved";
-      return `
-        <div class="admin-item">
-          <div class="admin-meta">
-            ${r.createdAt || ""} – <strong>${r.brand}</strong> (${r.product}) |
-            ${r.userName} (${r.userEmail})
-            <span class="pill-status ${cls}">${txt}</span>
-          </div>
-          <div>${r.details}</div>
-          ${r.adminNote ? `<div>Yönetici notu: ${r.adminNote}</div>` : ""}
-          <div class="admin-actions">
-            <input type="text" id="note-${r.id}" placeholder="Kısa not (opsiyonel)" />
-            <button class="btn-small btn-approve" data-id="${r.id}" data-status="approved" ${approvedLocked ? "disabled" : ""}>Onayla</button>
-            <button class="btn-small btn-reject" data-id="${r.id}" data-status="rejected" ${approvedLocked ? "disabled" : ""}>Reddet</button>
-          </div>
-          ${approvedLocked ? `<div style="font-size:11px;color:#4ade80;margin-top:3px;">Bu istek onaylandı, tekrar reddedilemez.</div>` : ""}
-        </div>
-      `;
-    }).join("");
-
-    adminRequestsBox.querySelectorAll("button[data-id]").forEach(btn => {
-      btn.addEventListener("click", async () => {
-        if (!currentUser || currentUser.role !== "admin") return;
-        const id = btn.dataset.id;
-        const newStatus = btn.dataset.status;
-        const noteInput = document.getElementById(`note-${id}`);
-        const adminNote = noteInput ? noteInput.value.trim() : "";
-        try {
-          const ref = doc(db, "requests", id);
-          const allSnap = await getDocs(collection(db, "requests"));
-          let current = null;
-          allSnap.forEach(d => { if (d.id === id) current = d.data(); });
-          if (current && current.status === "approved" && newStatus === "rejected") {
-            alert("Onaylanan bir istek reddedilemez.");
-            return;
-          }
-          await updateDoc(ref, { status: newStatus, adminNote });
-        } catch (err) {
-          console.error(err);
-          alert("Durum güncellenirken hata oluştu.");
-        }
-      });
-    });
-  }
-
-  function renderAdminMessages(list) {
-    if (!list.length) {
-      adminMessagesBox.innerHTML = "<div>Henüz mesaj yok.</div>";
-      return;
-    }
-    list.sort((a, b) => (a.createdAt || "").localeCompare(b.createdAt || ""));
-    adminMessagesBox.innerHTML = list.map(m => `
-      <div class="admin-item">
-        <div class="admin-meta">
-          ${m.createdAt || ""} – <strong>${m.fromName}</strong> (${m.fromEmail}) – ${m.subject}
-        </div>
-        <div>${m.body}</div>
-        ${m.reply ? `<div style="font-size:12px; margin-top:4px; color:#bbf7d0;">Yanıt: ${m.reply} (${m.replyAt || ""})</div>` : ""}
-        <div class="admin-actions">
-          <input type="text" id="reply-${m.id}" placeholder="Yanıt yaz..." value="${m.reply || ""}" />
-          <button class="btn-small btn-approve" data-reply-id="${m.id}">Yanıtı Kaydet</button>
-        </div>
-      </div>
-    `).join("");
-
-    adminMessagesBox.querySelectorAll("button[data-reply-id]").forEach(btn => {
-      btn.addEventListener("click", async () => {
-        if (!currentUser || currentUser.role !== "admin") return;
-        const id = btn.dataset.replyId;
-        const replyInput = document.getElementById(`reply-${id}`);
-        const replyText = replyInput ? replyInput.value.trim() : "";
-        try {
-          await updateDoc(doc(db, "messages", id), {
-            reply: replyText,
-            replyAt: new Date().toLocaleString("tr-TR")
-          });
-        } catch (e) {
-          console.error(e);
-          alert("Yanıt kaydedilirken hata oluştu.");
-        }
-      });
-    });
-  }
-
-  function renderAdminUsers(list) {
-    if (!list.length) {
-      adminUsersBox.innerHTML = "<div>Henüz üye yok.</div>";
-      return;
-    }
-    list.sort((a, b) => (a.createdAt || "").localeCompare(b.createdAt || ""));
-    adminUsersBox.innerHTML = list.map(u => `
-      <div class="admin-item">
-        <div class="admin-meta">
-          Kullanıcı: <strong>${u.name}</strong> (${u.email})
-        </div>
-        <div>Üyelik: ${u.createdAt || "-"}</div>
-        <div>Son giriş: ${u.lastLogin || "-"}</div>
-        <div>Kredi: ${u.credits || 0}</div>
-      </div>
-    `).join("");
   }
 
   function renderAdminPlans() {
-    if (!adminPlansBox) return;
-    if (!plans || !plans.length) {
-      adminPlansBox.innerHTML = "<div>Henüz paket / abonelik yok.</div>";
-      return;
-    }
-    adminPlansBox.innerHTML = plans.map(p => `
-      <div class="admin-item">
-        <div class="admin-meta">${p.id} – ${p.name}</div>
-        <div style="font-size:12px;">Kredi: ${p.credits}</div>
-        <div class="admin-actions">
-          <input type="number" step="0.01" id="plt-${p.id}-tl" value="${p.priceTL}">
-          <button class="btn-small btn-approve" data-plan="${p.id}">TL Fiyatı Kaydet</button>
-        </div>
-      </div>
-    `).join("");
-
-    adminPlansBox.querySelectorAll("button[data-plan]").forEach(btn => {
-      btn.addEventListener("click", async () => {
-        const id = btn.dataset.plan;
-        const plan = plans.find(p => p.id === id);
-        if (!plan) return;
-        const tlVal = Number(document.getElementById(`plt-${id}-tl`).value || plan.priceTL);
-        try {
-          await setDoc(doc(db, "plans", id), {
-            ...plan,
-            priceTL: tlVal
-          });
-          plan.priceTL = tlVal;
-          renderPlansUI();
-          renderPricingUI();
-          alert("Paket / abonelik güncellendi.");
-          refreshStats();
-        } catch (e) {
-          console.error(e);
-          alert("Paket güncellenirken hata oluştu.");
-        }
+    onSnapshot(collection(db,"plans"), snap=>{
+      const arr=[];
+      snap.forEach(d=> arr.push({id:d.id,...d.data()}));
+      arr.sort((a,b)=>(a.type||"").localeCompare(b.type||"") || (a.priceTL||0)-(b.priceTL||0));
+      adminPlansBox.innerHTML = arr.map(p=>{
+        return `<div class="admin-item">
+          <div class="admin-meta">${p.type==="credits" ? "Kredi Paketi" : "Abonelik"} – ID: ${p.id}</div>
+          <div><strong>${p.name}</strong> ${p.type==="credits" ? "("+(p.credits||0)+" kredi)" : ""}</div>
+          <div class="admin-actions" style="margin-top:6px;">
+            <input type="number" data-plan="${p.id}" value="${p.priceTL || 0}" />
+            <button class="btn-small btn-approve" data-save-plan="${p.id}">TL Fiyatı Kaydet</button>
+          </div>
+        </div>`;
+      }).join("") || "<div class='admin-item'>Plan bulunamadı.</div>";
+      adminPlansBox.querySelectorAll("button[data-save-plan]").forEach(btn=>{
+        btn.addEventListener("click", async ()=>{
+          const id = btn.dataset.savePlan;
+          const input = adminPlansBox.querySelector(`input[data-plan='${id}']`);
+          const val = Number(input.value || 0);
+          try{
+            await updateDoc(doc(db,"plans",id),{priceTL:val});
+            statusAddPlan.textContent="Fiyat güncellendi.";
+            renderPlansUI();
+            renderPricingUI();
+            refreshStats();
+          }catch(e){
+            console.error(e);
+            statusAddPlan.textContent="Fiyat güncellenemedi.";
+          }
+        });
       });
     });
   }
 
-  // Yeni paket ekle (admin)
-  document.getElementById("btn-add-plan").addEventListener("click", async () => {
-    statusAddPlan.textContent = "";
-    if (!currentUser || currentUser.role !== "admin") {
-      statusAddPlan.textContent = "Bu işlem sadece Yönetici için.";
-      return;
-    }
+  document.getElementById("btn-add-plan").addEventListener("click", async ()=>{
+    statusAddPlan.textContent="";
     const name = document.getElementById("new-plan-name").value.trim();
-    const creditsVal = Number(document.getElementById("new-plan-credits").value || 0);
-    const tlVal = Number(document.getElementById("new-plan-tl").value || 0);
-    if (!name || creditsVal < 0 || tlVal < 0) {
-      statusAddPlan.textContent = "Ad, kredi ve TL fiyatı geçerli olmalı.";
+    const type = document.getElementById("new-plan-type").value;
+    const credits = Number(document.getElementById("new-plan-credits").value || 0);
+    const priceTL = Number(document.getElementById("new-plan-tl").value || 0);
+    if (!name){
+      statusAddPlan.textContent="İsim zorunlu.";
       return;
     }
-    try {
-      const id = name.toLowerCase().replace(/[^a-z0-9]+/g, "-") || `plan-${Date.now()}`;
-      const newPlan = { id, name, credits: creditsVal, priceTL: tlVal };
-      await setDoc(doc(db, "plans", id), newPlan);
-      plans.push(newPlan);
+    try{
+      const now = new Date().toLocaleString("tr-TR");
+      await addDoc(collection(db,"plans"),{name,type,credits,priceTL,createdAt:now});
+      statusAddPlan.textContent="Yeni paket/abonelik eklendi.";
+      document.getElementById("new-plan-name").value="";
       renderPlansUI();
-      renderAdminPlans();
       renderPricingUI();
-      statusAddPlan.textContent = "Paket / abonelik eklendi.";
       refreshStats();
-    } catch (e) {
+    }catch(e){
       console.error(e);
-      statusAddPlan.textContent = "Paket eklenirken hata oluştu.";
+      statusAddPlan.textContent="Paket eklenemedi.";
     }
   });
 
-  // AI Reklam Asistanı (basit kural tabanlı)
-  const chatState = [];
-  function addChatMessage(sender, text) {
-    chatState.push({ sender, text });
-    renderAssistantChat();
+  function subscribeAdminStreams() {
+    onSnapshot(collection(db,"requests"), snap=>{
+      const arr=[];
+      snap.forEach(d=> arr.push({id:d.id,...d.data()}));
+      arr.sort((a,b)=>(b.createdAt||"").localeCompare(a.createdAt||""));
+      adminRequestsBox.innerHTML = arr.map(r=>{
+        const status = r.status || "pending";
+        const statusHtml =
+          status==="approved" ? "<span class='pill-status s-approved'>Onaylandı</span>" :
+          status==="rejected" ? "<span class='pill-status s-rejected'>Reddedildi</span>" :
+          "<span class='pill-status s-pending'>Beklemede</span>";
+        const disabled = status==="approved" ? "disabled" : "";
+        return `<div class="admin-item">
+          <div class="admin-meta">${r.createdAt || ""} – ${r.userName || ""} ${statusHtml}</div>
+          <div><strong>${r.brand || ""}</strong> / ${r.product || ""}</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">${r.desc || ""}</div>
+          <div class="admin-actions">
+            <input type="text" placeholder="Yönetici notu" data-note="${r.id}" value="${r.adminNote || ""}">
+            <button class="btn-small btn-approve" data-approve="${r.id}" ${disabled}>Onayla</button>
+            <button class="btn-small btn-reject" data-reject="${r.id}" ${disabled && "disabled"}>Reddet</button>
+          </div>
+        </div>`;
+      }).join("") || "<div class='admin-item'>Reklam isteği yok.</div>";
+      adminRequestsBox.querySelectorAll("button[data-approve]").forEach(btn=>{
+        btn.addEventListener("click", ()=> handleRequestAction(btn.dataset.approve,"approved"));
+      });
+      adminRequestsBox.querySelectorAll("button[data-reject]").forEach(btn=>{
+        btn.addEventListener("click", ()=> handleRequestAction(btn.dataset.reject,"rejected"));
+      });
+      refreshStats();
+    });
+
+    onSnapshot(collection(db,"messages"), snap=>{
+      const arr=[];
+      snap.forEach(d=> arr.push({id:d.id,...d.data()}));
+      arr.sort((a,b)=>(b.createdAt||"").localeCompare(a.createdAt||""));
+      adminMessagesBox.innerHTML = arr.map(m=>{
+        return `<div class="admin-item">
+          <div class="admin-meta">${m.createdAt || ""} – ${m.userName || ""}</div>
+          <div><strong>${m.subject || ""}</strong></div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">${m.body || ""}</div>
+          <div class="admin-actions">
+            <input type="text" placeholder="Yanıt yaz" data-reply="${m.id}" value="${m.adminReply || ""}">
+            <button class="btn-small btn-approve" data-send-reply="${m.id}">Yanıt Gönder</button>
+          </div>
+        </div>`;
+      }).join("") || "<div class='admin-item'>Mesaj yok.</div>";
+      adminMessagesBox.querySelectorAll("button[data-send-reply]").forEach(btn=>{
+        btn.addEventListener("click", ()=> sendMessageReply(btn.dataset.sendReply));
+      });
+      refreshStats();
+    });
+
+    onSnapshot(collection(db,"users"), snap=>{
+      const arr=[];
+      snap.forEach(d=> arr.push({id:d.id,...d.data()}));
+      arr.sort((a,b)=>(a.name||"").localeCompare(b.name||""));
+      adminUsersBox.innerHTML = arr.map(u=>`
+        <div class="admin-item">
+          <div class="admin-meta">${u.createdAt || ""} – ID: ${u.id}</div>
+          <div><strong>${u.name}</strong> – ${u.email}</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Rol: ${u.role || "user"} – Kredi: ${u.credits || 0}</div>
+        </div>
+      `).join("") || "<div class='admin-item'>Üye yok.</div>";
+      refreshStats();
+    });
+
+    onSnapshot(collection(db,"posts"), snap=>{
+      const arr=[];
+      snap.forEach(d=> arr.push({id:d.id,...d.data()}));
+      arr.sort((a,b)=>(b.createdAt||"").localeCompare(a.createdAt||""));
+      adminPostsBox.innerHTML = arr.map(p=>`
+        <div class="admin-item">
+          <div class="admin-meta">${p.createdAt || ""} – ${p.userName || ""}</div>
+          <div><strong>${p.title}</strong></div>
+        </div>
+      `).join("") || "<div class='admin-item'>Gönderi yok.</div>";
+      refreshStats();
+    });
+  }
+  subscribeAdminStreams();
+
+  async function handleRequestAction(id, status) {
+    try{
+      const noteInput = adminRequestsBox.querySelector(`input[data-note='${id}']`);
+      const adminNote = noteInput ? noteInput.value.trim() : "";
+      const ref = doc(db,"requests",id);
+      const newData = { status, adminNote };
+      await updateDoc(ref,newData);
+      if (status === "approved") {
+        const snap = await getDocs(collection(db,"requests"));
+        let rData=null;
+        snap.forEach(d=>{ if (d.id===id) rData=d.data(); });
+        if (rData && rData.userId) {
+          const userRef = doc(db,"users",rData.userId);
+          const usersSnap = await getDocs(collection(db,"users"));
+          usersSnap.forEach(d=>{
+            if (d.id===rData.userId){
+              const u=d.data();
+              const credits=u.credits || 0;
+              updateDoc(userRef,{credits});
+            }
+          });
+        }
+      }
+      loadNotificationsForUser();
+    }catch(e){
+      console.error(e);
+    }
   }
 
-  function renderAssistantChat() {
-    if (!assistantChat) return;
-    if (!chatState.length) {
-      assistantChat.innerHTML = `
-        <div style="font-size:12px; color:var(--muted);">
-          İlk sorunla başla: Örneğin “Bizim kulüp için Instagram'da nasıl reklam yapabiliriz?”
-        </div>
-      `;
-      return;
+  async function sendMessageReply(id) {
+    try{
+      const input = adminMessagesBox.querySelector(`input[data-reply='${id}']`);
+      const reply = input ? input.value.trim() : "";
+      const now = new Date().toLocaleString("tr-TR");
+      await updateDoc(doc(db,"messages",id),{
+        adminReply: reply,
+        adminRepliedAt: now
+      });
+      loadUserReplies();
+      loadNotificationsForUser();
+    }catch(e){
+      console.error(e);
     }
-    assistantChat.innerHTML = chatState.map(msg => `
-      <div class="chat-row ${msg.sender === "me" ? "me" : "ai"}">
-        <div class="chat-bubble">${msg.text}</div>
-      </div>
-    `).join("");
+  }
+
+  document.getElementById("btn-clear-requests").addEventListener("click", async ()=>{
+    try{
+      const snap = await getDocs(collection(db,"requests"));
+      const promises=[];
+      snap.forEach(d=> promises.push(deleteDoc(doc(db,"requests",d.id))));
+      await Promise.all(promises);
+    }catch(e){console.error(e);}
+  });
+
+  document.getElementById("btn-clear-messages").addEventListener("click", async ()=>{
+    try{
+      const snap = await getDocs(collection(db,"messages"));
+      const promises=[];
+      snap.forEach(d=> promises.push(deleteDoc(doc(db,"messages",d.id))));
+      await Promise.all(promises);
+    }catch(e){console.error(e);}
+  });
+
+  function pushChat(role, text) {
+    const row = document.createElement("div");
+    row.className = "chat-row " + role;
+    const bubble = document.createElement("div");
+    bubble.className = "chat-bubble";
+    bubble.textContent = text;
+    row.appendChild(bubble);
+    assistantChat.appendChild(row);
     assistantChat.scrollTop = assistantChat.scrollHeight;
   }
 
-  function getAssistantReply(question) {
-    const q = question.toLowerCase();
+  function generateAssistantAnswer(q) {
+    const t = q.toLowerCase();
+    const ideas = [];
 
-    if (q.includes("kulüp") || q.includes("kulub") || q.includes("spor")) {
-      if (q.includes("reklam") || q.includes("tanıtım")) {
-        return `Kulübün için basit bir reklam planı şöyle olabilir:
-1) Hedef kitleyi seç: öğrenciler mi, veliler mi, mahalle halkı mı?
-2) 1 cümlelik güçlü mesaj yaz: “Bizim kulüp, ${"gençlere disiplin ve takım ruhu kazandırıyor"}” gibi.
-3) 3 görsel fikri belirle: maçtan fotoğraf, antrenmandan kare, takımın toplu fotoğrafı.
-4) Instagram / WhatsApp durumu için kısa bir slogan ekle:
-   • “Takıma katıl, tribüne değil sahaya çık!”
-   • “Kulübümüzle hedefi 12'den vur!”
-Bu fikirler üzerinden senin kulübüne özel cümleler de üretebilirim; bana spor branşını ve yaş grubunu da yaz.`;
-      }
+    if (t.includes("kulüp") || t.includes("spor") || t.includes("takım")) {
+      ideas.push(
+        "Maç günlerinden önce sosyal medyada \"maç ritüeli\" kısa videoları çekin. Her videoda oyuncular 3 saniyelik slogan söylesin: \"Kalk, tribüne gel!\" gibi. Sonunda kulübün logosu ve maç tarihi gelsin.",
+        "Genç taraftarları hedeflemek için TikTok’ta kısa challenge başlatın: En iyi gol sevinci, en iyi savunma pozu vb. Kazanan videoyu kulübün resmi hesabında paylaşacağınızı duyurun."
+      );
+    }
+    if (t.includes("okul") || t.includes("kampüs")) {
+      ideas.push(
+        "Okulunuz için \"Bir Günüm\" formatında videolar çektirin. Her videoda farklı bir öğrenci kendi gününü 15–20 saniyede anlatır, sonunda okul logosu ve slogan görünür.",
+        "Kulüplerin ve projelerin stant açtığı bir \"kampüs keşif günü\" organize edip tüm standları tek videoda hızlı geçişli olarak gösterin. Videonun açıklamasına başvuru linkini ekleyin."
+      );
+    }
+    if (t.includes("youtube") || t.includes("video") || t.includes("kanal")) {
+      ideas.push(
+        "YouTube için 3 bölümlük mini seri yapın: 1) Tanışma – kulüp/marka hikayesi, 2) Kamera arkası – hazırlıklar, 3) Taraftar/müşteri yorumları. Her bölümün sonunda aynı CTA cümlesini kullanın.",
+        "Videolarınızda 5 saniyelik tekrar eden bir intro ve 3 saniyelik outro kullanın. Bu, marka hafızasını güçlendirir. İntro kısa bir jingle ve hareketli logo animasyonu olabilir."
+      );
+    }
+    if (t.includes("instagram") || t.includes("tiktok") || t.includes("reels")) {
+      ideas.push(
+        "Instagram Reels için 7 saniyelik \"öncesi/sonrası\" videoları çok işe yarar. İlk 2 saniyede problem, sonraki 5 saniyede çözümü ve markanızı gösterin.",
+        "TikTok’ta trend sesleri kendi metninizle birleştirin. Örneğin yazıyı “Bu sesi görüp de bizim kulübü düşünmeyen?” gibi eğlenceli cümlelerle başlayın."
+      );
+    }
+    if (t.includes("slogan")) {
+      ideas.push(
+        "Slogan üretirken 3 kuralı kullan: Kısa (3–5 kelime), ritimli ve içinde fiil olsun. Örn: \"Topu Bize Bırak\", \"Sahne Bizim\", \"Takımınla Yürü\".",
+        "Kulübün değerlerinden (cesaret, birlik, eğlence) birini seç, o kelimeyi mutlaka sloganda kullan. Böylece her içerikte aynı duyguyu vurgulamış olursun."
+      );
+    }
+    if (t.includes("influencer") || t.includes("influencer paketi")) {
+      ideas.push(
+        "Influencer paketi için mikro-influencer’lara odaklan: 5–10K takipçili ama hedef kitlenle tam örtüşen hesaplarla anlaşmak genelde büyük hesaplardan daha verimli olur.",
+        "Influencer’dan sadece ürün tanıtımı istemek yerine, kendi tarzında özgün içerik üretmesine izin ver. Sadece videonun sonunda markanın net şekilde görünmesini şart koş."
+      );
     }
 
-    if (q.includes("slogan")) {
-      return `Slogan üretmek için önce kulübün / markanın tarzını bilmek iyi olur ama örnek olarak:
-• “Her maç yeni bir hikâye.”
-• “Sahaya çıktığında, gerisi detaydır.”
-• “Biz sadece oynatmıyoruz, geliştiyoruz.”
-İstersen kulübünün adını ve spor branşını yaz, ona göre 5 farklı özel slogan üreteyim.`;
+    if (!ideas.length) {
+      ideas.push(
+        "Önce hedef kitleyi netleştir: yaş aralığı, ilgi alanları, en aktif oldukları platform. Sonra tek cümleyle kampanya hedefini yaz: \"Yeni formamızın lansmanını duyurmak\" gibi.",
+        "Her reklam fikrini 3 parçaya böl: Hook (ilk 2 saniyede merak uyandıran kısım), Story (ürünü gösterdiğin bölüm), Call to Action (takip et, forma al, maça gel gibi açık çağrı)."
+      );
     }
 
-    if (q.includes("okul") || q.includes("kampüs") || q.includes("bilim şenliği")) {
-      return `Okul veya kampüs için reklam fikri:
-1) Etkinliğe özel bir isim bul: “Bilim Patlaması Günü” gibi.
-2) 1-2 cümlelik açıklama: “Deneyler, atölyeler ve sürpriz gösterilerle dolu bir gün.”
-3) Öğrencilerin ilgisini çekecek bir çağrı ekle:
-   • “Arkadaşını da getir, deneyleri birlikte patlatalım!”
-4) Afiş veya duyuru metninde tarih, saat, yer ve kısa bir QR kod alanı bırak.
-İstersen etkinliğin detaylarını yaz, sana hazır duyuru metni de çıkarabilirim.`;
-    }
-
-    if (q.includes("kahve") || q.includes("kafe") || q.includes("coffee")) {
-      return `Bir kahve dükkanı için basit reklam fikri:
-• Hedef: Yakındaki ofis çalışanları ve öğrenciler.
-• Mesaj: “Ders / iş molanda 10 dakikada mutluluk.”
-• Kampanya: “Öğrenci kartını göster, 2. kahve %50 indirimli.”
-• Slogan örnekleri:
-   - “Uykunu değil, gününü aç.”
-   - “Bir yudum sakinlik, bir yudum enerji.”
-Bu tarz bir kampanya için sosyal medya yazısını da birlikte yazabiliriz.`;
-    }
-
-    if (q.includes("instagram") || q.includes("tiktok") || q.includes("reels") || q.includes("shorts")) {
-      return `Sosyal medya için genel reklam önerisi:
-1) Çok uzun yazılardan kaçın, 1–2 cümle yeterli.
-2) 1 tane güçlü “hook” (ilk cümle) kullan:
-   • “Bu kulüpte sadece maç sonucu yok, gerçek arkadaşlık var.”
-3) En sona net bir çağrı yaz:
-   • “Mesaj at, takıma katıl.”
-4) Haftada en az 3 paylaşım planla: 1 maç, 1 antrenman, 1 eğlenceli an.
-İstersen sana direkt kopyala-yapıştır yapabileceğin metinler üreteyim; sadece branşı yaz.`;
-    }
-
-    return `Güzel bir soru sordun, temel bir reklam planı şöyle ilerleyebilir:
-1) Hedefi netleştir: Daha çok üye mi, daha çok izleyici mi, daha çok satış mı?
-2) Hedef kitleyi seç: Yaş grubu, il/ilçe, öğrenci / veli / yetişkin.
-3) 1 ana mesaj yaz: “Bizim ${"kulüp / marka"} neyi farklı yapıyor?” sorusuna cevap ver.
-4) 3 kısa slogan üret ve en sevdiğini seç.
-5) Son olarak net bir çağrı ekle: “Kayıt için DM at”, “Deneme antrenmanına gel” gibi.
-İstersen bana kulübünün / markanın adını, ne yaptığını ve hedefini yaz; direkt hazır metinler önereyim.`;
+    const pick = ideas[Math.floor(Math.random()*ideas.length)];
+    const closing = "İstersen bana hedef kitleyi, bütçeyi ve hangi platformu kullanacağını da söylersen daha nokta atışı bir senaryo yazabilirim.";
+    return pick + " " + closing;
   }
 
-  assistantSend.addEventListener("click", () => {
+  function handleAssistantSend() {
     const text = assistantInput.value.trim();
     if (!text) return;
-    addChatMessage("me", text);
-    const reply = getAssistantReply(text);
-    addChatMessage("ai", reply);
+    pushChat("me", text);
     assistantInput.value = "";
+    const answer = generateAssistantAnswer(text);
+    setTimeout(()=>{ pushChat("ai", answer); }, 300);
+  }
+
+  assistantSend.addEventListener("click", handleAssistantSend);
+  assistantInput.addEventListener("keydown", e=>{
+    if (e.key === "Enter") { e.preventDefault(); handleAssistantSend(); }
   });
-
-  assistantInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      assistantSend.click();
-    }
-  });
-
-  renderAssistantChat();
-
-  // LocalStorage'dan kullanıcıyı geri yükle
-  (function initFromStorage() {
-    const raw = localStorage.getItem("spark_current_user");
-    if (raw) {
-      try { currentUser = JSON.parse(raw); } catch (e) { currentUser = null; }
-    }
-    if (currentUser) currentUser.credits = currentUser.credits || 0;
-    updateHeaderState();
-    if (currentUser) {
-      if (currentUser.role === "admin") {
-        setActiveScreen("admin");
-        renderAdminPlans();
-        refreshStats();
-      } else {
-        welcomeText.textContent = `Hoş geldin, ${currentUser.name} 👋`;
-        renderProfile();
-        loadNotificationsForUser();
-        loadUserReplies();
-        setActiveScreen("main");
-      }
-    } else {
-      setActiveScreen("info");
-    }
-    loadFeed();
-  })();
 
 </script>
-
 </body>
 </html>
