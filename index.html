@@ -21,9 +21,7 @@
         sans-serif;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -146,14 +144,8 @@
       overflow: auto;
     }
 
-    .screen {
-      display: none;
-      width: 100%;
-    }
-
-    .screen.active {
-      display: block;
-    }
+    .screen { display: none; width: 100%; }
+    .screen.active { display: block; }
 
     /* Info Screen */
     .info-layout {
@@ -236,10 +228,7 @@
       font-size: 12px;
     }
 
-    .blob-title {
-      font-size: 14px;
-      font-weight: 600;
-    }
+    .blob-title { font-size: 14px; font-weight: 600; }
 
     .blob-chip {
       font-size: 10px;
@@ -311,10 +300,7 @@
     }
 
     /* Auth */
-    .auth-layout {
-      max-width: 640px;
-      margin: 0 auto;
-    }
+    .auth-layout { max-width: 640px; margin: 0 auto; }
 
     .tabs {
       display: flex;
@@ -341,11 +327,7 @@
       font-weight: 600;
     }
 
-    .form-grid {
-      display: grid;
-      gap: 10px;
-      margin-top: 8px;
-    }
+    .form-grid { display: grid; gap: 10px; margin-top: 8px; }
 
     label {
       font-size: 12px;
@@ -376,10 +358,7 @@
       background: #020819;
     }
 
-    textarea {
-      min-height: 80px;
-      resize: vertical;
-    }
+    textarea { min-height: 80px; resize: vertical; }
 
     .form-actions {
       margin-top: 10px;
@@ -427,11 +406,7 @@
       background: #22c55e;
     }
 
-    .hint {
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 6px;
-    }
+    .hint { font-size: 11px; color: var(--muted); margin-top: 6px; }
 
     /* User Screen */
     .columns-2 {
@@ -440,11 +415,7 @@
       gap: 14px;
     }
 
-    .section-title {
-      font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
+    .section-title { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
 
     .section-sub {
       font-size: 12px;
@@ -485,7 +456,7 @@
       flex-wrap: wrap;
     }
 
-    /* Chat (AI Asistan) */
+    /* Chat */
     .chat-box {
       background: #020617;
       border-radius: 12px;
@@ -509,9 +480,7 @@
       gap: 6px;
     }
 
-    .chat-line.me {
-      justify-content: flex-end;
-    }
+    .chat-line.me { justify-content: flex-end; }
 
     .chat-bubble {
       max-width: 80%;
@@ -574,29 +543,10 @@
       justify-content: space-between;
     }
 
-    .price-name {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .price-tag {
-      font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
-    .price-value {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 2px;
-    }
-
-    .price-note {
-      font-size: 10px;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
+    .price-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .price-tag { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+    .price-value { font-size: 18px; font-weight: 700; margin-bottom: 2px; }
+    .price-note { font-size: 10px; color: var(--muted); margin-bottom: 8px; }
 
     .price-perks {
       font-size: 11px;
@@ -604,9 +554,7 @@
       margin-bottom: 8px;
     }
 
-    .price-perks li {
-      margin-bottom: 4px;
-    }
+    .price-perks li { margin-bottom: 4px; }
 
     /* Admin */
     .admin-grid {
@@ -629,9 +577,7 @@
       margin-bottom: 6px;
     }
 
-    .list-item strong {
-      font-size: 12px;
-    }
+    .list-item strong { font-size: 12px; }
 
     .list-meta {
       font-size: 10px;
@@ -722,10 +668,7 @@
       margin-bottom: 14px;
     }
 
-    .profile-name {
-      font-size: 16px;
-      font-weight: 600;
-    }
+    .profile-name { font-size: 16px; font-weight: 600; }
 
     @media (max-width: 900px) {
       .info-layout,
@@ -734,18 +677,9 @@
         grid-template-columns: minmax(0, 1fr);
       }
 
-      .topbar {
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-
-      main {
-        padding: 10px;
-      }
-
-      #app {
-        margin: 8px;
-      }
+      .topbar { flex-wrap: wrap; gap: 10px; }
+      main { padding: 10px; }
+      #app { margin: 8px; }
     }
   </style>
 </head>
@@ -877,13 +811,7 @@
               <button class="btn-sm" id="btn-forgot">Şifremi unuttum</button>
               <button class="btn-sm primary" id="btn-login">Giriş Yap</button>
             </div>
-            <p class="hint">
-              İpucu: Yönetici paneline girmek için sadece sende olan özel e-posta ve şifreyi kullan.
-            </p>
-            <p class="hint">
-              <strong>Yönetici hesabı (sadece test için):</strong>
-              admin@sparkad.studio / spark123
-            </p>
+            <p class="hint" id="auth-message"></p>
           </div>
 
           <div id="auth-register" style="display:none;">
@@ -910,8 +838,6 @@
               yönetici, seni Pro ya da Influencer yapabilir.
             </p>
           </div>
-
-          <p id="auth-message" class="hint"></p>
         </div>
       </section>
 
@@ -985,9 +911,7 @@
             Aktif paketine göre yapay zekanın derinliği, öncelik sıralaman ve renk etiketin
             değişir. Influencer paketi en güçlü ayrıcalıkları içerir.
           </div>
-          <ul class="price-perks" id="user-perks">
-            <!-- JS dolduracak -->
-          </ul>
+          <ul class="price-perks" id="user-perks"></ul>
         </div>
       </section>
 
@@ -997,8 +921,7 @@
           <div class="section-title">Yönetici Paneli</div>
           <div class="section-sub">
             Üyeleri görüntüle, reklam isteklerini onayla / reddet, mesajla ve paket fiyatlarını
-            düzenle. Yönetici rolü, normal kullanıcılar tarafından görülen “admin” kelimesini
-            göstermez; onlar sadece “Yönetici” etiketi görür.
+            düzenle. Normal kullanıcılar bu panelin varlığını göremez.
           </div>
         </div>
 
@@ -1095,8 +1018,8 @@
             <div>
               <div class="section-title">Profilini Düzenle</div>
               <div class="section-sub">
-                İsteğe bağlı olarak görünen ismini değiştirebilir, AI asistanın seni nasıl
-                hitap edeceğini belirleyebilirsin.
+                Görünen ismini değiştirebilir, AI asistanın sana nasıl hitap edeceğini
+                belirleyebilirsin.
               </div>
 
               <div class="form-grid">
@@ -1115,9 +1038,9 @@
             <div>
               <div class="section-title">Kendi Grubunu Kur</div>
               <div class="section-sub">
-                Örn: “Medya Ekibi”, “Sosyal Medya Squad” gibi bir grup adı gir. Sistem,
-                kullanıcı isimleriyle eşleşebilecek önerileri sana gösterebilir (şimdilik mini
-                bir simülasyon yapıyoruz).
+                Örn: “Medya Ekibi”, “Sosyal Medya Squad” gibi bir grup adı gir. Sistem, kayıtlı
+                kullanıcı isimleriyle eşleşebilecek önerileri mini bir simülasyon olarak
+                gösterir.
               </div>
               <div class="form-grid">
                 <div>
@@ -1164,7 +1087,7 @@
         </div>
       </section>
 
-      <!-- ASSISTANT ONLY SCREEN (farklı sekmeden erişim) -->
+      <!-- ASSISTANT ONLY SCREEN -->
       <section id="screen-assistant" class="screen">
         <div class="card">
           <div class="section-title">Spark AI Asistan (Tam Ekran)</div>
@@ -1192,9 +1115,9 @@
     const STORAGE_KEY = "spark_ad_studio_db_v1";
 
     const DEFAULT_DB = {
-      users: [], // {id, name, email, pass, plan}
-      requests: [], // {id, userEmail, brand, product, details, status, note, createdAt}
-      messages: [], // {id, fromEmail, text, answer, createdAt}
+      users: [],
+      requests: [],
+      messages: [],
       plans: [
         {
           id: "starter",
@@ -1301,7 +1224,6 @@
         btnAuth.style.display = "inline-flex";
         btnLogout.style.display = "none";
         navHome.style.display = "inline-flex";
-        // diğerleri sadece login sonrası anlamlı ama gizlemeye gerek yok
       }
     }
 
@@ -1322,6 +1244,7 @@
     const btnRegister = document.getElementById("btn-register");
     const btnToLogin = document.getElementById("btn-to-login");
 
+    // Yönetici bilgileri – sadece kodda, ekranda gösterilmiyor
     const ADMIN_EMAIL = "admin@sparkad.studio";
     const ADMIN_PASS = "spark123";
 
@@ -1370,7 +1293,7 @@
         name,
         email,
         pass,
-        plan: "starter", // varsayılan
+        plan: "starter",
       };
       DB.users.push(user);
       saveDB();
@@ -1492,7 +1415,6 @@
         userPerksList.appendChild(li);
       });
 
-      // Profil ekranını da güncelle
       renderProfile();
     }
 
@@ -1562,7 +1484,7 @@
       const meta = currentUser ? getPlanMeta(currentUser.plan) : null;
       const level =
         currentUser && currentUser.plan === "influencer"
-          ? "Sen Influencer seviyesinde olduğun için daha detaylı bir öneri sunuyorum."
+          ? "Sen Influencer seviyesinde olduğun için daha detaylı ve kampanya odaklı bir öneri sunuyorum."
           : currentUser && currentUser.plan === "pro"
           ? "Pro paketli bir kullanıcı olduğun için orta detaylı ama odaklı bir öneri veriyorum."
           : "Standart seviyede, kısa ama uygulanabilir bir öneri vereceğim.";
@@ -1590,7 +1512,6 @@
       const answer = generateAssistantAnswer(text);
       setTimeout(() => {
         pushChat(target, "ai", answer);
-        // mesajları yönetime kaydet
         DB.messages.push({
           id: "m_" + Date.now(),
           fromEmail: currentUser ? currentUser.email : "misafir",
