@@ -7,2030 +7,1978 @@
   <style>
     :root {
       --bg: #050816;
-      --bg-alt: #0b1020;
-      --card: #111827;
-      --accent: #ff7a3c;
-      --accent-soft: #ffd2aa;
-      --text: #f9fafb;
+      --bg-soft: #0b1120;
+      --bg-softer: #111827;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.15);
+      --danger: #f97373;
+      --text: #e5e7eb;
       --muted: #9ca3af;
-      --border-subtle: rgba(148, 163, 184, 0.35);
-      --radius-lg: 18px;
+      --border: #1f2937;
+      --radius: 10px;
+      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.4);
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
     }
 
-    * { box-sizing: border-box; margin:0; padding:0; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
-      font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      background: radial-gradient(circle at top,#1f2937 0,#050816 55%,#020617 100%);
+      margin: 0;
+      font-family: var(--font-sans);
+      background: radial-gradient(circle at top, #111827 0, #020617 55%);
       color: var(--text);
       min-height: 100vh;
-    }
-    body.light {
-      --bg:#f3f4f6; --bg-alt:#e5e7eb; --card:#ffffff; --text:#111827; --muted:#6b7280;
-      --border-subtle:rgba(148,163,184,.6);
-      background: linear-gradient(to bottom,#e5e7eb,#f9fafb);
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
     }
 
-    a { color:inherit; text-decoration:none; }
-
-    .container { width:min(1100px,92vw); margin:0 auto; }
-
-    header {
-      position:sticky; top:0; z-index:40;
-      backdrop-filter:blur(18px);
-      background:linear-gradient(to bottom,rgba(5,8,22,.95),transparent);
-      border-bottom:1px solid rgba(148,163,184,.25);
-    }
-    body.light header {
-      background:linear-gradient(to bottom,rgba(243,244,246,.95),transparent);
-      border-bottom-color:rgba(209,213,219,.9);
+    #app {
+      width: 100%;
+      max-width: 1200px;
+      margin: 16px;
+      background: linear-gradient(145deg, #020617 0%, #020715 40%, #020617 100%);
+      border-radius: 18px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid #111827;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
 
-    .nav {
-      display:flex; align-items:center; justify-content:space-between;
-      padding:10px 0; gap:16px;
-    }
-    .nav-left { display:flex; align-items:center; gap:10px; }
-    .nav-logo {
-      width:40px; height:40px; border-radius:14px;
-      background:radial-gradient(circle at 30% 0,var(--accent),#7c2d12);
-      display:flex; align-items:center; justify-content:center;
-      font-weight:800; font-size:16px; color:#111827;
-      box-shadow:0 10px 25px rgba(0,0,0,.6);
-    }
-    body.light .nav-logo { box-shadow:0 10px 25px rgba(15,23,42,.25); }
-
-    .nav-titles { display:flex; flex-direction:column; gap:2px; }
-    .nav-title { font-weight:700; letter-spacing:.03em; font-size:18px; }
-    .nav-sub {
-      font-size:11px; text-transform:uppercase; letter-spacing:.12em; color:var(--muted);
+    /* Topbar */
+    .topbar {
+      display: flex;
+      align-items: center;
+      padding: 12px 18px;
+      border-bottom: 1px solid #111827;
+      background: radial-gradient(circle at 0 50%, #0b1120 0, #020617 55%);
     }
 
-    .nav-right { display:flex; align-items:center; gap:14px; }
-    .nav-links { display:flex; gap:10px; font-size:13px; color:var(--muted); flex-wrap:wrap; }
-
-    .nav-link {
-      border:none; background:transparent; color:var(--muted);
-      cursor:pointer; padding:4px 6px; border-radius:999px;
+    .logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #fde68a, #f97316 55%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+      color: #020617;
+      margin-right: 10px;
+      box-shadow: 0 0 18px rgba(249, 115, 22, 0.55);
     }
-    .nav-link:hover { color:var(--accent); }
-    .nav-link.active { color:var(--accent); font-weight:600; }
 
-    .nav-cta {
-      border:none; cursor:pointer; padding:7px 14px; border-radius:999px;
-      font-size:13px; font-weight:600;
-      background:linear-gradient(135deg,var(--accent),#fb7185);
-      color:#111827; box-shadow:0 12px 28px rgba(0,0,0,.6);
+    .top-title {
+      font-weight: 650;
+      letter-spacing: 0.03em;
+      font-size: 18px;
     }
-    body.light .nav-cta { box-shadow:0 12px 25px rgba(15,23,42,.25); }
 
-    main { padding-bottom:40px; }
-    .screen { display:none; padding:32px 0; }
-    .screen.active { display:block; }
+    .top-tagline {
+      font-size: 12px;
+      color: var(--muted);
+    }
 
+    .top-left {
+      display: flex;
+      flex-direction: column;
+      margin-right: auto;
+    }
+
+    .top-nav {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: 0.2s all ease;
+    }
+
+    .nav-btn:hover {
+      background: #020617;
+      border-color: #1f2937;
+      color: var(--text);
+    }
+
+    .nav-btn.primary {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: #e0f2fe;
+      font-weight: 600;
+    }
+
+    .nav-btn.primary:hover {
+      background: rgba(56, 189, 248, 0.25);
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.35);
+    }
+
+    .nav-btn.danger {
+      border-color: #4b1b1b;
+      color: #fecaca;
+      background: rgba(220, 38, 38, 0.08);
+    }
+
+    .nav-btn.danger:hover {
+      background: rgba(220, 38, 38, 0.16);
+    }
+
+    main {
+      display: flex;
+      flex: 1;
+      padding: 16px;
+      overflow: auto;
+    }
+
+    .screen {
+      display: none;
+      width: 100%;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    /* Info Screen */
     .info-layout {
-      display:grid;
-      grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);
-      gap:24px; align-items:center;
-      min-height:calc(100vh - 80px);
-    }
-    @media (max-width:840px){
-      .info-layout{grid-template-columns:1fr; padding-top:20px;}
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.3fr);
+      gap: 18px;
+      align-items: stretch;
     }
 
-    .kicker {
-      font-size:11px; letter-spacing:.2em; text-transform:uppercase;
-      color:var(--accent-soft); display:inline-flex; align-items:center; gap:8px;
-      margin-bottom:10px;
-    }
-    .k-dot{width:7px;height:7px;border-radius:999px;background:var(--accent);}
-    .hero-title{font-size:clamp(30px,4vw,36px);font-weight:700;margin-bottom:8px;}
-    .hero-title span{
-      background:linear-gradient(135deg,var(--accent),#fb7185,#a855f7);
-      -webkit-background-clip:text;color:transparent;
-    }
-    .hero-lead{
-      font-size:14px;color:var(--muted);max-width:520px;margin-bottom:18px;
-    }
-    .pill-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;font-size:11px;}
-    .pill{
-      padding:4px 9px;border-radius:999px;
-      border:1px solid var(--border-subtle);
-      color:var(--accent-soft);background:rgba(15,23,42,.8);
-    }
-    body.light .pill{background:#fff;color:#7c2d12;}
-
-    .primary-btn{
-      border:none;cursor:pointer;padding:10px 18px;border-radius:999px;
-      background:linear-gradient(135deg,var(--accent),#fb7185);
-      color:#111827;font-weight:600;font-size:13px;
-      box-shadow:0 16px 36px rgba(0,0,0,.6);
+    .card {
+      background: radial-gradient(circle at top left, #020617 0, #020617 40%);
+      border-radius: 16px;
+      padding: 18px;
+      border: 1px solid #111827;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
     }
 
-    .card{
-      background:radial-gradient(circle at top left,rgba(248,250,252,.08),transparent 55%),var(--card);
-      border-radius:var(--radius-lg);
-      padding:16px 16px 14px;
-      border:1px solid var(--border-subtle);
-      box-shadow:0 16px 40px rgba(0,0,0,.6);
-      font-size:13px;
-    }
-    body.light .card{box-shadow:0 12px 26px rgba(15,23,42,.18);}
-
-    .auth-wrapper{max-width:420px;margin:0 auto;}
-    .auth-title{font-size:20px;text-align:center;margin-bottom:8px;}
-    .auth-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:18px;}
-
-    .auth-tabs{
-      display:flex;background:rgba(15,23,42,.9);padding:3px;border-radius:999px;margin-bottom:12px;
-    }
-    body.light .auth-tabs{background:rgba(229,231,235,.9);}
-    .auth-tab{
-      flex:1;text-align:center;padding:6px 0;font-size:13px;border-radius:999px;
-      cursor:pointer;color:var(--muted);
-    }
-    .auth-tab.active{
-      background:linear-gradient(135deg,var(--accent),#fb7185);
-      color:#111827;font-weight:600;
+    .info-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
     }
 
-    .field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px;}
-    .field label{font-size:12px;color:var(--muted);}
-    .field input,.field textarea,.field select{
-      border-radius:10px;border:1px solid rgba(148,163,184,.35);
-      padding:8px 10px;font-size:13px;background:rgba(15,23,42,.8);
-      color:var(--text);outline:none;
-    }
-    body.light .field input,body.light .field textarea,body.light .field select{
-      background:#f9fafb;color:#111827;border-color:rgba(148,163,184,.6);
-    }
-    .field textarea{min-height:90px;resize:vertical;}
-    .btn-full{width:100%;margin-top:4px;}
-    .status-text{font-size:12px;color:var(--accent-soft);min-height:16px;margin-top:6px;}
-
-    .section-title{font-size:20px;margin-bottom:4px;}
-    .section-sub{font-size:13px;color:var(--muted);margin-bottom:16px;}
-
-    .notif-list{
-      border-radius:14px;border:1px solid var(--border-subtle);
-      background:rgba(15,23,42,.9);padding:10px;font-size:13px;
-    }
-    body.light .notif-list{background:rgba(255,255,255,.9);}
-    .notif-item{padding:8px 6px;border-bottom:1px solid rgba(148,163,184,.35);}
-    .notif-item:last-child{border-bottom:none;}
-    .notif-meta{font-size:11px;color:var(--accent-soft);margin-bottom:2px;}
-
-    .pill-status{
-      display:inline-block;padding:2px 7px;border-radius:999px;font-size:10px;margin-left:6px;
-    }
-    .s-pending{background:rgba(234,179,8,.15);color:#facc15;}
-    .s-approved{background:rgba(22,163,74,.2);color:#4ade80;}
-    .s-rejected{background:rgba(239,68,68,.18);color:#fca5a5;}
-
-    .grid-two{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.1fr);gap:16px;}
-    @media (max-width:840px){.grid-two{grid-template-columns:1fr;}}
-
-    .grid-three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
-    @media (max-width:900px){.grid-three{grid-template-columns:repeat(2,minmax(0,1fr));}}
-    @media (max-width:640px){.grid-three{grid-template-columns:1fr;}}
-
-    .admin-layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;}
-    @media (max-width:960px){.admin-layout{grid-template-columns:1fr;}}
-
-    .admin-list{
-      max-height:260px;overflow-y:auto;border-radius:12px;
-      border:1px solid var(--border-subtle);padding:8px;font-size:12px;
-      background:rgba(15,23,42,.9);
-    }
-    body.light .admin-list{background:rgba(255,255,255,.9);}
-    .admin-item{padding:6px 4px;border-bottom:1px solid rgba(148,163,184,.35);}
-    .admin-item:last-child{border-bottom:none;}
-    .admin-meta{font-size:11px;color:var(--accent-soft);margin-bottom:2px;}
-    .admin-actions{margin-top:4px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
-    .admin-actions input{flex:1;min-width:90px;font-size:11px;padding:4px 8px;border-radius:999px;}
-
-    .btn-small{
-      border:none;border-radius:999px;font-size:11px;padding:4px 9px;cursor:pointer;
-    }
-    .btn-approve{background:rgba(22,163,74,.9);color:#e5f9ed;}
-    .btn-reject{background:rgba(239,68,68,.9);color:#fee2e2;}
-    .btn-ghost{
-      background:transparent;color:var(--muted);
-      border:1px dashed rgba(148,163,184,.6);
+    .info-sub {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 16px;
     }
 
-    .stats-grid{
-      display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:10px;
-    }
-    @media (max-width:840px){.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
-    .stat-card{
-      padding:8px 10px;border-radius:12px;background:rgba(15,23,42,.9);
-      border:1px solid rgba(148,163,184,.4);font-size:12px;
-    }
-    .stat-label{color:var(--muted);font-size:11px;}
-    .stat-value{font-size:18px;font-weight:600;}
-
-    .feed-post{padding:8px 6px;border-bottom:1px solid rgba(148,163,184,.3);}
-    .feed-post:last-child{border-bottom:none;}
-
-    .assistant-chat{
-      border-radius:14px;border:1px solid var(--border-subtle);
-      background:rgba(15,23,42,.9);padding:10px;max-height:320px;overflow-y:auto;font-size:13px;
-    }
-    body.light .assistant-chat{background:rgba(255,255,255,.9);}
-    .chat-row{margin-bottom:8px;}
-    .chat-row.me{text-align:right;}
-    .chat-bubble{
-      display:inline-block;padding:6px 10px;border-radius:999px;
-      max-width:80%;text-align:left;
-    }
-    .chat-row.me .chat-bubble{
-      background:linear-gradient(135deg,var(--accent),#fb7185);
-      color:#111827;border-bottom-right-radius:4px;
-    }
-    .chat-row.ai .chat-bubble{
-      background:rgba(15,23,42,.9);border:1px solid var(--border-subtle);
-      border-bottom-left-radius:4px;
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
     }
 
-    footer{padding:18px 0 28px;font-size:12px;color:var(--muted);}
-    footer .row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
-
-    /* Profil avatarı ve renkli isimler */
-    .profile-avatar{
-      width:64px;height:64px;border-radius:999px;
-      background:radial-gradient(circle at top,var(--accent),#0f172a);
-      display:flex;align-items:center;justify-content:center;
-      font-weight:700;font-size:22px;margin-bottom:8px;
-      background-size:cover;background-position:center;
-      color:#111827;
+    .pill {
+      background: rgba(15, 23, 42, 0.85);
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 11px;
+      color: var(--muted);
+      border: 1px solid #1f2937;
     }
-    body.light .profile-avatar{box-shadow:0 8px 20px rgba(15,23,42,.15);}
 
-    .name-beginner{color:#4CAF50;}
-    .name-pro{color:#2196F3;}
-    .name-sparkpro{color:#a855f7;}
-    .name-influencer{color:#facc15;}
+    .pill.strong {
+      border-color: var(--accent);
+      color: #e0f2fe;
+      background: rgba(8, 47, 73, 0.9);
+    }
+
+    .gradient-blob {
+      width: 260px;
+      height: 260px;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(248, 250, 252, 0.1) 0, transparent 55%),
+        radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.45) 0, transparent 55%),
+        radial-gradient(circle at 75% 15%, rgba(234, 179, 8, 0.7) 0, transparent 50%),
+        radial-gradient(circle at 60% 80%, rgba(16, 185, 129, 0.55) 0, transparent 45%);
+      position: relative;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .blob-inner {
+      width: 160px;
+      height: 160px;
+      border-radius: 36px;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(226, 232, 240, 0.08);
+      box-shadow: 0 18px 38px rgba(15, 23, 42, 0.95);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: var(--text);
+      font-size: 12px;
+    }
+
+    .blob-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .blob-chip {
+      font-size: 10px;
+      border-radius: 999px;
+      padding: 3px 7px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      display: inline-block;
+      margin-top: 4px;
+    }
+
+    .blob-metric-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+    }
+
+    .blob-metric {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .blob-metric strong {
+      display: block;
+      color: #bfdbfe;
+      font-size: 13px;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-big {
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-size: 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 500;
+      transition: 0.2s all ease;
+    }
+
+    .btn-big.primary {
+      background: linear-gradient(135deg, #0ea5e9, #22c55e);
+      color: #0b1120;
+      box-shadow: 0 20px 45px rgba(56, 189, 248, 0.55);
+    }
+
+    .btn-big.primary:hover {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+    }
+
+    .btn-big.ghost {
+      background: rgba(15, 23, 42, 0.9);
+      border-color: #1e293b;
+      color: var(--muted);
+    }
+
+    .btn-big.ghost:hover {
+      background: #020617;
+      color: var(--text);
+    }
+
+    /* Auth */
+    .auth-layout {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid #1f2937;
+      background: #020617;
+      color: var(--muted);
+      font-size: 13px;
+      cursor: pointer;
+      transition: 0.2s all;
+    }
+
+    .tab-btn.active {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: #e0f2fe;
+      font-weight: 600;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    label {
+      font-size: 12px;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #1f2937;
+      background: #020617;
+      color: var(--text);
+      padding: 7px 9px;
+      font-size: 13px;
+      outline: none;
+      transition: 0.15s border-color, 0.15s box-shadow, 0.15s background;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.25);
+      background: #020819;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .form-actions {
+      margin-top: 10px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .btn-sm {
+      padding: 7px 13px;
+      border-radius: 999px;
+      border: 1px solid #1f2937;
+      background: #020617;
+      color: var(--muted);
+      font-size: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-sm.primary {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: #e0f2fe;
+    }
+
+    .btn-sm.primary:hover {
+      background: rgba(56, 189, 248, 0.25);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: var(--muted);
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* User Screen */
+    .columns-2 {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.1fr);
+      gap: 14px;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .section-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .tag {
+      font-size: 10px;
+      border-radius: 999px;
+      padding: 2px 6px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid #1f2937;
+      color: var(--muted);
+    }
+
+    .tag.pro {
+      border-color: #22c55e;
+      color: #bbf7d0;
+    }
+
+    .tag.influencer {
+      border-color: #f97316;
+      color: #fed7aa;
+    }
+
+    .tag.standard {
+      border-color: #38bdf8;
+      color: #bae6fd;
+    }
+
+    .user-inline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Chat (AI Asistan) */
+    .chat-box {
+      background: #020617;
+      border-radius: 12px;
+      border: 1px solid #1f2937;
+      height: 260px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-log {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      font-size: 12px;
+    }
+
+    .chat-line {
+      margin-bottom: 6px;
+      display: flex;
+      gap: 6px;
+    }
+
+    .chat-line.me {
+      justify-content: flex-end;
+    }
+
+    .chat-bubble {
+      max-width: 80%;
+      padding: 6px 9px;
+      border-radius: 12px;
+      border-bottom-left-radius: 3px;
+      background: #020617;
+      border: 1px solid #1f2937;
+    }
+
+    .chat-line.me .chat-bubble {
+      background: rgba(56, 189, 248, 0.16);
+      border-color: rgba(56, 189, 248, 0.55);
+    }
+
+    .chat-line.ai .chat-bubble {
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    .chat-meta {
+      font-size: 10px;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .chat-input-row {
+      display: flex;
+      border-top: 1px solid #111827;
+    }
+
+    .chat-input-row input {
+      border-radius: 0;
+      border: none;
+      border-right: 1px solid #111827;
+    }
+
+    .chat-input-row button {
+      border: none;
+      background: var(--accent-soft);
+      color: #e0f2fe;
+      padding: 0 14px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    /* Pricing */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 10px;
+    }
+
+    .price-card {
+      border-radius: 14px;
+      padding: 12px;
+      border: 1px solid #1f2937;
+      background: radial-gradient(circle at top, #020617 0, #020617 55%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .price-name {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .price-tag {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .price-value {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .price-note {
+      font-size: 10px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .price-perks {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .price-perks li {
+      margin-bottom: 4px;
+    }
+
+    /* Admin */
+    .admin-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.4fr);
+      gap: 12px;
+    }
+
+    .list {
+      max-height: 260px;
+      overflow-y: auto;
+      font-size: 12px;
+    }
+
+    .list-item {
+      padding: 7px 8px;
+      border-radius: 8px;
+      border: 1px solid #111827;
+      background: rgba(15, 23, 42, 0.75);
+      margin-bottom: 6px;
+    }
+
+    .list-item strong {
+      font-size: 12px;
+    }
+
+    .list-meta {
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .pill-small {
+      font-size: 9px;
+      padding: 1px 5px;
+      border-radius: 999px;
+      border: 1px solid #1f2937;
+      color: var(--muted);
+    }
+
+    .pill-small.green {
+      border-color: #22c55e;
+      color: #bbf7d0;
+    }
+
+    .pill-small.orange {
+      border-color: #f97316;
+      color: #fed7aa;
+    }
+
+    .pill-small.blue {
+      border-color: #38bdf8;
+      color: #bae6fd;
+    }
+
+    .pill-small.gray {
+      border-color: #4b5563;
+      color: #9ca3af;
+    }
+
+    .admin-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+
+    .admin-actions button {
+      font-size: 11px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      border: 1px solid #1f2937;
+      background: #020617;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .admin-actions button.ok {
+      border-color: #22c55e;
+      color: #bbf7d0;
+    }
+
+    .admin-actions button.dgr {
+      border-color: #f97316;
+      color: #fed7aa;
+    }
+
+    /* Profile */
+    .avatar-circle {
+      width: 54px;
+      height: 54px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0, #22c55e, #38bdf8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 20px;
+      color: #020617;
+    }
+
+    .profile-row {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .profile-name {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    @media (max-width: 900px) {
+      .info-layout,
+      .columns-2,
+      .admin-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .topbar {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      main {
+        padding: 10px;
+      }
+
+      #app {
+        margin: 8px;
+      }
+    }
   </style>
 </head>
 <body>
-<header>
-  <div class="container nav">
-    <div class="nav-left">
-      <div class="nav-logo">SA</div>
-      <div class="nav-titles">
-        <div class="nav-title">Spark Ad Studio</div>
-        <div class="nav-sub">mini reklam stüdyosu</div>
+  <div id="app">
+    <header class="topbar">
+      <div class="logo">SA</div>
+      <div class="top-left">
+        <div class="top-title">Spark Ad Studio</div>
+        <div class="top-tagline">Kulüpler ve markalar için akılda kalan mini reklam stüdyosu</div>
       </div>
-    </div>
-    <div class="nav-right">
-      <div class="nav-links" id="nav-links" style="display:none;">
-        <button class="nav-link active" data-target="info" id="nav-info">Bilgi</button>
-        <button class="nav-link" data-target="main" id="nav-main">Ana Sayfa</button>
-        <button class="nav-link" data-target="studio" id="nav-studio">Stüdyo</button>
-        <button class="nav-link" data-target="community" id="nav-community">Topluluk</button>
-        <button class="nav-link" data-target="assistant" id="nav-assistant">Asistan</button>
-        <button class="nav-link" data-target="pricing" id="nav-pricing">Fiyatlandırma</button>
-        <button class="nav-link" data-target="settings" id="nav-settings">Ayarlar</button>
-        <button class="nav-link" data-target="admin" id="nav-admin" style="display:none;">Yönetici</button>
-      </div>
-      <button class="nav-cta" id="btn-auth">Üye Ol / Giriş Yap</button>
-    </div>
-  </div>
-</header>
+      <nav class="top-nav">
+        <button class="nav-btn" data-nav="home" id="nav-home">Ana Sayfa</button>
+        <button class="nav-btn" data-nav="studio" id="nav-studio">Stüdyo</button>
+        <button class="nav-btn" data-nav="community" id="nav-community">Topluluk</button>
+        <button class="nav-btn" data-nav="assistant" id="nav-assistant">Asistan</button>
+        <button class="nav-btn" data-nav="pricing" id="nav-pricing">Fiyatlandırma</button>
+        <button class="nav-btn" data-nav="profile" id="nav-profile">Profil</button>
+        <button class="nav-btn danger" id="btn-logout" style="display:none;">Çıkış Yap</button>
+        <button class="nav-btn primary" id="btn-auth">Üye Ol / Giriş Yap</button>
+      </nav>
+    </header>
 
-<main>
-  <div class="container">
-    <!-- LANDING -->
-    <section class="screen active" id="screen-info">
-      <div class="info-layout">
-        <div>
-          <div class="kicker"><span class="k-dot"></span> KULÜPLER VE MARKALAR İÇİN MİNİ STÜDYO</div>
-          <h1 class="hero-title">
-            <span>Spark Ad Studio</span> kulüpler ve markalar için akılda kalıcı reklam fikirleri üretir.
-          </h1>
-          <p class="hero-lead">
-            Kulüpler, okullar ve küçük markalar için basit bir panelden reklam fikri, slogan, kampanya
-            ve iletişim taslakları üretmeni sağlar. Sen fikri verirsin, onlar seni duyurur.
-          </p>
-          <div class="pill-row">
-            <span class="pill">🎯 Kulübüne özel reklam stratejisi</span>
-            <span class="pill">🤝 Karşılıklı tanıtım modeli</span>
-            <span class="pill">🧠 Akıllı Asistan ile fikir üretimi</span>
-            <span class="pill">📊 Yönetici paneli ve istatistikler</span>
+    <main>
+      <!-- INFO / LANDING -->
+      <section id="screen-info" class="screen active">
+        <div class="info-layout">
+          <div class="card">
+            <div class="badge">
+              <span class="badge-dot"></span>
+              7. sınıftan global markalara: Herkes için mini stüdyo
+            </div>
+            <h1 class="info-title">Kulübün reklamlarını 10 dakikada “yayına hazır” hale getir.</h1>
+            <p class="info-sub">
+              Spark Ad Studio, kulüpler ve markalar için <strong>kısa, akılda kalıcı reklamlar</strong>
+              üretmen için tasarlandı. Sen brief veriyorsun, sistem senin için fikir, metin ve sahne
+              akışını hazırlıyor.
+            </p>
+
+            <div class="pill-row">
+              <span class="pill strong">Kulüpler • Markalar • Okul projeleri</span>
+              <span class="pill">Hazır şablonlar</span>
+              <span class="pill">Yapay zeka asistanı</span>
+              <span class="pill">Paketli fiyatlandırma</span>
+            </div>
+
+            <p class="info-sub" style="margin-top:8px;">
+              Başta Işıkkent Eğitim Kampüsü olmak üzere, genç yaratıcıların “kendi ajansı” gibi
+              kullanabileceği bir stüdyo düşün.
+            </p>
+
+            <div class="btn-row">
+              <button class="btn-big primary" id="btn-info-start">
+                Hemen Başla
+              </button>
+              <button class="btn-big ghost" id="btn-info-pricing">
+                Paketleri Gör
+              </button>
+            </div>
+
+            <p class="hint">
+              Üye olduktan sonra <strong>“Yönetici” paneli</strong> üzerinden paket fiyatlarını,
+              kredi sayılarını ve influencer ayrıcalıklarını değiştirebilirsin.
+            </p>
           </div>
-          <button class="primary-btn" id="btn-info-start">Hemen Başla (Üye Ol / Giriş Yap)</button>
-        </div>
-        <div class="card">
-          <h3>Sistem Nasıl Çalışır?</h3>
-          <p style="color:var(--muted);font-size:13px;">
-            • Kulüp/marka hesabı açarsın.<br>
-            • Kredi paketleri veya abonelikler alırsın.<br>
-            • Reklam isteği formunu doldurursun, yönetici paneline düşer.<br>
-            • Yönetici isteği onaylar, mesajla geri bildirim verir.<br>
-            • Topluluk alanında fikirlerini paylaşır, asistanla senaryo üretebilirsin.
-          </p>
-        </div>
-      </div>
-    </section>
 
-    <!-- AUTH -->
-    <section class="screen" id="screen-auth">
-      <div class="auth-wrapper">
-        <div class="auth-title">Hesabına giriş yap veya yeni bir hesap oluştur</div>
-        <div class="auth-sub">
-          Hesabınla giriş yapabilir veya yeni üyelik oluşturup stüdyoyu kullanmaya başlayabilirsin.
+          <div class="card" style="display:flex;align-items:center;justify-content:center;">
+            <div class="gradient-blob">
+              <div class="blob-inner">
+                <div>
+                  <div class="blob-title">Yıllık Kulüp Özeti</div>
+                  <div class="blob-chip">Spark AI • Reklam Özeti</div>
+                </div>
+                <div class="blob-metric-row">
+                  <div class="blob-metric">
+                    Katıldığı yarışma
+                    <strong>+18</strong>
+                  </div>
+                  <div class="blob-metric">
+                    Toplam kilometre
+                    <strong>12.450 km</strong>
+                  </div>
+                </div>
+                <div class="blob-metric-row">
+                  <div class="blob-metric">
+                    Kazanılan madalya
+                    <strong>27</strong>
+                  </div>
+                  <div class="blob-metric">
+                    Etkileşim artışı
+                    <strong>%164</strong>
+                  </div>
+                </div>
+                <p class="hint" style="margin-top:6px;">
+                  Spark Ad Studio, kulübün <strong>yıl boyunca yaptıklarını</strong> tek bir
+                  “özet videoya” dönüştürmene yardım eder.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="card">
-          <div class="auth-tabs">
-            <div class="auth-tab active" id="tab-login">Giriş Yap</div>
-            <div class="auth-tab" id="tab-register">Üye Ol</div>
+      </section>
+
+      <!-- AUTH -->
+      <section id="screen-auth" class="screen">
+        <div class="auth-layout card">
+          <div class="section-title">Spark Ad hesabına giriş yap</div>
+          <div class="section-sub">
+            Reklam stüdyona erişmek için önce hesabına giriş yap ya da yeni bir hesap oluştur.
+          </div>
+
+          <div class="tabs">
+            <button class="tab-btn active" id="tab-login">Giriş Yap</button>
+            <button class="tab-btn" id="tab-register">Üye Ol</button>
           </div>
 
           <div id="auth-login">
-            <div class="field">
-              <label for="login-email">E-posta veya kullanıcı adı</label>
-              <input id="login-email" type="text" placeholder="ör: seninmailin@mail.com" />
+            <div class="form-grid">
+              <div>
+                <label for="login-email">E-posta</label>
+                <input id="login-email" type="email" placeholder="ornek@kulubun.com" />
+              </div>
+              <div>
+                <label for="login-pass">Şifre</label>
+                <input id="login-pass" type="password" placeholder="••••••••" />
+              </div>
             </div>
-            <div class="field">
-              <label for="login-pass">Şifre</label>
-              <input id="login-pass" type="password" placeholder="şifren" />
+            <div class="form-actions">
+              <button class="btn-sm" id="btn-forgot">Şifremi unuttum</button>
+              <button class="btn-sm primary" id="btn-login">Giriş Yap</button>
             </div>
-            <button class="primary-btn btn-full" id="btn-login">Giriş Yap</button>
-            <div class="status-text" id="status-login"></div>
+            <p class="hint">
+              İpucu: Yönetici paneline girmek için sadece sende olan özel e-posta ve şifreyi kullan.
+            </p>
+            <p class="hint">
+              <strong>Yönetici hesabı (sadece test için):</strong>
+              admin@sparkad.studio / spark123
+            </p>
           </div>
 
           <div id="auth-register" style="display:none;">
-            <div class="field">
-              <label for="reg-name">Adın</label>
-              <input id="reg-name" type="text" placeholder="Adını yaz" />
+            <div class="form-grid">
+              <div>
+                <label for="reg-name">Ad Soyad</label>
+                <input id="reg-name" type="text" placeholder="Emir Anka" />
+              </div>
+              <div>
+                <label for="reg-email">E-posta</label>
+                <input id="reg-email" type="email" placeholder="ornek@kulubun.com" />
+              </div>
+              <div>
+                <label for="reg-pass">Şifre</label>
+                <input id="reg-pass" type="password" placeholder="En az 6 karakter" />
+              </div>
             </div>
-            <div class="field">
-              <label for="reg-email">E-posta</label>
-              <input id="reg-email" type="email" placeholder="ornek@mail.com" />
+            <div class="form-actions">
+              <button class="btn-sm" id="btn-to-login">Zaten hesabım var</button>
+              <button class="btn-sm primary" id="btn-register">Üye Ol ve Giriş Yap</button>
             </div>
-            <div class="field">
-              <label for="reg-pass">Şifre</label>
-              <input id="reg-pass" type="password" placeholder="Bir şifre belirle" />
+            <p class="hint">
+              Yeni hesaplar varsayılan olarak <strong>Standart</strong> pakette açılır. Daha sonra
+              yönetici, seni Pro ya da Influencer yapabilir.
+            </p>
+          </div>
+
+          <p id="auth-message" class="hint"></p>
+        </div>
+      </section>
+
+      <!-- USER -->
+      <section id="screen-user" class="screen">
+        <div class="columns-2">
+          <div class="card">
+            <div class="user-inline">
+              <div>
+                <div class="section-title" id="user-welcome">Hoş geldin!</div>
+                <div class="section-sub">
+                  Burası senin mini reklam kontrol panelin. Kulübün için fikirler üret, istek bırak,
+                  AI asistandan destek al.
+                </div>
+              </div>
+              <span id="user-plan-badge" class="tag standard">Standart Üye</span>
             </div>
-            <button class="primary-btn btn-full" id="btn-register">Üye Ol ve Giriş Yap</button>
-            <div class="status-text" id="status-register"></div>
+
+            <div class="section-title">Reklam İsteği Oluştur</div>
+            <div class="section-sub">
+              Kulübün / markan için bir reklam fikri iste. Yönetici onayı sonrası stüdyoya
+              aktarılacak.
+            </div>
+
+            <div class="form-grid">
+              <div>
+                <label for="req-brand">Marka / Kulüp Adı</label>
+                <input id="req-brand" placeholder="Örn: Işıkkent Okçuluk Kulübü" />
+              </div>
+              <div>
+                <label for="req-product">Ürün / Kampanya</label>
+                <input id="req-product" placeholder="Yeni sezon forma lansmanı" />
+              </div>
+              <div>
+                <label for="req-details">Kısa Açıklama</label>
+                <textarea
+                  id="req-details"
+                  placeholder="Hedef kitle, ton, süresi gibi temel bilgileri yaz."
+                ></textarea>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn-sm primary" id="btn-send-request">İstek Gönder</button>
+            </div>
+            <p class="hint" id="req-hint"></p>
+          </div>
+
+          <div class="card">
+            <div class="section-title">Spark AI Asistan</div>
+            <div class="section-sub">
+              Kulübün hakkında nasıl reklam yapabileceğini sor. Örn:
+              <em>"Okçuluk kulübüm için 15 saniyelik Instagram Reels fikri verir misin?"</em>
+            </div>
+
+            <div class="chat-box">
+              <div id="chat-log" class="chat-log"></div>
+              <div class="chat-input-row">
+                <input
+                  id="assistant-input"
+                  placeholder="Sorunu yaz: Kulübüm için nasıl bir kampanya hazırlayabilirim?"
+                />
+                <button id="assistant-send">Gönder</button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- MAIN -->
-    <section class="screen" id="screen-main">
-      <div style="margin-bottom:16px;">
-        <div style="font-size:14px;color:var(--accent-soft);" id="welcome-text"></div>
-      </div>
-      <h2 class="section-title">Bildirimler</h2>
-      <p class="section-sub">
-        Reklam isteklerinin durumu, satın almalar ve yönetici yanıtları burada.
-      </p>
-      <div class="notif-list" id="notif-list"></div>
-    </section>
-
-    <!-- STUDIO -->
-    <section class="screen" id="screen-studio">
-      <h2 class="section-title">Stüdyo</h2>
-      <p class="section-sub">
-        Profilin, reklam istekleri, grupların ve yönetici ile mesajlaşma alanın.
-      </p>
-
-      <div class="grid-two">
-        <div class="card">
-          <h3>Profil Bilgilerin</h3>
-          <div class="profile-avatar" id="profile-avatar"></div>
-          <p id="profile-info" style="font-size:13px;color:var(--muted);margin-top:4px;"></p>
-        </div>
-
-        <div class="card">
-          <h3>Profilini Düzenle</h3>
-          <div class="field">
-            <label for="profile-name">Görünen İsim</label>
-            <input id="profile-name" type="text" placeholder="Adını güncelle" />
+        <div style="margin-top:14px;" class="card">
+          <div class="section-title">Paketin ve Ayrıcalıkların</div>
+          <div class="section-sub">
+            Aktif paketine göre yapay zekanın derinliği, öncelik sıralaman ve renk etiketin
+            değişir. Influencer paketi en güçlü ayrıcalıkları içerir.
           </div>
-          <div class="field">
-            <label for="profile-photo">Profil Fotoğrafı</label>
-            <input id="profile-photo" type="file" accept="image/*" />
-          </div>
-          <button class="primary-btn btn-full" id="btn-save-profile">Profili Kaydet</button>
-          <div class="status-text" id="status-profile"></div>
-        </div>
-
-        <div class="card" id="card-ads">
-          <h3>Reklam İsteği Gönder</h3>
-          <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">
-            Reklam istediğin kulüp/marka, ürün ve hedef kitleyi kısaca anlat.
-          </p>
-          <div class="field">
-            <label for="ad-brand">Kulüp / Marka</label>
-            <input id="ad-brand" type="text" placeholder="Örn: X Spor Kulübü" />
-          </div>
-          <div class="field">
-            <label for="ad-product">Ürün / Kampanya</label>
-            <input id="ad-product" type="text" placeholder="Örn: yeni forma lansmanı" />
-          </div>
-          <div class="field">
-            <label for="ad-desc">Detay</label>
-            <textarea id="ad-desc" placeholder="Hedef kitle, platform, tarz (komik, ciddi, vb.)"></textarea>
-          </div>
-          <button class="primary-btn btn-full" id="btn-send-ad">Reklam İsteğini Gönder (1 kredi)</button>
-          <div class="status-text" id="status-ad"></div>
-        </div>
-
-        <div class="card">
-          <h3>Yöneticiye Mesaj Gönder</h3>
-          <div class="field">
-            <label for="msg-subject">Konu</label>
-            <input id="msg-subject" type="text" placeholder="Konu başlığı" />
-          </div>
-          <div class="field">
-            <label for="msg-body">Mesaj</label>
-            <textarea id="msg-body" placeholder="Mesajını buraya yaz..."></textarea>
-          </div>
-          <button class="primary-btn btn-full" id="btn-send-msg">Mesajı Gönder</button>
-          <div class="status-text" id="status-msg"></div>
-        </div>
-
-        <div class="card">
-          <h3>Yönetici Yanıtları</h3>
-          <div class="notif-list" id="user-messages-list" style="max-height:220px;overflow-y:auto;"></div>
-        </div>
-
-        <div class="card">
-          <h3>Kendi Grubunu Kur</h3>
-          <div class="field">
-            <label for="group-name">Grup Adı</label>
-            <input id="group-name" type="text" placeholder="Örn: Kreatif Ekip" />
-          </div>
-          <div class="field">
-            <label for="group-search">Üye Arama (isim)</label>
-            <input id="group-search" type="text" placeholder="Örn: Emir, Ahmet, Kulüp adı..." />
-          </div>
-          <button class="btn-small btn-approve" id="btn-search-members">Kişi Önerilerini Göster</button>
-          <div class="status-text" id="status-group"></div>
-          <div class="notif-list" id="group-suggestions" style="margin-top:8px;max-height:160px;overflow-y:auto;"></div>
-          <h4 style="font-size:13px;margin-top:10px;">Seçilen Üyeler</h4>
-          <div class="notif-list" id="group-selected" style="max-height:120px;overflow-y:auto;"></div>
-          <button class="primary-btn btn-full" id="btn-create-group" style="margin-top:8px;">Grubu Oluştur</button>
-        </div>
-
-        <div class="card">
-          <h3>Grupların</h3>
-          <div class="notif-list" id="group-list" style="max-height:220px;overflow-y:auto;"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ASSISTANT -->
-    <section class="screen" id="screen-assistant">
-      <h2 class="section-title">AI Reklam Asistanı</h2>
-      <p class="section-sub">
-        Kulübün, okulun veya markan için “Nasıl bir reklam yapabiliriz?” gibi sorular sor.
-        Asistan, hazır şablonlarla akıllı öneriler üretir.
-      </p>
-      <div class="grid-two">
-        <div class="card">
-          <h3>Sohbet</h3>
-          <div class="assistant-chat" id="assistant-chat"></div>
-          <div style="display:flex;gap:8px;margin-top:8px;">
-            <input id="assistant-input" type="text"
-                   placeholder="Örn: Basketbol kulübümüz için TikTok reklamı fikri verir misin?"
-                   style="flex:1;padding:8px 10px;border-radius:999px;border:1px solid var(--border-subtle);
-                          background:rgba(15,23,42,.9);color:var(--text);font-size:13px;">
-            <button class="primary-btn" id="assistant-send" style="padding:8px 14px;font-size:12px;">Gönder</button>
-          </div>
-          <div style="font-size:11px;color:var(--muted);margin-top:6px;">
-            Not: Bu asistan tarayıcı içinde hazır kurallarla çalışır, internetten veri çekmez.
-          </div>
-        </div>
-        <div class="card">
-          <h3>Hazır Sorular</h3>
-          <ul style="font-size:13px;color:var(--muted);padding-left:16px;line-height:1.6;">
-            <li>“Bizim futbol kulübü için Instagram’da nasıl reklam yapabiliriz?”</li>
-            <li>“Okulumuzun bilim şenliği için akılda kalıcı bir slogan önerir misin?”</li>
-            <li>“Kahve dükkanımız için esprili bir kampanya fikri verir misin?”</li>
-            <li>“Yeni açtığımız YouTube kanalı için tanıtım videosu fikri üretir misin?”</li>
+          <ul class="price-perks" id="user-perks">
+            <!-- JS dolduracak -->
           </ul>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- COMMUNITY -->
-    <section class="screen" id="screen-community">
-      <h2 class="section-title">Topluluk Akışı</h2>
-      <p class="section-sub">
-        Ürettiğin fikirleri, senaryoları veya örnek projelerini paylaş.
-      </p>
-      <div class="grid-two">
-        <div class="card">
-          <h3>Yeni Gönderi Oluştur</h3>
-          <div class="field">
-            <label for="post-title">Başlık</label>
-            <input id="post-title" type="text" placeholder="Örn: X Kulübü için komik senaryo" />
+      <!-- ADMIN -->
+      <section id="screen-admin" class="screen">
+        <div class="card" style="margin-bottom:12px;">
+          <div class="section-title">Yönetici Paneli</div>
+          <div class="section-sub">
+            Üyeleri görüntüle, reklam isteklerini onayla / reddet, mesajla ve paket fiyatlarını
+            düzenle. Yönetici rolü, normal kullanıcılar tarafından görülen “admin” kelimesini
+            göstermez; onlar sadece “Yönetici” etiketi görür.
           </div>
-          <div class="field">
-            <label for="post-text">Gönderi Metni</label>
-            <textarea id="post-text" placeholder="Fikrini, senaryonu veya önerini buraya yaz..."></textarea>
-          </div>
-          <div class="field">
-            <label for="post-link">İsteğe Bağlı Bağlantı (YouTube, Drive vb.)</label>
-            <input id="post-link" type="text" placeholder="https://..." />
-          </div>
-          <button class="primary-btn btn-full" id="btn-post">Gönderiyi Paylaş</button>
-          <div class="status-text" id="status-post"></div>
         </div>
-        <div class="card">
-          <h3>Topluluk Gönderileri</h3>
-          <div class="notif-list" id="feed-list" style="max-height:320px;overflow-y:auto;"></div>
-        </div>
-      </div>
-    </section>
 
-    <!-- PRICING -->
-    <section class="screen" id="screen-pricing">
-      <h2 class="section-title">Fiyatlandırma</h2>
-      <p class="section-sub">
-        Spark Free ile başla, kredi paketleriyle isteğe bağlı kredi al veya Spark Pro / Influencer abonelikleriyle
-        daha fazla destek al. Fiyatlar TL üzerinden tanımlanır, sistem otomatik USD ve EUR hesaplar.
-      </p>
-      <div class="grid-two">
-        <div class="card">
-          <h3>Satın Alma</h3>
-          <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">
-            Aşağıdan kredi paketlerini ve abonelikleri görebilirsin. Satın alma demo amaçlıdır;
-            Firestore’a kayıt bırakılır ve kredin artar.
-          </p>
-          <div id="plans-list"></div>
-          <div class="status-text" id="status-plans"></div>
-        </div>
-        <div class="card" id="pricing-list"></div>
-      </div>
-    </section>
-
-    <!-- SETTINGS -->
-    <section class="screen" id="screen-settings">
-      <h2 class="section-title">Ayarlar</h2>
-      <p class="section-sub">
-        Tema, vurgu rengi ve dil ayarlarını buradan değiştirebilirsin.
-      </p>
-      <div class="card" style="max-width:420px;">
-        <div class="field">
-          <label for="theme-select">Tema</label>
-          <select id="theme-select">
-            <option value="dark">Koyu Tema (Varsayılan)</option>
-            <option value="light">Açık Tema</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="accent-select">Vurgu Rengi</label>
-          <select id="accent-select">
-            <option value="orange">Turuncu</option>
-            <option value="blue">Mavi</option>
-            <option value="green">Yeşil</option>
-            <option value="purple">Mor</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="lang-select">Dil (fiyat gösterimi)</label>
-          <select id="lang-select">
-            <option value="tr">Türkçe – TL</option>
-            <option value="en">English – USD</option>
-            <option value="de">Deutsch – EUR</option>
-          </select>
-        </div>
-        <p style="font-size:12px;color:var(--muted);">
-          Dil, paketlerde hangi para biriminin öncelikli gösterileceğini belirler:
-          Türkçe → ₺, English → $, Deutsch → €.
-        </p>
-      </div>
-    </section>
-
-    <!-- ADMIN -->
-    <section class="screen" id="screen-admin">
-      <div style="margin-bottom:14px;font-size:14px;color:var(--accent-soft);">
-        Yönetici paneline hoş geldin 👑
-      </div>
-      <h2 class="section-title">Genel Görünüm</h2>
-      <p class="section-sub">
-        Buradan reklam istekleri, mesajlar, paketler, abonelikler, üyeler ve topluluk paylaşımlarını yönetebilirsin.
-      </p>
-
-      <div class="card" style="margin-bottom:16px;">
-        <h3>İstatistikler</h3>
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-label">Toplam Üye</div>
-            <div class="stat-value" id="stat-users">-</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Reklam İsteği</div>
-            <div class="stat-value" id="stat-requests">-</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Satın Alma</div>
-            <div class="stat-value" id="stat-purchases">-</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Mesaj</div>
-            <div class="stat-value" id="stat-messages">-</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Topluluk Gönderisi</div>
-            <div class="stat-value" id="stat-posts">-</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Paket / Abonelik</div>
-            <div class="stat-value" id="stat-plans">-</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="admin-layout">
-        <div>
-          <div class="card">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-              <h3>Reklam İstekleri</h3>
-              <button class="btn-small btn-ghost" id="btn-clear-requests">Geçmişi Sil</button>
+        <div class="admin-grid">
+          <div>
+            <div class="card" style="margin-bottom:10px;">
+              <div class="section-title">Üyeler</div>
+              <div class="section-sub">
+                Paket almayanlar temaya göre beyaz / siyah isimle gösterilir. Paket sahibi
+                kullanıcılar, paket renklerine göre renklendirilir.
+              </div>
+              <div id="admin-users" class="list"></div>
             </div>
-            <div class="admin-list" id="admin-requests"></div>
-          </div>
 
-          <div class="card">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-              <h3>Kullanıcı Mesajları</h3>
-              <button class="btn-small btn-ghost" id="btn-clear-messages">Geçmişi Sil</button>
+            <div class="card">
+              <div class="section-title">Kullanıcı Mesajları</div>
+              <div class="section-sub">
+                Asistan üzerinden gelen veya kullanıcı panelinden iletilen mesajlar burada görünür.
+              </div>
+              <div id="admin-messages" class="list"></div>
+              <div class="form-actions">
+                <button class="btn-sm danger" id="btn-clear-messages">Geçmişi Temizle</button>
+              </div>
             </div>
-            <div class="admin-list" id="admin-messages"></div>
           </div>
 
-          <div class="card">
-            <h3>Topluluk Gönderileri</h3>
-            <div class="admin-list" id="admin-posts"></div>
-          </div>
-        </div>
+          <div>
+            <div class="card" style="margin-bottom:10px;">
+              <div class="section-title">Reklam İstekleri</div>
+              <div class="section-sub">
+                Kullanıcıların gönderdiği istekleri onaylayabilir, reddedebilir ve kısa not
+                bırakabilirsin.
+              </div>
+              <div id="admin-requests" class="list"></div>
+              <div class="form-actions">
+                <button class="btn-sm danger" id="btn-clear-requests">Tüm Geçmişi Sil</button>
+              </div>
+            </div>
 
-        <div>
-          <div class="card">
-            <h3>Üyeler</h3>
-            <div class="admin-list" id="admin-users"></div>
-          </div>
+            <div class="card">
+              <div class="section-title">Fiyatlandırma ve Paketler</div>
+              <div class="section-sub">
+                Abonelik paketleri ve kredi paketleri burada. Sadece yönetici görebilir ve
+                değiştirebilir.
+              </div>
 
-          <div class="card">
-            <h3>Paket / Abonelik Fiyatlandırma</h3>
-            <div class="admin-list" id="admin-plans"></div>
-            <div style="margin-top:8px;">
-              <h4 style="font-size:13px;margin-bottom:4px;">Yeni Paket / Abonelik Ekle</h4>
-              <div class="field">
-                <label for="new-plan-name">Adı (Örn: Beginner, Pro, Spark Pro)</label>
-                <input id="new-plan-name" type="text" placeholder="Örn: Spark Pro" />
+              <div class="pricing-grid" id="admin-pricing"></div>
+
+              <div class="form-grid" style="margin-top:10px;">
+                <div>
+                  <label for="new-plan-name">Yeni Paket Adı</label>
+                  <input id="new-plan-name" placeholder="Örn: Spark Pro" />
+                </div>
+                <div>
+                  <label for="new-plan-type">Tür</label>
+                  <select id="new-plan-type">
+                    <option value="subscription">Abonelik</option>
+                    <option value="credits">Kredi Paketi</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="new-plan-price">Fiyat (TL)</label>
+                  <input id="new-plan-price" type="number" min="0" step="50" value="1450" />
+                </div>
+                <div>
+                  <label for="new-plan-perks">Kısa Not</label>
+                  <input
+                    id="new-plan-perks"
+                    placeholder="Örn: Aylık 8 reklam, öncelikli teslim, gelişmiş AI"
+                  />
+                </div>
               </div>
-              <div class="field">
-                <label for="new-plan-type">Tür</label>
-                <select id="new-plan-type">
-                  <option value="credits">Kredi Paketi</option>
-                  <option value="subscription">Abonelik</option>
-                </select>
+              <div class="form-actions">
+                <button class="btn-sm primary" id="btn-add-plan">Paket Ekle</button>
               </div>
-              <div class="field">
-                <label for="new-plan-credits">Kredi (istersen 0 bırak)</label>
-                <input id="new-plan-credits" type="number" min="0" value="0" />
-              </div>
-              <div class="field">
-                <label for="new-plan-tl">Fiyat (TL)</label>
-                <input id="new-plan-tl" type="number" min="0" value="1450" />
-              </div>
-              <button class="btn-small btn-approve" id="btn-add-plan">Paket / Abonelik Ekle</button>
-              <div class="status-text" id="status-add-plan"></div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
+      <!-- PROFILE -->
+      <section id="screen-profile" class="screen">
+        <div class="card">
+          <div class="profile-row">
+            <div class="avatar-circle" id="profile-avatar">SA</div>
+            <div>
+              <div class="profile-name" id="profile-name">Kullanıcı adı</div>
+              <div class="section-sub" id="profile-email">mail@ornek.com</div>
+              <div id="profile-plan" class="tag standard">Standart Üye</div>
+            </div>
+          </div>
+
+          <div class="columns-2">
+            <div>
+              <div class="section-title">Profilini Düzenle</div>
+              <div class="section-sub">
+                İsteğe bağlı olarak görünen ismini değiştirebilir, AI asistanın seni nasıl
+                hitap edeceğini belirleyebilirsin.
+              </div>
+
+              <div class="form-grid">
+                <div>
+                  <label for="profile-name-input">Görünen Ad</label>
+                  <input id="profile-name-input" placeholder="Yeni görünen ad" />
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="btn-sm primary" id="btn-save-profile">
+                  Profili Kaydet
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <div class="section-title">Kendi Grubunu Kur</div>
+              <div class="section-sub">
+                Örn: “Medya Ekibi”, “Sosyal Medya Squad” gibi bir grup adı gir. Sistem,
+                kullanıcı isimleriyle eşleşebilecek önerileri sana gösterebilir (şimdilik mini
+                bir simülasyon yapıyoruz).
+              </div>
+              <div class="form-grid">
+                <div>
+                  <label for="group-name-input">Grup Adı</label>
+                  <input id="group-name-input" placeholder="Örn: Işıkkent Creative Squad" />
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="btn-sm primary" id="btn-create-group">
+                  Grup Önerilerini Göster
+                </button>
+              </div>
+              <ul id="group-suggestions" class="price-perks" style="margin-top:8px;"></ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRICING (USER) -->
+      <section id="screen-pricing" class="screen">
+        <div class="card">
+          <div class="section-title">Paketler ve Abonelikler</div>
+          <div class="section-sub">
+            Aşağıdaki fiyatlar tanıtım amaçlıdır. Gerçek satın alma işlemi yoktur; bu proje
+            tamamen demo ve öğrenme amaçlıdır. Yönetici panelinden TL fiyatları değiştirebilirsin.
+          </div>
+          <div class="pricing-grid" id="user-pricing"></div>
+        </div>
+      </section>
+
+      <!-- COMMUNITY (şimdilik sade) -->
+      <section id="screen-community" class="screen">
+        <div class="card">
+          <div class="section-title">Topluluk Akışı (Demo)</div>
+          <div class="section-sub">
+            Burada ileride kullanıcıların ürettiği reklam fikirleri, örnek videolar ve beğeni
+            sayıları listelenebilir. Şimdilik sadece birkaç örnek satır gösteriyoruz.
+          </div>
+          <ul class="price-perks">
+            <li><strong>Deneme 1:</strong> "Okçuluk kulübü için 6 saniyelik YouTube bumper" – 23 beğeni</li>
+            <li><strong>Deneme 2:</strong> "Okul kantini için TikTok trend videosu" – 41 beğeni</li>
+            <li><strong>Deneme 3:</strong> "Yeni forma lansmanı için Reels storyboard" – 12 beğeni</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ASSISTANT ONLY SCREEN (farklı sekmeden erişim) -->
+      <section id="screen-assistant" class="screen">
+        <div class="card">
+          <div class="section-title">Spark AI Asistan (Tam Ekran)</div>
+          <div class="section-sub">
+            Aynı asistanı kullanıcı panelinde de görüyorsun; burada biraz daha geniş alanda
+            konuşabilirsin.
+          </div>
+          <div class="chat-box">
+            <div id="chat-log-2" class="chat-log"></div>
+            <div class="chat-input-row">
+              <input
+                id="assistant-input-2"
+                placeholder="Kulübün hakkında sor: Örn: 'Sponsorum için nasıl bir video çekmeliyim?'"
+              />
+              <button id="assistant-send-2">Gönder</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
-</main>
 
-<footer>
-  <div class="container row">
-    <span>© <span id="year"></span> Spark Ad Studio</span>
-  </div>
-</footer>
+  <script>
+    // Basit localStorage tabanlı mini veritabanı
+    const STORAGE_KEY = "spark_ad_studio_db_v1";
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-  import {
-    getFirestore,
-    collection,
-    addDoc,
-    getDocs,
-    onSnapshot,
-    doc,
-    updateDoc,
-    setDoc,
-    deleteDoc
-  } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
-  import {
-    getStorage,
-    ref as storageRef,
-    uploadBytes,
-    getDownloadURL
-  } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-storage.js";
+    const DEFAULT_DB = {
+      users: [], // {id, name, email, pass, plan}
+      requests: [], // {id, userEmail, brand, product, details, status, note, createdAt}
+      messages: [], // {id, fromEmail, text, answer, createdAt}
+      plans: [
+        {
+          id: "starter",
+          name: "Starter",
+          type: "subscription",
+          priceTl: 250,
+          perks: "Aylık 1–2 kısa video, temel AI önerileri, standart hız",
+          color: "standard",
+        },
+        {
+          id: "pro",
+          name: "Pro",
+          type: "subscription",
+          priceTl: 1100,
+          perks: "Aylık 4–5 video, gelişmiş AI, öncelikli teslim",
+          color: "pro",
+        },
+        {
+          id: "influencer",
+          name: "Influencer",
+          type: "subscription",
+          priceTl: 1600,
+          perks: "Sınıra yakın üretim, marka tonu eğitimi, detaylı AI beyin fırtınası",
+          color: "influencer",
+        },
+        {
+          id: "credits-10",
+          name: "10 Kredi Paketi",
+          type: "credits",
+          priceTl: 490,
+          perks: "10 adet tekil reklam brifi üretmek için kredi",
+          color: "standard",
+        },
+        {
+          id: "credits-25",
+          name: "25 Kredi Paketi",
+          type: "credits",
+          priceTl: 990,
+          perks: "Yoğun sezonlar için 25 reklam kredisi",
+          color: "pro",
+        },
+      ],
+    };
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDc6kmOfcRwWLFxPAKOqtB5w_QJkTdHqh8",
-    authDomain: "spark-ad-studio.firebaseapp.com",
-    projectId: "spark-ad-studio",
-    storageBucket: "spark-ad-studio.firebasestorage.app",
-    messagingSenderId: "91249468928",
-    appId: "1:91249468928:web:6661ecd7e1ff1e92c41ae5",
-    measurementId: "G-JW6S3PGH98"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const storage = getStorage(app);
-
-  const USD_RATE = 42.45;
-  const EUR_RATE = 49.60;
-
-  let currentUser = null;
-  let currentLang = "tr";
-  let plans = [];
-  let pendingGroupMembers = [];
-
-  const screens = {
-    info: document.getElementById("screen-info"),
-    auth: document.getElementById("screen-auth"),
-    main: document.getElementById("screen-main"),
-    studio: document.getElementById("screen-studio"),
-    assistant: document.getElementById("screen-assistant"),
-    community: document.getElementById("screen-community"),
-    pricing: document.getElementById("screen-pricing"),
-    settings: document.getElementById("screen-settings"),
-    admin: document.getElementById("screen-admin")
-  };
-
-  const navLinksContainer = document.getElementById("nav-links");
-  const navAdmin = document.getElementById("nav-admin");
-  const navInfo = document.getElementById("nav-info");
-  const btnAuth = document.getElementById("btn-auth");
-  const welcomeText = document.getElementById("welcome-text");
-  const profileInfo = document.getElementById("profile-info");
-  const profileAvatar = document.getElementById("profile-avatar");
-  const notifList = document.getElementById("notif-list");
-  const userMessagesList = document.getElementById("user-messages-list");
-  const plansList = document.getElementById("plans-list");
-  const statusPlans = document.getElementById("status-plans");
-  const pricingList = document.getElementById("pricing-list");
-  const yearSpan = document.getElementById("year");
-  yearSpan.textContent = new Date().getFullYear();
-
-  const statusLogin = document.getElementById("status-login");
-  const statusRegister = document.getElementById("status-register");
-  const statusAd = document.getElementById("status-ad");
-  const statusMsg = document.getElementById("status-msg");
-  const statusPost = document.getElementById("status-post");
-  const statusAddPlan = document.getElementById("status-add-plan");
-  const statusProfile = document.getElementById("status-profile");
-  const statusGroup = document.getElementById("status-group");
-
-  const adminRequestsBox = document.getElementById("admin-requests");
-  const adminMessagesBox = document.getElementById("admin-messages");
-  const adminUsersBox = document.getElementById("admin-users");
-  const adminPlansBox = document.getElementById("admin-plans");
-  const adminPostsBox = document.getElementById("admin-posts");
-  const feedList = document.getElementById("feed-list");
-
-  const groupSuggestionsBox = document.getElementById("group-suggestions");
-  const groupSelectedBox = document.getElementById("group-selected");
-  const groupListBox = document.getElementById("group-list");
-
-  const statsEls = {
-    users: document.getElementById("stat-users"),
-    requests: document.getElementById("stat-requests"),
-    purchases: document.getElementById("stat-purchases"),
-    messages: document.getElementById("stat-messages"),
-    posts: document.getElementById("stat-posts"),
-    plans: document.getElementById("stat-plans")
-  };
-
-  const assistantChat = document.getElementById("assistant-chat");
-  const assistantInput = document.getElementById("assistant-input");
-  const assistantSend = document.getElementById("assistant-send");
-
-  function setActiveScreen(key) {
-    Object.values(screens).forEach(el => el.classList.remove("active"));
-    if (screens[key]) screens[key].classList.add("active");
-    document.querySelectorAll(".nav-link").forEach(btn => {
-      btn.classList.toggle("active", btn.dataset.target === key);
-    });
-  }
-
-  function getPlanType(user) {
-    if (!user) return "free";
-    return user.planType || "free";
-  }
-  function getNameClassByPlan(planType) {
-    if (planType === "beginner") return "name-beginner";
-    if (planType === "pro") return "name-pro";
-    if (planType === "sparkpro") return "name-sparkpro";
-    if (planType === "influencer") return "name-influencer";
-    return "";
-  }
-  function getNameClassByUser(u) {
-    return getNameClassByPlan(getPlanType(u));
-  }
-
-  function updateStudioAccess() {
-    const cardAds = document.getElementById("card-ads");
-    if (!cardAds) return;
-    if (currentUser && currentUser.role === "user" && (currentUser.credits || 0) > 0) {
-      cardAds.style.display = "block";
-    } else {
-      cardAds.style.display = "none";
-    }
-  }
-
-  function updateHeaderState() {
-    if (!currentUser) {
-      navLinksContainer.style.display = "none";
-      btnAuth.textContent = "Üye Ol / Giriş Yap";
-      navInfo.style.display = "inline-block";
-    } else {
-      navLinksContainer.style.display = "flex";
-      btnAuth.textContent = "Çıkış Yap";
-      navInfo.style.display = "none";
-    }
-    if (currentUser && currentUser.role === "admin") {
-      navAdmin.style.display = "inline-block";
-    } else {
-      navAdmin.style.display = "none";
-    }
-    updateStudioAccess();
-  }
-
-  function applyAccent(key) {
-    let accent = "#ff7a3c", soft = "#ffd2aa";
-    if (key === "blue") { accent="#3b82f6"; soft="#bfdbfe"; }
-    else if (key === "green") { accent="#22c55e"; soft="#bbf7d0"; }
-    else if (key === "purple") { accent="#a855f7"; soft="#e9d5ff"; }
-    document.documentElement.style.setProperty("--accent", accent);
-    document.documentElement.style.setProperty("--accent-soft", soft);
-  }
-
-  function applyThemeAndLangFromStorage() {
-    const theme = localStorage.getItem("spark_theme") || "dark";
-    const accent = localStorage.getItem("spark_accent") || "orange";
-    currentLang = localStorage.getItem("spark_lang") || "tr";
-
-    document.getElementById("theme-select").value = theme;
-    document.getElementById("accent-select").value = accent;
-    document.getElementById("lang-select").value = currentLang;
-
-    if (theme === "light") document.body.classList.add("light");
-    else document.body.classList.remove("light");
-
-    applyAccent(accent);
-    renderPlansUI();
-    renderPricingUI();
-  }
-
-  document.getElementById("theme-select").addEventListener("change", () => {
-    const v = document.getElementById("theme-select").value;
-    localStorage.setItem("spark_theme", v);
-    applyThemeAndLangFromStorage();
-  });
-  document.getElementById("accent-select").addEventListener("change", () => {
-    const v = document.getElementById("accent-select").value;
-    localStorage.setItem("spark_accent", v);
-    applyThemeAndLangFromStorage();
-  });
-  document.getElementById("lang-select").addEventListener("change", () => {
-    currentLang = document.getElementById("lang-select").value;
-    localStorage.setItem("spark_lang", currentLang);
-    renderPlansUI();
-    renderPricingUI();
-  });
-  applyThemeAndLangFromStorage();
-
-  document.getElementById("tab-login").addEventListener("click", () => {
-    document.getElementById("tab-login").classList.add("active");
-    document.getElementById("tab-register").classList.remove("active");
-    document.getElementById("auth-login").style.display = "block";
-    document.getElementById("auth-register").style.display = "none";
-  });
-  document.getElementById("tab-register").addEventListener("click", () => {
-    document.getElementById("tab-login").classList.remove("active");
-    document.getElementById("tab-register").classList.add("active");
-    document.getElementById("auth-login").style.display = "none";
-    document.getElementById("auth-register").style.display = "block";
-  });
-
-  document.getElementById("btn-info-start").addEventListener("click", () => {
-    setActiveScreen("auth");
-  });
-
-  btnAuth.addEventListener("click", () => {
-    if (!currentUser) {
-      setActiveScreen("auth");
-    } else {
-      currentUser = null;
-      localStorage.removeItem("spark_current_user");
-      updateHeaderState();
-      setActiveScreen("info");
-      notifList.innerHTML = "";
-      profileInfo.textContent = "";
-      userMessagesList.innerHTML = "";
-      groupListBox.innerHTML = "";
-      groupSelectedBox.innerHTML = "";
-      groupSuggestionsBox.innerHTML = "";
-    }
-  });
-
-  document.querySelectorAll(".nav-link").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const target = btn.dataset.target;
-      if (!currentUser && target !== "info" && target !== "auth") {
-        setActiveScreen("auth");
-        return;
+    function loadDB() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return structuredClone(DEFAULT_DB);
+        const parsed = JSON.parse(raw);
+        return Object.assign(structuredClone(DEFAULT_DB), parsed);
+      } catch (e) {
+        console.warn("DB okunamadı, sıfırlanıyor:", e);
+        return structuredClone(DEFAULT_DB);
       }
-      if (target === "admin" && (!currentUser || currentUser.role !== "admin")) {
-        setActiveScreen("main");
-        return;
-      }
-      setActiveScreen(target);
-      if (target === "main" && currentUser && currentUser.role === "user") {
-        loadNotificationsForUser();
-      }
-      if (target === "studio" && currentUser && currentUser.role === "user") {
-        renderProfile();
-        loadUserReplies();
-        loadUserGroups();
-        updateProfileEditForm();
-      }
-      if (target === "pricing") {
-        renderPlansUI();
-        renderPricingUI();
-      }
-      if (target === "community") {
-        loadFeed();
-      }
-      if (target === "admin" && currentUser && currentUser.role === "admin") {
-        refreshStats();
-        renderAdminPlans();
-      }
-      if (target === "settings" && currentUser) {
-        updateProfileEditForm();
-      }
-    });
-  });
-
-  function updateProfileEditForm() {
-    if (!currentUser) return;
-    const nameInput = document.getElementById("profile-name");
-    if (nameInput) nameInput.value = currentUser.name || "";
-    updateProfileAvatar();
-  }
-
-  function updateProfileAvatar() {
-    if (!profileAvatar || !currentUser) return;
-    if (currentUser.photoURL) {
-      profileAvatar.style.backgroundImage = `url(${currentUser.photoURL})`;
-      profileAvatar.textContent = "";
-    } else {
-      const initials = (currentUser.name || "?")
-        .trim().split(/\s+/).map(p => p[0]).join("").substring(0,2).toUpperCase();
-      profileAvatar.style.backgroundImage = "none";
-      profileAvatar.textContent = initials || "?";
-    }
-  }
-
-  document.getElementById("btn-save-profile").addEventListener("click", async () => {
-    if (!currentUser || currentUser.role !== "user") {
-      statusProfile.textContent = "Profil düzenlemek için giriş yapmalısın.";
-      return;
-    }
-    statusProfile.textContent = "";
-    const newName = document.getElementById("profile-name").value.trim();
-    const fileInput = document.getElementById("profile-photo");
-    const file = fileInput.files[0];
-    const updates = {};
-    if (newName && newName !== currentUser.name) {
-      updates.name = newName;
-    }
-    try {
-      if (file) {
-        const refPath = `profilePhotos/${currentUser.id}`;
-        const refObj = storageRef(storage, refPath);
-        await uploadBytes(refObj, file);
-        const url = await getDownloadURL(refObj);
-        updates.photoURL = url;
-      }
-      if (Object.keys(updates).length === 0) {
-        statusProfile.textContent = "Değişiklik yok.";
-        return;
-      }
-      await updateDoc(doc(db,"users",currentUser.id), updates);
-      Object.assign(currentUser, updates);
-      localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
-      statusProfile.textContent = "Profil güncellendi.";
-      updateProfileAvatar();
-      renderProfile();
-      fileInput.value = "";
-    } catch (e) {
-      console.error(e);
-      statusProfile.textContent = "Profil kaydedilirken bir hata oluştu.";
-    }
-  });
-
-  document.getElementById("btn-register").addEventListener("click", async () => {
-    statusRegister.textContent = "";
-    const name = document.getElementById("reg-name").value.trim();
-    const email = document.getElementById("reg-email").value.trim();
-    const pass = document.getElementById("reg-pass").value.trim();
-    if (!name || !email || !pass) {
-      statusRegister.textContent = "Lütfen tüm alanları doldur.";
-      return;
-    }
-    try {
-      const usersRef = collection(db, "users");
-      const snap = await getDocs(usersRef);
-      let exists = false;
-      snap.forEach(d => { if (d.data().email === email) exists = true; });
-      if (exists) {
-        statusRegister.textContent = "Bu e-posta zaten kayıtlı.";
-        return;
-      }
-      const now = new Date().toLocaleString("tr-TR");
-      const docRef = await addDoc(usersRef, {
-        name, email, pass,
-        role: "user",
-        createdAt: now,
-        lastLogin: now,
-        credits: 0,
-        planType: "free",
-        photoURL: ""
-      });
-      currentUser = {
-        id: docRef.id, name, email, role: "user",
-        createdAt: now, lastLogin: now, credits: 0,
-        planType: "free", photoURL: ""
-      };
-      localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
-      updateHeaderState();
-      welcomeText.innerHTML = `Hoş geldin, <span class="${getNameClassByUser(currentUser)}">${currentUser.name}</span> 👋`;
-      renderProfile();
-      loadNotificationsForUser();
-      setActiveScreen("main");
-    } catch (e) {
-      console.error(e);
-      statusRegister.textContent = "Kayıt sırasında hata oluştu (Rules ayarlarını kontrol et).";
-    }
-  });
-
-  document.getElementById("btn-login").addEventListener("click", async () => {
-    statusLogin.textContent = "";
-    const loginVal = document.getElementById("login-email").value.trim();
-    const pass = document.getElementById("login-pass").value.trim();
-    if (!loginVal || !pass) {
-      statusLogin.textContent = "Lütfen kullanıcı adı/e-posta ve şifre gir.";
-      return;
     }
 
-    if (loginVal === "admin" && pass === "spark123") {
-      currentUser = {
-        id: "ADMIN",
-        name: "Yönetici",
-        email: "admin@sparkad.studio",
-        role: "admin",
-        credits: 0,
-        planType: "influencer"
-      };
-      localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
-      statusLogin.textContent = "Yönetici olarak giriş yapıldı.";
-      updateHeaderState();
-      renderAdminPlans();
-      refreshStats();
-      setActiveScreen("admin");
-      return;
+    function saveDB() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(DB));
     }
 
-    try {
-      const usersRef = collection(db, "users");
-      const snap = await getDocs(usersRef);
-      let found = null;
-      snap.forEach(d => {
-        const u = d.data();
-        if ((u.email === loginVal || u.name === loginVal) && u.pass === pass) {
-          found = { id: d.id, ...u };
-        }
-      });
-      if (!found) {
-        statusLogin.textContent = "Kullanıcı bulunamadı veya şifre hatalı.";
-        return;
-      }
-      const now = new Date().toLocaleString("tr-TR");
-      try { await updateDoc(doc(db, "users", found.id), { lastLogin: now }); } catch(e){}
-      found.lastLogin = now;
-      found.credits = found.credits || 0;
-      found.planType = found.planType || "free";
-      currentUser = found;
-      localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
-      updateHeaderState();
-      updateProfileAvatar();
-      if (currentUser.role === "admin") {
-        renderAdminPlans();
-        refreshStats();
-        setActiveScreen("admin");
+    const DB = loadDB();
+
+    // Ekran yönetimi
+    const screens = {
+      info: document.getElementById("screen-info"),
+      auth: document.getElementById("screen-auth"),
+      user: document.getElementById("screen-user"),
+      admin: document.getElementById("screen-admin"),
+      profile: document.getElementById("screen-profile"),
+      pricing: document.getElementById("screen-pricing"),
+      community: document.getElementById("screen-community"),
+      assistant: document.getElementById("screen-assistant"),
+    };
+
+    const btnInfoStart = document.getElementById("btn-info-start");
+    const btnInfoPricing = document.getElementById("btn-info-pricing");
+    const btnAuth = document.getElementById("btn-auth");
+    const btnLogout = document.getElementById("btn-logout");
+    const navHome = document.getElementById("nav-home");
+    const navStudio = document.getElementById("nav-studio");
+    const navCommunity = document.getElementById("nav-community");
+    const navAssistant = document.getElementById("nav-assistant");
+    const navPricing = document.getElementById("nav-pricing");
+    const navProfile = document.getElementById("nav-profile");
+
+    let currentUser = null; // {name, email, plan}
+
+    function showScreen(name) {
+      Object.values(screens).forEach((el) => el.classList.remove("active"));
+      if (screens[name]) screens[name].classList.add("active");
+    }
+
+    function updateTopbarForUser() {
+      if (currentUser) {
+        btnAuth.style.display = "none";
+        btnLogout.style.display = "inline-flex";
+        navHome.style.display = "inline-flex";
+        navStudio.style.display = "inline-flex";
+        navCommunity.style.display = "inline-flex";
+        navAssistant.style.display = "inline-flex";
+        navPricing.style.display = "inline-flex";
+        navProfile.style.display = "inline-flex";
       } else {
-        welcomeText.innerHTML = `Hoş geldin, <span class="${getNameClassByUser(currentUser)}">${currentUser.name}</span> 👋`;
-        renderProfile();
-        loadNotificationsForUser();
-        setActiveScreen("main");
+        btnAuth.style.display = "inline-flex";
+        btnLogout.style.display = "none";
+        navHome.style.display = "inline-flex";
+        // diğerleri sadece login sonrası anlamlı ama gizlemeye gerek yok
       }
-    } catch (e) {
-      console.error(e);
-      statusLogin.textContent = "Giriş sırasında bir hata oluştu.";
     }
-  });
 
-  const savedUser = localStorage.getItem("spark_current_user");
-  if (savedUser) {
-    try {
-      currentUser = JSON.parse(savedUser);
-      currentUser.planType = currentUser.planType || "free";
-      updateHeaderState();
-      updateProfileAvatar();
-      if (currentUser.role === "admin") {
-        setActiveScreen("admin");
-        renderAdminPlans();
-        refreshStats();
-      } else {
-        welcomeText.innerHTML = `Hoş geldin, <span class="${getNameClassByUser(currentUser)}">${currentUser.name}</span> 👋`;
-        renderProfile();
-        loadNotificationsForUser();
-        setActiveScreen("main");
-      }
-    } catch(e){ currentUser = null; }
-  }
+    // ----------------- AUTH ------------------
+    const TAB_LOGIN = document.getElementById("tab-login");
+    const TAB_REGISTER = document.getElementById("tab-register");
+    const VIEW_LOGIN = document.getElementById("auth-login");
+    const VIEW_REGISTER = document.getElementById("auth-register");
+    const authMsg = document.getElementById("auth-message");
 
-  function renderProfile() {
-    if (!currentUser || currentUser.role !== "user") return;
-    const planType = getPlanType(currentUser);
-    const planLabel =
-      planType === "beginner" ? "Beginner" :
-      planType === "pro" ? "Pro" :
-      planType === "sparkpro" ? "Spark Pro" :
-      planType === "influencer" ? "Influencer" :
-      "Free";
-    profileInfo.innerHTML =
-      `<strong>Ad:</strong> <span class="${getNameClassByUser(currentUser)}">${currentUser.name}</span><br>` +
-      `<strong>E-posta:</strong> ${currentUser.email}<br>` +
-      `<strong>Üyelik Tarihi:</strong> ${currentUser.createdAt || "-"}<br>` +
-      `<strong>Son Giriş:</strong> ${currentUser.lastLogin || "-"}<br>` +
-      `<strong>Kredi:</strong> ${currentUser.credits || 0}<br>` +
-      `<strong>Paket:</strong> ${planLabel}`;
-    updateStudioAccess();
-    updateProfileAvatar();
-  }
+    const loginEmail = document.getElementById("login-email");
+    const loginPass = document.getElementById("login-pass");
+    const regName = document.getElementById("reg-name");
+    const regEmail = document.getElementById("reg-email");
+    const regPass = document.getElementById("reg-pass");
 
-  async function loadNotificationsForUser() {
-    if (!currentUser || currentUser.role !== "user") return;
-    notifList.innerHTML = "Yükleniyor...";
-    const items = [];
-    try {
-      const reqSnap = await getDocs(collection(db,"requests"));
-      reqSnap.forEach(d => {
-        const r = d.data();
-        if (r.userId === currentUser.id) {
-          items.push({
-            type:"request",
-            createdAt:r.createdAt,
-            status:r.status || "pending",
-            text:`Reklam isteğin: ${r.brand || "-"} / ${r.product || "-"}`,
-            adminNote:r.adminNote || ""
-          });
-        }
-      });
-      const purSnap = await getDocs(collection(db,"purchases"));
-      purSnap.forEach(d => {
-        const p = d.data();
-        if (p.userId === currentUser.id) {
-          items.push({
-            type:"purchase",
-            createdAt:p.createdAt,
-            status:"done",
-            text:`${p.planName} satın alındı (${p.priceTL}₺)`,
-            adminNote:""
-          });
-        }
-      });
-      const msgSnap = await getDocs(collection(db,"messages"));
-      msgSnap.forEach(d => {
-        const m = d.data();
-        if (m.userId === currentUser.id && m.adminReply) {
-          items.push({
-            type:"msg",
-            createdAt:m.adminRepliedAt || m.createdAt,
-            status:"reply",
-            text:`Mesajına yönetici yanıtı: ${m.subject || "-"}`,
-            adminNote:m.adminReply
-          });
-        }
-      });
-      items.sort((a,b)=> (b.createdAt||"").localeCompare(a.createdAt||""));
-      if (!items.length) {
-        notifList.innerHTML = "<div class='notif-item'>Henüz bildirimin yok.</div>";
+    const btnLogin = document.getElementById("btn-login");
+    const btnRegister = document.getElementById("btn-register");
+    const btnToLogin = document.getElementById("btn-to-login");
+
+    const ADMIN_EMAIL = "admin@sparkad.studio";
+    const ADMIN_PASS = "spark123";
+
+    TAB_LOGIN.addEventListener("click", () => {
+      TAB_LOGIN.classList.add("active");
+      TAB_REGISTER.classList.remove("active");
+      VIEW_LOGIN.style.display = "";
+      VIEW_REGISTER.style.display = "none";
+      authMsg.textContent = "";
+    });
+
+    TAB_REGISTER.addEventListener("click", () => {
+      TAB_REGISTER.classList.add("active");
+      TAB_LOGIN.classList.remove("active");
+      VIEW_REGISTER.style.display = "";
+      VIEW_LOGIN.style.display = "none";
+      authMsg.textContent = "";
+    });
+
+    btnToLogin.addEventListener("click", () => {
+      TAB_LOGIN.click();
+    });
+
+    function findUserByEmail(email) {
+      return DB.users.find((u) => u.email.toLowerCase() === email.toLowerCase());
+    }
+
+    function registerUser() {
+      const name = regName.value.trim();
+      const email = regEmail.value.trim();
+      const pass = regPass.value.trim();
+      if (!name || !email || !pass) {
+        authMsg.textContent = "Lütfen tüm alanları doldur.";
         return;
       }
-      notifList.innerHTML = items.map(i=>{
-        let statusHtml="";
-        if (i.type==="request"){
-          if (i.status==="approved") statusHtml="<span class='pill-status s-approved'>Onaylandı</span>";
-          else if (i.status==="rejected") statusHtml="<span class='pill-status s-rejected'>Reddedildi</span>";
-          else statusHtml="<span class='pill-status s-pending'>Beklemede</span>";
-        } else if (i.type==="purchase"){
-          statusHtml="<span class='pill-status s-approved'>Satın alma</span>";
-        } else if (i.type==="msg"){
-          statusHtml="<span class='pill-status s-approved'>Yanıtlandı</span>";
-        }
-        return `<div class="notif-item">
-          <div class="notif-meta">${i.createdAt || ""} ${statusHtml}</div>
-          <div>${i.text}</div>
-          ${i.adminNote ? `<div style="font-size:12px;color:var(--muted);margin-top:4px;">Yönetici notu: ${i.adminNote}</div>`:""}
-        </div>`;
-      }).join("");
-    } catch(e){
-      console.error(e);
-      notifList.innerHTML="<div class='notif-item'>Bildirimler yüklenemedi.</div>";
-    }
-  }
-
-  async function loadUserReplies() {
-    if (!currentUser || currentUser.role !== "user") return;
-    userMessagesList.innerHTML = "";
-    const snap = await getDocs(collection(db,"messages"));
-    const arr = [];
-    snap.forEach(d=>{
-      const m = d.data();
-      if (m.userId === currentUser.id && m.adminReply){
-        arr.push(m);
+      if (pass.length < 6) {
+        authMsg.textContent = "Şifre en az 6 karakter olmalı.";
+        return;
       }
-    });
-    arr.sort((a,b)=>(b.adminRepliedAt||"").localeCompare(a.adminRepliedAt||""));
-    if (!arr.length){
-      userMessagesList.innerHTML="<div class='notif-item'>Henüz yönetici yanıtı yok.</div>";
-      return;
+      if (findUserByEmail(email)) {
+        authMsg.textContent = "Bu e-posta ile zaten bir hesap var.";
+        return;
+      }
+      const user = {
+        id: "u_" + Date.now(),
+        name,
+        email,
+        pass,
+        plan: "starter", // varsayılan
+      };
+      DB.users.push(user);
+      saveDB();
+      authMsg.textContent = "Kayıt başarılı! Giriş yapılıyor...";
+      setTimeout(() => {
+        loginEmail.value = email;
+        loginPass.value = pass;
+        loginUser();
+      }, 400);
     }
-    userMessagesList.innerHTML = arr.map(m=>`
-      <div class="notif-item">
-        <div class="notif-meta">${m.adminRepliedAt || ""}</div>
-        <div><strong>Sen:</strong> ${m.subject || ""}</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:2px;">${m.body || ""}</div>
-        <div style="margin-top:4px;"><strong>Yönetici:</strong> ${m.adminReply}</div>
-      </div>
-    `).join("");
-  }
 
-  document.getElementById("btn-send-ad").addEventListener("click", async () => {
-    statusAd.textContent = "";
-    if (!currentUser || currentUser.role !== "user") {
-      statusAd.textContent = "Önce giriş yapmalısın.";
-      return;
+    function loginUser() {
+      const email = loginEmail.value.trim();
+      const pass = loginPass.value.trim();
+      if (!email || !pass) {
+        authMsg.textContent = "Lütfen e-posta ve şifreyi doldur.";
+        return;
+      }
+
+      // Yönetici mi?
+      if (email === ADMIN_EMAIL && pass === ADMIN_PASS) {
+        currentUser = {
+          name: "Yönetici",
+          email: ADMIN_EMAIL,
+          plan: "admin",
+        };
+        authMsg.textContent = "Yönetici olarak giriş yapıldı.";
+        updateTopbarForUser();
+        renderAdmin();
+        showScreen("admin");
+        return;
+      }
+
+      const user = findUserByEmail(email);
+      if (!user || user.pass !== pass) {
+        authMsg.textContent = "E-posta veya şifre hatalı.";
+        return;
+      }
+
+      currentUser = { name: user.name, email: user.email, plan: user.plan };
+      authMsg.textContent = "Giriş başarılı!";
+      updateTopbarForUser();
+      renderUserDashboard();
+      showScreen("user");
     }
-    if ((currentUser.credits || 0) <= 0) {
-      statusAd.textContent = "Yeterli kredin yok. Fiyatlandırma bölümünden kredi al.";
-      return;
+
+    btnRegister.addEventListener("click", registerUser);
+    btnLogin.addEventListener("click", loginUser);
+
+    document.getElementById("btn-forgot").addEventListener("click", () => {
+      authMsg.textContent =
+        "Bu proje demo olduğu için gerçek şifre sıfırlama yok. İstersen yeni bir hesap açabilirsin.";
+    });
+
+    // ----------------- USER DASHBOARD ------------------
+    const userWelcome = document.getElementById("user-welcome");
+    const userPlanBadge = document.getElementById("user-plan-badge");
+    const userPerksList = document.getElementById("user-perks");
+
+    const reqBrand = document.getElementById("req-brand");
+    const reqProduct = document.getElementById("req-product");
+    const reqDetails = document.getElementById("req-details");
+    const btnSendRequest = document.getElementById("btn-send-request");
+    const reqHint = document.getElementById("req-hint");
+
+    function getPlanMeta(planId) {
+      if (planId === "admin") {
+        return { label: "Yönetici", color: "standard", perks: [] };
+      }
+      const p = DB.plans.find((pl) => pl.id === planId) || null;
+      if (!p) {
+        return {
+          label: "Standart Üye",
+          color: "standard",
+          perks: ["Temel haklar"],
+        };
+      }
+      let label = p.name + " Üye";
+      if (p.id === "influencer") label = "Influencer Müşterisi";
+      const perks = [];
+      if (p.id === "starter") {
+        perks.push(
+          "Aylık 1–2 reklam brifi",
+          "Temel yapay zeka önerileri",
+          "Standart öncelik"
+        );
+      } else if (p.id === "pro") {
+        perks.push(
+          "Aylık 4–5 reklam brifi",
+          "Daha derin AI cevapları",
+          "Öncelikli inceleme",
+          "Paket rengin panellerde yeşil görünecek"
+        );
+      } else if (p.id === "influencer") {
+        perks.push(
+          "Kapsamlı kampanya beyin fırtınası",
+          "Detaylı storyboard önerileri",
+          "Toplulukta 'Influencer Müşterisi' etiketi",
+          "Renk teması turuncu / altın tonları",
+          "Kullanıcı ismin öne çıkarılır"
+        );
+      } else {
+        perks.push(p.perks);
+      }
+      return { label, color: p.color || "standard", perks };
     }
-    const brand = document.getElementById("ad-brand").value.trim();
-    const product = document.getElementById("ad-product").value.trim();
-    const desc = document.getElementById("ad-desc").value.trim();
-    if (!brand || !product || !desc) {
-      statusAd.textContent = "Lütfen tüm alanları doldur.";
-      return;
+
+    function renderUserDashboard() {
+      if (!currentUser) return;
+      const meta = getPlanMeta(currentUser.plan);
+      userWelcome.textContent = `Hoş geldin, ${currentUser.name}!`;
+      userPlanBadge.textContent = meta.label;
+      userPlanBadge.className = "tag " + (meta.color || "standard");
+
+      userPerksList.innerHTML = "";
+      meta.perks.forEach((perk) => {
+        const li = document.createElement("li");
+        li.textContent = perk;
+        userPerksList.appendChild(li);
+      });
+
+      // Profil ekranını da güncelle
+      renderProfile();
     }
-    try {
-      const now = new Date().toLocaleString("tr-TR");
-      await addDoc(collection(db,"requests"),{
-        userId: currentUser.id,
+
+    btnSendRequest.addEventListener("click", () => {
+      if (!currentUser) {
+        reqHint.textContent = "İstek göndermek için önce giriş yapmalısın.";
+        return;
+      }
+      const brand = reqBrand.value.trim();
+      const product = reqProduct.value.trim();
+      const details = reqDetails.value.trim();
+      if (!brand || !product || !details) {
+        reqHint.textContent = "Lütfen marka, ürün ve açıklama kısmını doldur.";
+        return;
+      }
+      const req = {
+        id: "r_" + Date.now(),
+        userEmail: currentUser.email,
         userName: currentUser.name,
-        userPlanType: getPlanType(currentUser),
-        brand, product, desc,
+        brand,
+        product,
+        details,
         status: "pending",
-        adminNote: "",
-        createdAt: now
+        note: "",
+        createdAt: new Date().toISOString(),
+      };
+      DB.requests.unshift(req);
+      saveDB();
+      reqHint.textContent =
+        "İstek gönderildi! Yönetici onayladıktan sonra stüdyoda görünecek.";
+      reqBrand.value = "";
+      reqProduct.value = "";
+      reqDetails.value = "";
+      renderAdminRequests();
+    });
+
+    // ----------------- CHAT / AI ASISTAN ------------------
+    const assistantInput = document.getElementById("assistant-input");
+    const assistantSend = document.getElementById("assistant-send");
+    const chatLog = document.getElementById("chat-log");
+
+    const assistantInput2 = document.getElementById("assistant-input-2");
+    const assistantSend2 = document.getElementById("assistant-send-2");
+    const chatLog2 = document.getElementById("chat-log-2");
+
+    function pushChat(target, who, text) {
+      const log = target === "main" ? chatLog : chatLog2;
+      const line = document.createElement("div");
+      line.className = "chat-line " + who;
+      const bubble = document.createElement("div");
+      bubble.className = "chat-bubble";
+      const meta = document.createElement("div");
+      meta.className = "chat-meta";
+      meta.textContent = who === "me" ? (currentUser?.name || "Sen") : "Spark AI";
+      const body = document.createElement("div");
+      body.textContent = text;
+      bubble.appendChild(meta);
+      bubble.appendChild(body);
+      line.appendChild(bubble);
+      log.appendChild(line);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function generateAssistantAnswer(prompt) {
+      const base =
+        "Kulübün için güzel bir reklam fikri çıkarmak üzere sana yardımcı oluyorum. ";
+      const meta = currentUser ? getPlanMeta(currentUser.plan) : null;
+      const level =
+        currentUser && currentUser.plan === "influencer"
+          ? "Sen Influencer seviyesinde olduğun için daha detaylı bir öneri sunuyorum."
+          : currentUser && currentUser.plan === "pro"
+          ? "Pro paketli bir kullanıcı olduğun için orta detaylı ama odaklı bir öneri veriyorum."
+          : "Standart seviyede, kısa ama uygulanabilir bir öneri vereceğim.";
+
+      let idea =
+        "Önce 3 parçalı bir yapı düşün: 1) açılışta hızlı ve dikkat çeken bir sahne, 2) kulübün duygusunu gösteren kısa bir an, 3) logon ve net bir çağrı (örn. 'Bize katıl').";
+
+      if (prompt.toLowerCase().includes("okçuluk")) {
+        idea =
+          "Kamerayı hedefe doğru yaklaşırken çek, ok tam isabet olduğunda kısa bir slow-motion ve üstüne slogan: 'Hedefini Bize Söyle, Gerisini Biz Halledelim'. Ardından kulüp antrenmanından gülümseyen kısa planlar göster.";
+      } else if (prompt.toLowerCase().includes("forma")) {
+        idea =
+          "Eski formadan yeni formaya geçiş efekti kullan. Bir oyuncu eski formayla kadraja girer, kısa bir dönüşle yeni formaya geçer. Alt yazıda 'Yeni Sezon, Yeni Hedefler' yazsın, en sonda fiyat ve satış noktası gelsin.";
+      }
+
+      return base + level + " Önerim: " + idea;
+    }
+
+    function handleAssistantSend(target) {
+      const input = target === "main" ? assistantInput : assistantInput2;
+      const text = input.value.trim();
+      if (!text) return;
+      pushChat(target, "me", text);
+      input.value = "";
+      const answer = generateAssistantAnswer(text);
+      setTimeout(() => {
+        pushChat(target, "ai", answer);
+        // mesajları yönetime kaydet
+        DB.messages.push({
+          id: "m_" + Date.now(),
+          fromEmail: currentUser ? currentUser.email : "misafir",
+          text,
+          answer,
+          createdAt: new Date().toISOString(),
+        });
+        saveDB();
+        renderAdminMessages();
+      }, 250);
+    }
+
+    assistantSend.addEventListener("click", () => handleAssistantSend("main"));
+    assistantInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleAssistantSend("main");
+      }
+    });
+
+    assistantSend2.addEventListener("click", () => handleAssistantSend("full"));
+    assistantInput2.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleAssistantSend("full");
+      }
+    });
+
+    // ----------------- ADMIN RENDER ------------------
+    const adminUsersEl = document.getElementById("admin-users");
+    const adminRequestsEl = document.getElementById("admin-requests");
+    const adminMessagesEl = document.getElementById("admin-messages");
+    const adminPricingEl = document.getElementById("admin-pricing");
+
+    function renderAdminUsers() {
+      adminUsersEl.innerHTML = "";
+      DB.users.forEach((u) => {
+        const meta = getPlanMeta(u.plan);
+        const item = document.createElement("div");
+        item.className = "list-item";
+        const labelRow = document.createElement("div");
+        labelRow.className = "label-row";
+        const strong = document.createElement("strong");
+        strong.textContent = u.name;
+        strong.style.color =
+          meta.color === "influencer"
+            ? "#fed7aa"
+            : meta.color === "pro"
+            ? "#bbf7d0"
+            : "#e5e7eb";
+        const pill = document.createElement("span");
+        pill.className =
+          "pill-small " +
+          (meta.color === "influencer"
+            ? "orange"
+            : meta.color === "pro"
+            ? "green"
+            : "blue");
+        pill.textContent = meta.label;
+        labelRow.appendChild(strong);
+        labelRow.appendChild(pill);
+        const metaLine = document.createElement("div");
+        metaLine.className = "list-meta";
+        metaLine.textContent = `${u.email} • Paket: ${u.plan}`;
+        item.appendChild(labelRow);
+        item.appendChild(metaLine);
+        adminUsersEl.appendChild(item);
       });
-      const newCredits = (currentUser.credits || 0) - 1;
-      currentUser.credits = newCredits;
-      await updateDoc(doc(db,"users",currentUser.id),{credits:newCredits});
-      localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
+    }
+
+    function renderAdminRequests() {
+      adminRequestsEl.innerHTML = "";
+      DB.requests.forEach((r) => {
+        const item = document.createElement("div");
+        item.className = "list-item";
+        const labelRow = document.createElement("div");
+        labelRow.className = "label-row";
+
+        const strong = document.createElement("strong");
+        strong.textContent = r.brand + " – " + r.product;
+        const status = document.createElement("span");
+        status.className =
+          "pill-small " +
+          (r.status === "approved"
+            ? "green"
+            : r.status === "rejected"
+            ? "orange"
+            : "gray");
+        status.textContent =
+          r.status === "approved"
+            ? "Onaylandı"
+            : r.status === "rejected"
+            ? "Reddedildi"
+            : "Bekliyor";
+
+        labelRow.appendChild(strong);
+        labelRow.appendChild(status);
+
+        const meta = document.createElement("div");
+        meta.className = "list-meta";
+        meta.textContent =
+          `${r.userName} (${r.userEmail}) • ${new Date(
+            r.createdAt
+          ).toLocaleString("tr-TR")}`;
+
+        const details = document.createElement("div");
+        details.style.marginTop = "4px";
+        details.textContent = r.details;
+
+        const actions = document.createElement("div");
+        actions.className = "admin-actions";
+
+        const okBtn = document.createElement("button");
+        okBtn.className = "ok";
+        okBtn.textContent = "Onayla";
+        okBtn.addEventListener("click", () => {
+          r.status = "approved";
+          saveDB();
+          renderAdminRequests();
+        });
+
+        const noBtn = document.createElement("button");
+        noBtn.className = "dgr";
+        noBtn.textContent = "Reddet";
+        noBtn.addEventListener("click", () => {
+          r.status = "rejected";
+          saveDB();
+          renderAdminRequests();
+        });
+
+        actions.appendChild(okBtn);
+        actions.appendChild(noBtn);
+
+        item.appendChild(labelRow);
+        item.appendChild(meta);
+        item.appendChild(details);
+        item.appendChild(actions);
+
+        adminRequestsEl.appendChild(item);
+      });
+    }
+
+    function renderAdminMessages() {
+      adminMessagesEl.innerHTML = "";
+      DB.messages.forEach((m) => {
+        const item = document.createElement("div");
+        item.className = "list-item";
+        const labelRow = document.createElement("div");
+        labelRow.className = "label-row";
+        const strong = document.createElement("strong");
+        strong.textContent = m.fromEmail;
+        const pill = document.createElement("span");
+        pill.className = "pill-small blue";
+        pill.textContent = "AI sohbeti";
+        labelRow.appendChild(strong);
+        labelRow.appendChild(pill);
+        const meta = document.createElement("div");
+        meta.className = "list-meta";
+        meta.textContent = new Date(m.createdAt).toLocaleString("tr-TR");
+        const text = document.createElement("div");
+        text.style.marginTop = "4px";
+        text.textContent = "Kullanıcı: " + m.text;
+        const ans = document.createElement("div");
+        ans.style.marginTop = "2px";
+        ans.style.fontSize = "11px";
+        ans.style.color = "#9ca3af";
+        ans.textContent = "AI: " + m.answer;
+        item.appendChild(labelRow);
+        item.appendChild(meta);
+        item.appendChild(text);
+        item.appendChild(ans);
+        adminMessagesEl.appendChild(item);
+      });
+    }
+
+    function renderAdminPricing() {
+      adminPricingEl.innerHTML = "";
+      DB.plans.forEach((p) => {
+        const card = document.createElement("div");
+        card.className = "price-card";
+        const name = document.createElement("div");
+        name.className = "price-name";
+        name.textContent = p.name;
+        const tag = document.createElement("div");
+        tag.className = "price-tag";
+        tag.textContent =
+          p.type === "subscription" ? "Abonelik Paketi" : "Kredi Paketi";
+        const value = document.createElement("div");
+        value.className = "price-value";
+        value.textContent = `${p.priceTl.toLocaleString("tr-TR")} TL`;
+        const note = document.createElement("div");
+        note.className = "price-note";
+        note.textContent = p.perks;
+        card.appendChild(name);
+        card.appendChild(tag);
+        card.appendChild(value);
+        card.appendChild(note);
+        adminPricingEl.appendChild(card);
+      });
+    }
+
+    function renderAdmin() {
+      renderAdminUsers();
+      renderAdminRequests();
+      renderAdminMessages();
+      renderAdminPricing();
+    }
+
+    document
+      .getElementById("btn-clear-messages")
+      .addEventListener("click", () => {
+        DB.messages = [];
+        saveDB();
+        renderAdminMessages();
+      });
+
+    document
+      .getElementById("btn-clear-requests")
+      .addEventListener("click", () => {
+        DB.requests = [];
+        saveDB();
+        renderAdminRequests();
+      });
+
+    document.getElementById("btn-add-plan").addEventListener("click", () => {
+      const name = document.getElementById("new-plan-name").value.trim();
+      const type = document.getElementById("new-plan-type").value;
+      const price = Number(
+        document.getElementById("new-plan-price").value || "0"
+      );
+      const perks = document.getElementById("new-plan-perks").value.trim();
+      if (!name || !perks) return;
+      DB.plans.push({
+        id: "p_" + Date.now(),
+        name,
+        type,
+        priceTl: price,
+        perks,
+        color: type === "subscription" ? "pro" : "standard",
+      });
+      saveDB();
+      renderAdminPricing();
+    });
+
+    // ----------------- PROFILE ------------------
+    const profileAvatar = document.getElementById("profile-avatar");
+    const profileName = document.getElementById("profile-name");
+    const profileEmail = document.getElementById("profile-email");
+    const profilePlan = document.getElementById("profile-plan");
+    const profileNameInput = document.getElementById("profile-name-input");
+    const btnSaveProfile = document.getElementById("btn-save-profile");
+    const groupNameInput = document.getElementById("group-name-input");
+    const btnCreateGroup = document.getElementById("btn-create-group");
+    const groupSuggestions = document.getElementById("group-suggestions");
+
+    function renderProfile() {
+      if (!currentUser) return;
+      const meta = getPlanMeta(currentUser.plan);
+      profileName.textContent = currentUser.name;
+      profileEmail.textContent = currentUser.email;
+      profilePlan.textContent = meta.label;
+      profilePlan.className = "tag " + (meta.color || "standard");
+      const initials =
+        currentUser.name
+          .split(" ")
+          .map((p) => p[0])
+          .join("")
+          .slice(0, 2)
+          .toUpperCase() || "SA";
+      profileAvatar.textContent = initials;
+    }
+
+    btnSaveProfile.addEventListener("click", () => {
+      const newName = profileNameInput.value.trim();
+      if (!newName || !currentUser) return;
+      currentUser.name = newName;
+      const usr = findUserByEmail(currentUser.email);
+      if (usr) usr.name = newName;
+      saveDB();
+      renderUserDashboard();
       renderProfile();
-      loadNotificationsForUser();
-      statusAd.textContent = "Reklam isteğin gönderildi. Kalan kredi: " + newCredits;
-      document.getElementById("ad-desc").value="";
-    } catch(e){
-      console.error(e);
-      statusAd.textContent="İstek gönderilirken hata oluştu.";
-    }
-  });
-
-  document.getElementById("btn-send-msg").addEventListener("click", async () => {
-    statusMsg.textContent="";
-    if (!currentUser || currentUser.role !== "user"){
-      statusMsg.textContent="Önce giriş yapmalısın.";
-      return;
-    }
-    const subject = document.getElementById("msg-subject").value.trim();
-    const body = document.getElementById("msg-body").value.trim();
-    if (!subject || !body){
-      statusMsg.textContent="Lütfen konu ve mesajı doldur.";
-      return;
-    }
-    try{
-      const now = new Date().toLocaleString("tr-TR");
-      await addDoc(collection(db,"messages"),{
-        userId: currentUser.id,
-        userName: currentUser.name,
-        userPlanType: getPlanType(currentUser),
-        subject, body,
-        createdAt: now,
-        adminReply:"",
-        adminRepliedAt:""
-      });
-      statusMsg.textContent="Mesajın yöneticiye gönderildi.";
-      document.getElementById("msg-subject").value="";
-      document.getElementById("msg-body").value="";
-      loadNotificationsForUser();
-    }catch(e){
-      console.error(e);
-      statusMsg.textContent="Mesaj gönderilirken hata oluştu.";
-    }
-  });
-
-  document.getElementById("btn-post").addEventListener("click", async () => {
-    statusPost.textContent="";
-    if (!currentUser){
-      statusPost.textContent="Önce giriş yapmalısın.";
-      return;
-    }
-    const title = document.getElementById("post-title").value.trim();
-    const text = document.getElementById("post-text").value.trim();
-    const link = document.getElementById("post-link").value.trim();
-    if (!title || !text){
-      statusPost.textContent="Başlık ve metin zorunludur.";
-      return;
-    }
-    try{
-      const now = new Date().toLocaleString("tr-TR");
-      await addDoc(collection(db,"posts"),{
-        userId: currentUser.id,
-        userName: currentUser.name,
-        userPlanType: getPlanType(currentUser),
-        title,text,link,
-        createdAt: now
-      });
-      statusPost.textContent="Gönderi toplulukta paylaşıldı.";
-      document.getElementById("post-title").value="";
-      document.getElementById("post-text").value="";
-      document.getElementById("post-link").value="";
-      loadFeed();
-    }catch(e){
-      console.error(e);
-      statusPost.textContent="Gönderi kaydedilirken hata oluştu.";
-    }
-  });
-
-  async function loadFeed() {
-    feedList.innerHTML="Yükleniyor...";
-    try{
-      const snap = await getDocs(collection(db,"posts"));
-      const arr=[];
-      snap.forEach(d=> arr.push({id:d.id,...d.data()}));
-      arr.sort((a,b)=>(b.createdAt||"").localeCompare(a.createdAt||""));
-      if (!arr.length){
-        feedList.innerHTML="<div class='feed-post'>Henüz topluluk gönderisi yok.</div>";
-        return;
-      }
-      feedList.innerHTML = arr.map(p=>{
-        const cls = getNameClassByPlan(p.userPlanType || "free");
-        return `<div class="feed-post">
-          <div class="notif-meta">${p.createdAt || ""} – <span class="${cls}">${p.userName || ""}</span></div>
-          <div><strong>${p.title || ""}</strong></div>
-          <div style="font-size:12px;color:var(--muted);margin-top:2px;">${p.text || ""}</div>
-          ${p.link ? `<div style="margin-top:4px;font-size:12px;"><a href="${p.link}" target="_blank">Bağlantı</a></div>`:""}
-        </div>`;
-      }).join("");
-    }catch(e){
-      console.error(e);
-      feedList.innerHTML="<div class='feed-post'>Gönderiler yüklenemedi.</div>";
-    }
-  }
-
-  async function loadUserGroups() {
-    if (!currentUser) return;
-    groupListBox.innerHTML = "Yükleniyor...";
-    try{
-      const snap = await getDocs(collection(db,"groups"));
-      const arr=[];
-      snap.forEach(d=>{
-        const g = d.data();
-        if (g.ownerId === currentUser.id) {
-          arr.push({id: d.id, ...g});
-        }
-      });
-      arr.sort((a,b)=>(b.createdAt||"").localeCompare(a.createdAt||""));
-      if (!arr.length){
-        groupListBox.innerHTML="<div class='notif-item'>Henüz bir grubun yok.</div>";
-        return;
-      }
-      groupListBox.innerHTML = arr.map(g=>`
-        <div class="notif-item">
-          <div class="notif-meta">${g.createdAt || ""}</div>
-          <div><strong>${g.groupName}</strong></div>
-          <div style="font-size:12px;color:var(--muted);margin-top:2px;">
-            Üyeler: ${(g.memberNames || []).join(", ") || currentUser.name}
-          </div>
-        </div>
-      `).join("");
-    }catch(e){
-      console.error(e);
-      groupListBox.innerHTML="<div class='notif-item'>Gruplar yüklenemedi.</div>";
-    }
-  }
-
-  document.getElementById("btn-search-members").addEventListener("click", async () => {
-    statusGroup.textContent="";
-    if (!currentUser){
-      statusGroup.textContent="Önce giriş yapmalısın.";
-      return;
-    }
-    const term = document.getElementById("group-search").value.trim().toLowerCase();
-    if (!term){
-      statusGroup.textContent="Aramak için bir isim yaz.";
-      return;
-    }
-    groupSuggestionsBox.innerHTML="Yükleniyor...";
-    try{
-      const snap = await getDocs(collection(db,"users"));
-      const arr=[];
-      snap.forEach(d=>{
-        const u = d.data();
-        if (d.id === currentUser.id) return;
-        const name = (u.name || "").toLowerCase();
-        if (name.includes(term)) {
-          arr.push({id:d.id, ...u});
-        }
-      });
-      if (!arr.length){
-        groupSuggestionsBox.innerHTML="<div class='notif-item'>Uygun kişi bulunamadı.</div>";
-        return;
-      }
-      groupSuggestionsBox.innerHTML = arr.map(u=>{
-        const cls = getNameClassByUser(u);
-        return `<div class="notif-item">
-          <div class="notif-meta">${u.email || ""}</div>
-          <div><span class="${cls}">${u.name || ""}</span></div>
-          <div class="admin-actions" style="margin-top:4px;">
-            <button class="btn-small btn-approve" data-add-member="${u.id}">Ekle</button>
-          </div>
-        </div>`;
-      }).join("");
-      groupSuggestionsBox.querySelectorAll("button[data-add-member]").forEach(btn=>{
-        btn.addEventListener("click", ()=>{
-          const id = btn.dataset.addMember;
-          const u = arr.find(x=>x.id===id);
-          if (!u) return;
-          if (!pendingGroupMembers.find(m=>m.id===u.id)){
-            pendingGroupMembers.push({id:u.id,name:u.name,planType:u.planType || "free"});
-            renderSelectedGroupMembers();
-          }
-        });
-      });
-    }catch(e){
-      console.error(e);
-      groupSuggestionsBox.innerHTML="<div class='notif-item'>Kişiler yüklenemedi.</div>";
-    }
-  });
-
-  function renderSelectedGroupMembers() {
-    if (!pendingGroupMembers.length){
-      groupSelectedBox.innerHTML="<div class='notif-item'>Henüz üye seçilmedi. Grup kurduğunda sen otomatik üye olursun.</div>";
-      return;
-    }
-    groupSelectedBox.innerHTML = pendingGroupMembers.map(m=>{
-      const cls = getNameClassByPlan(m.planType || "free");
-      return `<div class="notif-item">
-        <div><span class="${cls}">${m.name}</span></div>
-      </div>`;
-    }).join("");
-  }
-  renderSelectedGroupMembers();
-
-  document.getElementById("btn-create-group").addEventListener("click", async () => {
-    statusGroup.textContent="";
-    if (!currentUser){
-      statusGroup.textContent="Önce giriş yapmalısın.";
-      return;
-    }
-    const groupName = document.getElementById("group-name").value.trim();
-    if (!groupName){
-      statusGroup.textContent="Grup adı yazmalısın.";
-      return;
-    }
-    try{
-      const now = new Date().toLocaleString("tr-TR");
-      const memberIds = [currentUser.id, ...pendingGroupMembers.map(m=>m.id)];
-      const memberNames = [currentUser.name, ...pendingGroupMembers.map(m=>m.name)];
-      await addDoc(collection(db,"groups"),{
-        ownerId: currentUser.id,
-        ownerName: currentUser.name,
-        groupName,
-        memberIds,
-        memberNames,
-        createdAt: now
-      });
-      statusGroup.textContent="Grubun oluşturuldu.";
-      pendingGroupMembers = [];
-      renderSelectedGroupMembers();
-      groupSuggestionsBox.innerHTML="";
-      document.getElementById("group-name").value="";
-      loadUserGroups();
-    }catch(e){
-      console.error(e);
-      statusGroup.textContent="Grup oluşturulurken hata oluştu.";
-    }
-  });
-
-  function normalizePlanName(name) {
-    const n = (name || "").toLowerCase();
-    if (n.includes("influencer")) return "influencer";
-    if (n.includes("spark") && n.includes("pro")) return "sparkpro";
-    if (n.includes("beginner") || n.includes("başlangıç")) return "beginner";
-    if (n === "pro") return "pro";
-    return "free";
-  }
-
-  async function loadFeed() {
-    feedList.innerHTML="Yükleniyor...";
-    try{
-      const snap = await getDocs(collection(db,"posts"));
-      const arr=[];
-      snap.forEach(d=> arr.push({id:d.id,...d.data()}));
-      arr.sort((a,b)=>(b.createdAt||"").localeCompare(a.createdAt||""));
-      if (!arr.length){
-        feedList.innerHTML="<div class='feed-post'>Henüz topluluk gönderisi yok.</div>";
-        return;
-      }
-      feedList.innerHTML = arr.map(p=>{
-        const cls = getNameClassByPlan(p.userPlanType || "free");
-        return `<div class="feed-post">
-          <div class="notif-meta">${p.createdAt || ""} – <span class="${cls}">${p.userName || ""}</span></div>
-          <div><strong>${p.title || ""}</strong></div>
-          <div style="font-size:12px;color:var(--muted);margin-top:2px;">${p.text || ""}</div>
-          ${p.link ? `<div style="margin-top:4px;font-size:12px;"><a href="${p.link}" target="_blank">Bağlantı</a></div>`:""}
-        </div>`;
-      }).join("");
-    }catch(e){
-      console.error(e);
-      feedList.innerHTML="<div class='feed-post'>Gönderiler yüklenemedi.</div>";
-    }
-  }
-
-  function ensureDefaultPlans() {
-    onSnapshot(collection(db,"plans"), async snap => {
-      if (snap.empty) {
-        const now = new Date().toLocaleString("tr-TR");
-        await addDoc(collection(db,"plans"),{name:"Starter",type:"credits",credits:3,priceTL:250,createdAt:now});
-        await addDoc(collection(db,"plans"),{name:"Pro",type:"credits",credits:10,priceTL:1100,createdAt:now});
-        await addDoc(collection(db,"plans"),{name:"Ultra",type:"credits",credits:25,priceTL:1750,createdAt:now});
-        await addDoc(collection(db,"plans"),{name:"Spark Pro",type:"subscription",credits:0,priceTL:1450,createdAt:now});
-        await addDoc(collection(db,"plans"),{name:"Influencer",type:"subscription",credits:0,priceTL:2500,createdAt:now});
-      }
-    });
-  }
-  ensureDefaultPlans();
-
-  async function fetchPlans() {
-    const snap = await getDocs(collection(db,"plans"));
-    plans=[];
-    snap.forEach(d=> plans.push({id:d.id,...d.data()}));
-    plans.sort((a,b)=>(a.type||"").localeCompare(b.type||"") || (a.priceTL||0)-(b.priceTL||0));
-  }
-
-  function formatPrice(p) {
-    const tl = p.priceTL || 0;
-    const usd = (tl / USD_RATE).toFixed(2);
-    const eur = (tl / EUR_RATE).toFixed(2);
-    if (currentLang === "en") return `$${usd} (≈ ${tl}₺ / €${eur})`;
-    if (currentLang === "de") return `€${eur} (≈ ${tl}₺ / $${usd})`;
-    return `${tl}₺ (≈ $${usd} / €${eur})`;
-  }
-
-  async function renderPlansUI() {
-    await fetchPlans();
-    const creditPlans = plans.filter(p=>p.type==="credits");
-    const subs = plans.filter(p=>p.type==="subscription");
-    let html = "";
-    if (creditPlans.length){
-      html += "<h4 style='margin-bottom:6px;'>Kredi Paketleri</h4>";
-      creditPlans.forEach(p=>{
-        html += `<div class="notif-item">
-          <div class="notif-meta">${p.name} – ${p.credits} kredi</div>
-          <div>${formatPrice(p)}</div>
-          <button class="btn-small btn-approve" data-buy="${p.id}" style="margin-top:6px;">Bu paketi al</button>
-        </div>`;
-      });
-    }
-    if (subs.length){
-      html += "<h4 style='margin:10px 0 6px;'>Abonelikler</h4>";
-      subs.forEach(p=>{
-        const planType = normalizePlanName(p.name);
-        const cls = getNameClassByPlan(planType);
-        html += `<div class="notif-item">
-          <div class="notif-meta"><span class="${cls}">${p.name}</span> – abonelik</div>
-          <div>${formatPrice(p)}</div>
-          <button class="btn-small btn-approve" data-buy="${p.id}" style="margin-top:6px;">Aboneliği başlat</button>
-        </div>`;
-      });
-    }
-    plansList.innerHTML = html || "<div class='notif-item'>Henüz tanımlı paket yok.</div>";
-    plansList.querySelectorAll("button[data-buy]").forEach(btn=>{
-      btn.addEventListener("click", ()=> buyPlan(btn.dataset.buy));
-    });
-  }
-
-  async function buyPlan(planId) {
-    statusPlans.textContent="";
-    if (!currentUser || currentUser.role!=="user"){
-      statusPlans.textContent="Satın almak için giriş yapmalısın.";
-      return;
-    }
-    const plan = plans.find(p=>p.id===planId);
-    if (!plan){ statusPlans.textContent="Paket bulunamadı."; return; }
-    try{
-      const tl = plan.priceTL || 0;
-      const usd = parseFloat((tl / USD_RATE).toFixed(2));
-      const eur = parseFloat((tl / EUR_RATE).toFixed(2));
-      const now = new Date().toLocaleString("tr-TR");
-      await addDoc(collection(db,"purchases"),{
-        userId: currentUser.id,
-        userName: currentUser.name,
-        planId: plan.id,
-        planName: plan.name,
-        type: plan.type,
-        priceTL: tl,
-        priceUSD: usd,
-        priceEUR: eur,
-        createdAt: now
-      });
-      if (plan.type === "credits") {
-        const addCredits = plan.credits || 0;
-        const newCredits = (currentUser.credits || 0) + addCredits;
-        currentUser.credits = newCredits;
-        await updateDoc(doc(db,"users",currentUser.id),{credits:newCredits});
-        localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
-        renderProfile();
-        updateStudioAccess();
-      } else if (plan.type === "subscription") {
-        const planType = normalizePlanName(plan.name);
-        currentUser.planType = planType;
-        await updateDoc(doc(db,"users",currentUser.id),{planType});
-        localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
-        renderProfile();
-      }
-      statusPlans.textContent = `${plan.name} satın alındı.`;
-      loadNotificationsForUser();
-    }catch(e){
-      console.error(e);
-      statusPlans.textContent="Satın alma kaydedilirken hata oluştu.";
-    }
-  }
-
-  function renderPricingUI() {
-    fetchPlans().then(()=>{
-      if (!plans.length){
-        pricingList.innerHTML="<p style='font-size:13px;color:var(--muted);'>Paket bulunamadı.</p>";
-        return;
-      }
-      const creditPlans = plans.filter(p=>p.type==="credits");
-      const subs = plans.filter(p=>p.type==="subscription");
-      let html="<h3 style='margin-bottom:8px;'>Genel Fiyat Tablosu (Demo)</h3>";
-      if (creditPlans.length){
-        html+="<h4 style='margin-bottom:4px;'>Kredi Paketleri</h4><ul style='font-size:13px;color:var(--muted);padding-left:16px;'>";
-        creditPlans.forEach(p=>{
-          html+=`<li>${p.name}: ${p.credits} kredi – ${formatPrice(p)}</li>`;
-        });
-        html+="</ul>";
-      }
-      if (subs.length){
-        html+="<h4 style='margin:10px 0 4px;'>Abonelikler</h4><ul style='font-size:13px;color:var(--muted);padding-left:16px;'>";
-        subs.forEach(p=>{
-          html+=`<li>${p.name} aboneliği – ${formatPrice(p)}</li>`;
-        });
-        html+="</ul>";
-      }
-      pricingList.innerHTML=html;
-    });
-  }
-
-  async function refreshStats() {
-    try{
-      const u = await getDocs(collection(db,"users"));
-      const r = await getDocs(collection(db,"requests"));
-      const m = await getDocs(collection(db,"messages"));
-      const p = await getDocs(collection(db,"purchases"));
-      const posts = await getDocs(collection(db,"posts"));
-      const pl = await getDocs(collection(db,"plans"));
-      statsEls.users.textContent = u.size;
-      statsEls.requests.textContent = r.size;
-      statsEls.messages.textContent = m.size;
-      statsEls.purchases.textContent = p.size;
-      statsEls.posts.textContent = posts.size;
-      statsEls.plans.textContent = pl.size;
-    }catch(e){
-      console.error(e);
-    }
-  }
-
-  function renderAdminPlans() {
-    onSnapshot(collection(db,"plans"), snap=>{
-      const arr=[];
-      snap.forEach(d=> arr.push({id:d.id,...d.data()}));
-      arr.sort((a,b)=>(a.type||"").localeCompare(b.type||"") || (a.priceTL||0)-(b.priceTL||0));
-      adminPlansBox.innerHTML = arr.map(p=>{
-        return `<div class="admin-item">
-          <div class="admin-meta">${p.type==="credits" ? "Kredi Paketi" : "Abonelik"} – ID: ${p.id}</div>
-          <div><strong>${p.name}</strong> ${p.type==="credits" ? "("+(p.credits||0)+" kredi)" : ""}</div>
-          <div class="admin-actions" style="margin-top:6px;">
-            <input type="number" data-plan="${p.id}" value="${p.priceTL || 0}" />
-            <button class="btn-small btn-approve" data-save-plan="${p.id}">TL Fiyatı Kaydet</button>
-          </div>
-        </div>`;
-      }).join("") || "<div class='admin-item'>Plan bulunamadı.</div>";
-      adminPlansBox.querySelectorAll("button[data-save-plan]").forEach(btn=>{
-        btn.addEventListener("click", async ()=>{
-          const id = btn.dataset.savePlan;
-          const input = adminPlansBox.querySelector(`input[data-plan='${id}']`);
-          const val = Number(input.value || 0);
-          try{
-            await updateDoc(doc(db,"plans",id),{priceTL:val});
-            statusAddPlan.textContent="Fiyat güncellendi.";
-            renderPlansUI();
-            renderPricingUI();
-            refreshStats();
-          }catch(e){
-            console.error(e);
-            statusAddPlan.textContent="Fiyat güncellenemedi.";
-          }
-        });
-      });
-    });
-  }
-
-  document.getElementById("btn-add-plan").addEventListener("click", async ()=>{
-    statusAddPlan.textContent="";
-    const name = document.getElementById("new-plan-name").value.trim();
-    const type = document.getElementById("new-plan-type").value;
-    const credits = Number(document.getElementById("new-plan-credits").value || 0);
-    const priceTL = Number(document.getElementById("new-plan-tl").value || 0);
-    if (!name){
-      statusAddPlan.textContent="İsim zorunlu.";
-      return;
-    }
-    try{
-      const now = new Date().toLocaleString("tr-TR");
-      await addDoc(collection(db,"plans"),{name,type,credits,priceTL,createdAt:now});
-      statusAddPlan.textContent="Yeni paket/abonelik eklendi.";
-      document.getElementById("new-plan-name").value="";
-      renderPlansUI();
-      renderPricingUI();
-      refreshStats();
-    }catch(e){
-      console.error(e);
-      statusAddPlan.textContent="Paket eklenemedi.";
-    }
-  });
-
-  function subscribeAdminStreams() {
-    onSnapshot(collection(db,"requests"), snap=>{
-      const arr=[];
-      snap.forEach(d=> arr.push({id:d.id,...d.data()}));
-      arr.sort((a,b)=>(b.createdAt||"").localeCompare(a.createdAt||""));
-      adminRequestsBox.innerHTML = arr.map(r=>{
-        const status = r.status || "pending";
-        const statusHtml =
-          status==="approved" ? "<span class='pill-status s-approved'>Onaylandı</span>" :
-          status==="rejected" ? "<span class='pill-status s-rejected'>Reddedildi</span>" :
-          "<span class='pill-status s-pending'>Beklemede</span>";
-        const disabled = status==="approved" ? "disabled" : "";
-        const cls = getNameClassByPlan(r.userPlanType || "free");
-        return `<div class="admin-item">
-          <div class="admin-meta">${r.createdAt || ""} – <span class="${cls}">${r.userName || ""}</span> ${statusHtml}</div>
-          <div><strong>${r.brand || ""}</strong> / ${r.product || ""}</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:2px;">${r.desc || ""}</div>
-          <div class="admin-actions">
-            <input type="text" placeholder="Yönetici notu" data-note="${r.id}" value="${r.adminNote || ""}">
-            <button class="btn-small btn-approve" data-approve="${r.id}" ${disabled}>Onayla</button>
-            <button class="btn-small btn-reject" data-reject="${r.id}" ${status==="approved" ? "disabled" : ""}>Reddet</button>
-          </div>
-        </div>`;
-      }).join("") || "<div class='admin-item'>Reklam isteği yok.</div>";
-      adminRequestsBox.querySelectorAll("button[data-approve]").forEach(btn=>{
-        btn.addEventListener("click", ()=> handleRequestAction(btn.dataset.approve,"approved"));
-      });
-      adminRequestsBox.querySelectorAll("button[data-reject]").forEach(btn=>{
-        btn.addEventListener("click", ()=> handleRequestAction(btn.dataset.reject,"rejected"));
-      });
-      refreshStats();
+      profileNameInput.value = "";
     });
 
-    onSnapshot(collection(db,"messages"), snap=>{
-      const arr=[];
-      snap.forEach(d=> arr.push({id:d.id,...d.data()}));
-      arr.sort((a,b)=>(b.createdAt||"").localeCompare(a.createdAt||""));
-      adminMessagesBox.innerHTML = arr.map(m=>{
-        const cls = getNameClassByPlan(m.userPlanType || "free");
-        return `<div class="admin-item">
-          <div class="admin-meta">${m.createdAt || ""} – <span class="${cls}">${m.userName || ""}</span></div>
-          <div><strong>${m.subject || ""}</strong></div>
-          <div style="font-size:12px;color:var(--muted);margin-top:2px;">${m.body || ""}</div>
-          <div class="admin-actions">
-            <input type="text" placeholder="Yanıt yaz" data-reply="${m.id}" value="${m.adminReply || ""}">
-            <button class="btn-small btn-approve" data-send-reply="${m.id}">Yanıt Gönder</button>
-          </div>
-        </div>`;
-      }).join("") || "<div class='admin-item'>Mesaj yok.</div>";
-      adminMessagesBox.querySelectorAll("button[data-send-reply]").forEach(btn=>{
-        btn.addEventListener("click", ()=> sendMessageReply(btn.dataset.sendReply));
+    btnCreateGroup.addEventListener("click", () => {
+      const gName = groupNameInput.value.trim();
+      groupSuggestions.innerHTML = "";
+      if (!gName) return;
+      const sample = DB.users.slice(0, 5);
+      sample.forEach((u) => {
+        const li = document.createElement("li");
+        li.textContent = `${gName} ekibinde olabilecek kişi: ${u.name} (${u.email})`;
+        groupSuggestions.appendChild(li);
       });
-      refreshStats();
+      if (sample.length === 0) {
+        const li = document.createElement("li");
+        li.textContent =
+          "Şu an kayıtlı başka kullanıcı yok. Yine de grup adın harika: " +
+          gName +
+          " 🎉";
+        groupSuggestions.appendChild(li);
+      }
     });
 
-    onSnapshot(collection(db,"users"), snap=>{
-      const arr=[];
-      snap.forEach(d=> arr.push({id:d.id,...d.data()}));
-      arr.sort((a,b)=>(a.name||"").localeCompare(b.name||""));
-      adminUsersBox.innerHTML = arr.map(u=>{
-        const cls = getNameClassByUser(u);
-        const planLabel =
-          (u.planType === "beginner") ? "Beginner" :
-          (u.planType === "pro") ? "Pro" :
-          (u.planType === "sparkpro") ? "Spark Pro" :
-          (u.planType === "influencer") ? "Influencer" :
-          "Free";
-        return `<div class="admin-item">
-          <div class="admin-meta">${u.createdAt || ""} – ID: ${u.id}</div>
-          <div><strong class="${cls}">${u.name}</strong> – ${u.email}</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Rol: ${u.role || "user"} – Kredi: ${u.credits || 0} – Paket: ${planLabel}</div>
-        </div>`;
-      }).join("") || "<div class='admin-item'>Üye yok.</div>";
-      refreshStats();
-    });
+    // ----------------- PRICING (USER VIEW) ------------------
+    const userPricingEl = document.getElementById("user-pricing");
 
-    onSnapshot(collection(db,"posts"), snap=>{
-      const arr=[];
-      snap.forEach(d=> arr.push({id:d.id,...d.data()}));
-      arr.sort((a,b)=>(b.createdAt||"").localeCompare(a.createdAt||""));
-      adminPostsBox.innerHTML = arr.map(p=>{
-        const cls = getNameClassByPlan(p.userPlanType || "free");
-        return `<div class="admin-item">
-          <div class="admin-meta">${p.createdAt || ""} – <span class="${cls}">${p.userName || ""}</span></div>
-          <div><strong>${p.title}</strong></div>
-        </div>`;
-      }).join("") || "<div class='admin-item'>Gönderi yok.</div>";
-      refreshStats();
-    });
-  }
-  subscribeAdminStreams();
-
-  async function handleRequestAction(id, status) {
-    try{
-      const noteInput = adminRequestsBox.querySelector(`input[data-note='${id}']`);
-      const adminNote = noteInput ? noteInput.value.trim() : "";
-      const ref = doc(db,"requests",id);
-      await updateDoc(ref,{ status, adminNote });
-      loadNotificationsForUser();
-    }catch(e){
-      console.error(e);
-    }
-  }
-
-  async function sendMessageReply(id) {
-    try{
-      const input = adminMessagesBox.querySelector(`input[data-reply='${id}']`);
-      const reply = input ? input.value.trim() : "";
-      const now = new Date().toLocaleString("tr-TR");
-      await updateDoc(doc(db,"messages",id),{
-        adminReply: reply,
-        adminRepliedAt: now
+    function renderUserPricing() {
+      userPricingEl.innerHTML = "";
+      DB.plans.forEach((p) => {
+        const card = document.createElement("div");
+        card.className = "price-card";
+        const name = document.createElement("div");
+        name.className = "price-name";
+        name.textContent = p.name;
+        const tag = document.createElement("div");
+        tag.className = "price-tag";
+        tag.textContent =
+          p.type === "subscription" ? "Abonelik" : "Kredi paketi (demo)";
+        const value = document.createElement("div");
+        value.className = "price-value";
+        value.textContent = `${p.priceTl.toLocaleString("tr-TR")} TL`;
+        const note = document.createElement("div");
+        note.className = "price-note";
+        note.textContent = p.perks;
+        card.appendChild(name);
+        card.appendChild(tag);
+        card.appendChild(value);
+        card.appendChild(note);
+        userPricingEl.appendChild(card);
       });
-      loadUserReplies();
-      loadNotificationsForUser();
-    }catch(e){
-      console.error(e);
-    }
-  }
-
-  document.getElementById("btn-clear-requests").addEventListener("click", async ()=>{
-    try{
-      const snap = await getDocs(collection(db,"requests"));
-      const promises=[];
-      snap.forEach(d=> promises.push(deleteDoc(doc(db,"requests",d.id))));
-      await Promise.all(promises);
-    }catch(e){console.error(e);}
-  });
-
-  document.getElementById("btn-clear-messages").addEventListener("click", async ()=>{
-    try{
-      const snap = await getDocs(collection(db,"messages"));
-      const promises=[];
-      snap.forEach(d=> promises.push(deleteDoc(doc(db,"messages",d.id))));
-      await Promise.all(promises);
-    }catch(e){console.error(e);}
-  });
-
-  function pushChat(role, text) {
-    const row = document.createElement("div");
-    row.className = "chat-row " + role;
-    const bubble = document.createElement("div");
-    bubble.className = "chat-bubble";
-    bubble.textContent = text;
-    row.appendChild(bubble);
-    assistantChat.appendChild(row);
-    assistantChat.scrollTop = assistantChat.scrollHeight;
-  }
-
-  function generateAssistantAnswer(q) {
-    const t = q.toLowerCase();
-    const ideas = [];
-
-    if (t.includes("kulüp") || t.includes("spor") || t.includes("takım")) {
-      ideas.push(
-        "Maç günlerinden önce sosyal medyada \"maç ritüeli\" kısa videoları çekin. Her videoda oyuncular 3 saniyelik slogan söylesin: \"Kalk, tribüne gel!\" gibi. Sonunda kulübün logosu ve maç tarihi gelsin.",
-        "Genç taraftarları hedeflemek için TikTok’ta kısa challenge başlatın: En iyi gol sevinci, en iyi savunma pozu vb. Kazanan videoyu kulübün resmi hesabında paylaşacağınızı duyurun."
-      );
-    }
-    if (t.includes("okul") || t.includes("kampüs")) {
-      ideas.push(
-        "Okulunuz için \"Bir Günüm\" formatında videolar çektirin. Her videoda farklı bir öğrenci kendi gününü 15–20 saniyede anlatır, sonunda okul logosu ve slogan görünür.",
-        "Kulüplerin ve projelerin stant açtığı bir \"kampüs keşif günü\" organize edip tüm standları tek videoda hızlı geçişli olarak gösterin. Videonun açıklamasına başvuru linkini ekleyin."
-      );
-    }
-    if (t.includes("youtube") || t.includes("video") || t.includes("kanal")) {
-      ideas.push(
-        "YouTube için 3 bölümlük mini seri yapın: 1) Tanışma – kulüp/marka hikayesi, 2) Kamera arkası – hazırlıklar, 3) Taraftar/müşteri yorumları. Her bölümün sonunda aynı CTA cümlesini kullanın.",
-        "Videolarınızda 5 saniyelik tekrar eden bir intro ve 3 saniyelik outro kullanın. Bu, marka hafızasını güçlendirir. İntro kısa bir jingle ve hareketli logo animasyonu olabilir."
-      );
-    }
-    if (t.includes("instagram") || t.includes("tiktok") || t.includes("reels")) {
-      ideas.push(
-        "Instagram Reels için 7 saniyelik \"öncesi/sonrası\" videoları çok işe yarar. İlk 2 saniyede problem, sonraki 5 saniyede çözümü ve markanızı gösterin.",
-        "TikTok’ta trend sesleri kendi metninizle birleştirin. Örneğin yazıyı “Bu sesi görüp de bizim kulübü düşünmeyen?” gibi eğlenceli cümlelerle başlayın."
-      );
-    }
-    if (t.includes("slogan")) {
-      ideas.push(
-        "Slogan üretirken 3 kuralı kullan: Kısa (3–5 kelime), ritimli ve içinde fiil olsun. Örn: \"Topu Bize Bırak\", \"Sahne Bizim\", \"Takımınla Yürü\".",
-        "Kulübün değerlerinden (cesaret, birlik, eğlence) birini seç, o kelimeyi mutlaka sloganda kullan. Böylece her içerikte aynı duyguyu vurgulamış olursun."
-      );
-    }
-    if (t.includes("influencer") || t.includes("influencer paketi")) {
-      ideas.push(
-        "Influencer paketi için mikro-influencer’lara odaklan: 5–10K takipçili ama hedef kitlenle tam örtüşen hesaplarla anlaşmak genelde büyük hesaplardan daha verimli olur.",
-        "Influencer’dan sadece ürün tanıtımı istemek yerine, kendi tarzında özgün içerik üretmesine izin ver. Sadece videonun sonunda markanın net şekilde görünmesini şart koş."
-      );
     }
 
-    if (!ideas.length) {
-      ideas.push(
-        "Önce hedef kitleyi netleştir: yaş aralığı, ilgi alanları, en aktif oldukları platform. Sonra tek cümleyle kampanya hedefini yaz: \"Yeni formamızın lansmanını duyurmak\" gibi.",
-        "Her reklam fikrini 3 parçaya böl: Hook (ilk 2 saniyede merak uyandıran kısım), Story (ürünü gösterdiğin bölüm), Call to Action (takip et, forma al, maça gel gibi açık çağrı)."
-      );
-    }
+    // ----------------- NAVIGATION ------------------
+    btnInfoStart.addEventListener("click", () => {
+      showScreen("auth");
+    });
 
-    const pick = ideas[Math.floor(Math.random()*ideas.length)];
-    const closing = " İstersen bana hedef kitleyi, bütçeyi ve hangi platformu kullanacağını da söylersen daha nokta atışı bir senaryo yazabilirim.";
-    return pick + closing;
-  }
+    btnInfoPricing.addEventListener("click", () => {
+      renderUserPricing();
+      showScreen("pricing");
+    });
 
-  function handleAssistantSend() {
-    const text = assistantInput.value.trim();
-    if (!text) return;
-    pushChat("me", text);
-    assistantInput.value = "";
-    const answer = generateAssistantAnswer(text);
-    setTimeout(()=>{ pushChat("ai", answer); }, 300);
-  }
+    btnAuth.addEventListener("click", () => {
+      showScreen("auth");
+    });
 
-  assistantSend.addEventListener("click", handleAssistantSend);
-  assistantInput.addEventListener("keydown", e=>{
-    if (e.key === "Enter") { e.preventDefault(); handleAssistantSend(); }
-  });
+    btnLogout.addEventListener("click", () => {
+      currentUser = null;
+      updateTopbarForUser();
+      showScreen("info");
+    });
 
-</script>
+    navHome.addEventListener("click", () => {
+      if (currentUser && currentUser.email === ADMIN_EMAIL) {
+        showScreen("admin");
+      } else if (currentUser) {
+        showScreen("user");
+      } else {
+        showScreen("info");
+      }
+    });
+
+    navStudio.addEventListener("click", () => {
+      if (currentUser && currentUser.email === ADMIN_EMAIL) {
+        showScreen("admin");
+      } else if (currentUser) {
+        showScreen("user");
+      } else {
+        showScreen("info");
+      }
+    });
+
+    navCommunity.addEventListener("click", () => showScreen("community"));
+    navAssistant.addEventListener("click", () => showScreen("assistant"));
+    navPricing.addEventListener("click", () => {
+      renderUserPricing();
+      showScreen("pricing");
+    });
+    navProfile.addEventListener("click", () => {
+      renderProfile();
+      showScreen("profile");
+    });
+
+    // İlk yüklemede
+    updateTopbarForUser();
+    renderUserPricing();
+    console.log("Spark Ad Studio front-end yüklendi ✅");
+  </script>
 </body>
 </html>
