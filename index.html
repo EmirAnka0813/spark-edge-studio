@@ -255,6 +255,22 @@
 
     footer{padding:18px 0 28px;font-size:12px;color:var(--muted);}
     footer .row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
+
+    /* Profil avatarı ve renkli isimler */
+    .profile-avatar{
+      width:64px;height:64px;border-radius:999px;
+      background:radial-gradient(circle at top,var(--accent),#0f172a);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:700;font-size:22px;margin-bottom:8px;
+      background-size:cover;background-position:center;
+      color:#111827;
+    }
+    body.light .profile-avatar{box-shadow:0 8px 20px rgba(15,23,42,.15);}
+
+    .name-beginner{color:#4CAF50;}
+    .name-pro{color:#2196F3;}
+    .name-sparkpro{color:#a855f7;}
+    .name-influencer{color:#facc15;}
   </style>
 </head>
 <body>
@@ -309,7 +325,7 @@
           <h3>Sistem Nasıl Çalışır?</h3>
           <p style="color:var(--muted);font-size:13px;">
             • Kulüp/marka hesabı açarsın.<br>
-            • Kredi paketleri veya Spark Pro / Influencer gibi abonelikler alırsın.<br>
+            • Kredi paketleri veya abonelikler alırsın.<br>
             • Reklam isteği formunu doldurursun, yönetici paneline düşer.<br>
             • Yönetici isteği onaylar, mesajla geri bildirim verir.<br>
             • Topluluk alanında fikirlerini paylaşır, asistanla senaryo üretebilirsin.
@@ -380,22 +396,28 @@
     <section class="screen" id="screen-studio">
       <h2 class="section-title">Stüdyo</h2>
       <p class="section-sub">
-        Profilin, reklam istekleri ve yönetici ile mesajlaşma alanın.
+        Profilin, reklam istekleri, grupların ve yönetici ile mesajlaşma alanın.
       </p>
 
       <div class="grid-two">
         <div class="card">
           <h3>Profil Bilgilerin</h3>
-          <p id="profile-info" style="font-size:13px;color:var(--muted);margin-top:8px;"></p>
+          <div class="profile-avatar" id="profile-avatar"></div>
+          <p id="profile-info" style="font-size:13px;color:var(--muted);margin-top:4px;"></p>
         </div>
 
         <div class="card">
-          <h3>Stüdyo Özeti</h3>
-          <p style="font-size:13px;color:var(--muted);">
-            • Kredi paketleri ve abonelikler: <strong>Fiyatlandırma</strong> menüsünde.<br>
-            • Her reklam isteği 1 kredi tüketir.<br>
-            • Spark Pro ve Influencer aboneliklerinde isteklere öncelik verilir.<br>
-          </p>
+          <h3>Profilini Düzenle</h3>
+          <div class="field">
+            <label for="profile-name">Görünen İsim</label>
+            <input id="profile-name" type="text" placeholder="Adını güncelle" />
+          </div>
+          <div class="field">
+            <label for="profile-photo">Profil Fotoğrafı</label>
+            <input id="profile-photo" type="file" accept="image/*" />
+          </div>
+          <button class="primary-btn btn-full" id="btn-save-profile">Profili Kaydet</button>
+          <div class="status-text" id="status-profile"></div>
         </div>
 
         <div class="card" id="card-ads">
@@ -439,10 +461,26 @@
         </div>
 
         <div class="card">
-          <h3>Not</h3>
-          <p style="font-size:13px;color:var(--muted);">
-            Bu stüdyo eğitim amaçlıdır. Ödeme işlemleri simülasyon olarak Firestore üzerinde tutulur.
-          </p>
+          <h3>Kendi Grubunu Kur</h3>
+          <div class="field">
+            <label for="group-name">Grup Adı</label>
+            <input id="group-name" type="text" placeholder="Örn: Kreatif Ekip" />
+          </div>
+          <div class="field">
+            <label for="group-search">Üye Arama (isim)</label>
+            <input id="group-search" type="text" placeholder="Örn: Emir, Ahmet, Kulüp adı..." />
+          </div>
+          <button class="btn-small btn-approve" id="btn-search-members">Kişi Önerilerini Göster</button>
+          <div class="status-text" id="status-group"></div>
+          <div class="notif-list" id="group-suggestions" style="margin-top:8px;max-height:160px;overflow-y:auto;"></div>
+          <h4 style="font-size:13px;margin-top:10px;">Seçilen Üyeler</h4>
+          <div class="notif-list" id="group-selected" style="max-height:120px;overflow-y:auto;"></div>
+          <button class="primary-btn btn-full" id="btn-create-group" style="margin-top:8px;">Grubu Oluştur</button>
+        </div>
+
+        <div class="card">
+          <h3>Grupların</h3>
+          <div class="notif-list" id="group-list" style="max-height:220px;overflow-y:auto;"></div>
         </div>
       </div>
     </section>
@@ -647,7 +685,7 @@
             <div style="margin-top:8px;">
               <h4 style="font-size:13px;margin-bottom:4px;">Yeni Paket / Abonelik Ekle</h4>
               <div class="field">
-                <label for="new-plan-name">Adı (Örn: Spark Pro)</label>
+                <label for="new-plan-name">Adı (Örn: Beginner, Pro, Spark Pro)</label>
                 <input id="new-plan-name" type="text" placeholder="Örn: Spark Pro" />
               </div>
               <div class="field">
@@ -695,6 +733,12 @@
     setDoc,
     deleteDoc
   } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+  import {
+    getStorage,
+    ref as storageRef,
+    uploadBytes,
+    getDownloadURL
+  } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-storage.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDc6kmOfcRwWLFxPAKOqtB5w_QJkTdHqh8",
@@ -708,6 +752,7 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  const storage = getStorage(app);
 
   const USD_RATE = 42.45;
   const EUR_RATE = 49.60;
@@ -715,6 +760,7 @@
   let currentUser = null;
   let currentLang = "tr";
   let plans = [];
+  let pendingGroupMembers = [];
 
   const screens = {
     info: document.getElementById("screen-info"),
@@ -734,6 +780,7 @@
   const btnAuth = document.getElementById("btn-auth");
   const welcomeText = document.getElementById("welcome-text");
   const profileInfo = document.getElementById("profile-info");
+  const profileAvatar = document.getElementById("profile-avatar");
   const notifList = document.getElementById("notif-list");
   const userMessagesList = document.getElementById("user-messages-list");
   const plansList = document.getElementById("plans-list");
@@ -748,6 +795,8 @@
   const statusMsg = document.getElementById("status-msg");
   const statusPost = document.getElementById("status-post");
   const statusAddPlan = document.getElementById("status-add-plan");
+  const statusProfile = document.getElementById("status-profile");
+  const statusGroup = document.getElementById("status-group");
 
   const adminRequestsBox = document.getElementById("admin-requests");
   const adminMessagesBox = document.getElementById("admin-messages");
@@ -755,6 +804,10 @@
   const adminPlansBox = document.getElementById("admin-plans");
   const adminPostsBox = document.getElementById("admin-posts");
   const feedList = document.getElementById("feed-list");
+
+  const groupSuggestionsBox = document.getElementById("group-suggestions");
+  const groupSelectedBox = document.getElementById("group-selected");
+  const groupListBox = document.getElementById("group-list");
 
   const statsEls = {
     users: document.getElementById("stat-users"),
@@ -775,6 +828,21 @@
     document.querySelectorAll(".nav-link").forEach(btn => {
       btn.classList.toggle("active", btn.dataset.target === key);
     });
+  }
+
+  function getPlanType(user) {
+    if (!user) return "free";
+    return user.planType || "free";
+  }
+  function getNameClassByPlan(planType) {
+    if (planType === "beginner") return "name-beginner";
+    if (planType === "pro") return "name-pro";
+    if (planType === "sparkpro") return "name-sparkpro";
+    if (planType === "influencer") return "name-influencer";
+    return "";
+  }
+  function getNameClassByUser(u) {
+    return getNameClassByPlan(getPlanType(u));
   }
 
   function updateStudioAccess() {
@@ -877,6 +945,9 @@
       notifList.innerHTML = "";
       profileInfo.textContent = "";
       userMessagesList.innerHTML = "";
+      groupListBox.innerHTML = "";
+      groupSelectedBox.innerHTML = "";
+      groupSuggestionsBox.innerHTML = "";
     }
   });
 
@@ -898,6 +969,8 @@
       if (target === "studio" && currentUser && currentUser.role === "user") {
         renderProfile();
         loadUserReplies();
+        loadUserGroups();
+        updateProfileEditForm();
       }
       if (target === "pricing") {
         renderPlansUI();
@@ -910,7 +983,68 @@
         refreshStats();
         renderAdminPlans();
       }
+      if (target === "settings" && currentUser) {
+        updateProfileEditForm();
+      }
     });
+  });
+
+  function updateProfileEditForm() {
+    if (!currentUser) return;
+    const nameInput = document.getElementById("profile-name");
+    if (nameInput) nameInput.value = currentUser.name || "";
+    updateProfileAvatar();
+  }
+
+  function updateProfileAvatar() {
+    if (!profileAvatar || !currentUser) return;
+    if (currentUser.photoURL) {
+      profileAvatar.style.backgroundImage = `url(${currentUser.photoURL})`;
+      profileAvatar.textContent = "";
+    } else {
+      const initials = (currentUser.name || "?")
+        .trim().split(/\s+/).map(p => p[0]).join("").substring(0,2).toUpperCase();
+      profileAvatar.style.backgroundImage = "none";
+      profileAvatar.textContent = initials || "?";
+    }
+  }
+
+  document.getElementById("btn-save-profile").addEventListener("click", async () => {
+    if (!currentUser || currentUser.role !== "user") {
+      statusProfile.textContent = "Profil düzenlemek için giriş yapmalısın.";
+      return;
+    }
+    statusProfile.textContent = "";
+    const newName = document.getElementById("profile-name").value.trim();
+    const fileInput = document.getElementById("profile-photo");
+    const file = fileInput.files[0];
+    const updates = {};
+    if (newName && newName !== currentUser.name) {
+      updates.name = newName;
+    }
+    try {
+      if (file) {
+        const refPath = `profilePhotos/${currentUser.id}`;
+        const refObj = storageRef(storage, refPath);
+        await uploadBytes(refObj, file);
+        const url = await getDownloadURL(refObj);
+        updates.photoURL = url;
+      }
+      if (Object.keys(updates).length === 0) {
+        statusProfile.textContent = "Değişiklik yok.";
+        return;
+      }
+      await updateDoc(doc(db,"users",currentUser.id), updates);
+      Object.assign(currentUser, updates);
+      localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
+      statusProfile.textContent = "Profil güncellendi.";
+      updateProfileAvatar();
+      renderProfile();
+      fileInput.value = "";
+    } catch (e) {
+      console.error(e);
+      statusProfile.textContent = "Profil kaydedilirken bir hata oluştu.";
+    }
   });
 
   document.getElementById("btn-register").addEventListener("click", async () => {
@@ -937,12 +1071,18 @@
         role: "user",
         createdAt: now,
         lastLogin: now,
-        credits: 0
+        credits: 0,
+        planType: "free",
+        photoURL: ""
       });
-      currentUser = { id: docRef.id, name, email, role:"user", createdAt:now, lastLogin:now, credits:0 };
+      currentUser = {
+        id: docRef.id, name, email, role: "user",
+        createdAt: now, lastLogin: now, credits: 0,
+        planType: "free", photoURL: ""
+      };
       localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
       updateHeaderState();
-      welcomeText.textContent = `Hoş geldin, ${currentUser.name} 👋`;
+      welcomeText.innerHTML = `Hoş geldin, <span class="${getNameClassByUser(currentUser)}">${currentUser.name}</span> 👋`;
       renderProfile();
       loadNotificationsForUser();
       setActiveScreen("main");
@@ -967,7 +1107,8 @@
         name: "Yönetici",
         email: "admin@sparkad.studio",
         role: "admin",
-        credits: 0
+        credits: 0,
+        planType: "influencer"
       };
       localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
       statusLogin.textContent = "Yönetici olarak giriş yapıldı.";
@@ -996,18 +1137,19 @@
       try { await updateDoc(doc(db, "users", found.id), { lastLogin: now }); } catch(e){}
       found.lastLogin = now;
       found.credits = found.credits || 0;
+      found.planType = found.planType || "free";
       currentUser = found;
       localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
       updateHeaderState();
+      updateProfileAvatar();
       if (currentUser.role === "admin") {
         renderAdminPlans();
         refreshStats();
         setActiveScreen("admin");
       } else {
-        welcomeText.textContent = `Hoş geldin, ${currentUser.name} 👋`;
+        welcomeText.innerHTML = `Hoş geldin, <span class="${getNameClassByUser(currentUser)}">${currentUser.name}</span> 👋`;
         renderProfile();
         loadNotificationsForUser();
-        loadUserReplies();
         setActiveScreen("main");
       }
     } catch (e) {
@@ -1020,13 +1162,15 @@
   if (savedUser) {
     try {
       currentUser = JSON.parse(savedUser);
+      currentUser.planType = currentUser.planType || "free";
       updateHeaderState();
+      updateProfileAvatar();
       if (currentUser.role === "admin") {
         setActiveScreen("admin");
         renderAdminPlans();
         refreshStats();
       } else {
-        welcomeText.textContent = `Hoş geldin, ${currentUser.name} 👋`;
+        welcomeText.innerHTML = `Hoş geldin, <span class="${getNameClassByUser(currentUser)}">${currentUser.name}</span> 👋`;
         renderProfile();
         loadNotificationsForUser();
         setActiveScreen("main");
@@ -1036,13 +1180,22 @@
 
   function renderProfile() {
     if (!currentUser || currentUser.role !== "user") return;
+    const planType = getPlanType(currentUser);
+    const planLabel =
+      planType === "beginner" ? "Beginner" :
+      planType === "pro" ? "Pro" :
+      planType === "sparkpro" ? "Spark Pro" :
+      planType === "influencer" ? "Influencer" :
+      "Free";
     profileInfo.innerHTML =
-      `<strong>Ad:</strong> ${currentUser.name}<br>` +
+      `<strong>Ad:</strong> <span class="${getNameClassByUser(currentUser)}">${currentUser.name}</span><br>` +
       `<strong>E-posta:</strong> ${currentUser.email}<br>` +
       `<strong>Üyelik Tarihi:</strong> ${currentUser.createdAt || "-"}<br>` +
       `<strong>Son Giriş:</strong> ${currentUser.lastLogin || "-"}<br>` +
-      `<strong>Kredi:</strong> ${currentUser.credits || 0}`;
+      `<strong>Kredi:</strong> ${currentUser.credits || 0}<br>` +
+      `<strong>Paket:</strong> ${planLabel}`;
     updateStudioAccess();
+    updateProfileAvatar();
   }
 
   async function loadNotificationsForUser() {
@@ -1165,6 +1318,7 @@
       await addDoc(collection(db,"requests"),{
         userId: currentUser.id,
         userName: currentUser.name,
+        userPlanType: getPlanType(currentUser),
         brand, product, desc,
         status: "pending",
         adminNote: "",
@@ -1201,6 +1355,7 @@
       await addDoc(collection(db,"messages"),{
         userId: currentUser.id,
         userName: currentUser.name,
+        userPlanType: getPlanType(currentUser),
         subject, body,
         createdAt: now,
         adminReply:"",
@@ -1234,6 +1389,7 @@
       await addDoc(collection(db,"posts"),{
         userId: currentUser.id,
         userName: currentUser.name,
+        userPlanType: getPlanType(currentUser),
         title,text,link,
         createdAt: now
       });
@@ -1259,14 +1415,185 @@
         feedList.innerHTML="<div class='feed-post'>Henüz topluluk gönderisi yok.</div>";
         return;
       }
-      feedList.innerHTML = arr.map(p=>`
-        <div class="feed-post">
-          <div class="notif-meta">${p.createdAt || ""} – ${p.userName || ""}</div>
+      feedList.innerHTML = arr.map(p=>{
+        const cls = getNameClassByPlan(p.userPlanType || "free");
+        return `<div class="feed-post">
+          <div class="notif-meta">${p.createdAt || ""} – <span class="${cls}">${p.userName || ""}</span></div>
           <div><strong>${p.title || ""}</strong></div>
           <div style="font-size:12px;color:var(--muted);margin-top:2px;">${p.text || ""}</div>
           ${p.link ? `<div style="margin-top:4px;font-size:12px;"><a href="${p.link}" target="_blank">Bağlantı</a></div>`:""}
+        </div>`;
+      }).join("");
+    }catch(e){
+      console.error(e);
+      feedList.innerHTML="<div class='feed-post'>Gönderiler yüklenemedi.</div>";
+    }
+  }
+
+  async function loadUserGroups() {
+    if (!currentUser) return;
+    groupListBox.innerHTML = "Yükleniyor...";
+    try{
+      const snap = await getDocs(collection(db,"groups"));
+      const arr=[];
+      snap.forEach(d=>{
+        const g = d.data();
+        if (g.ownerId === currentUser.id) {
+          arr.push({id: d.id, ...g});
+        }
+      });
+      arr.sort((a,b)=>(b.createdAt||"").localeCompare(a.createdAt||""));
+      if (!arr.length){
+        groupListBox.innerHTML="<div class='notif-item'>Henüz bir grubun yok.</div>";
+        return;
+      }
+      groupListBox.innerHTML = arr.map(g=>`
+        <div class="notif-item">
+          <div class="notif-meta">${g.createdAt || ""}</div>
+          <div><strong>${g.groupName}</strong></div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">
+            Üyeler: ${(g.memberNames || []).join(", ") || currentUser.name}
+          </div>
         </div>
       `).join("");
+    }catch(e){
+      console.error(e);
+      groupListBox.innerHTML="<div class='notif-item'>Gruplar yüklenemedi.</div>";
+    }
+  }
+
+  document.getElementById("btn-search-members").addEventListener("click", async () => {
+    statusGroup.textContent="";
+    if (!currentUser){
+      statusGroup.textContent="Önce giriş yapmalısın.";
+      return;
+    }
+    const term = document.getElementById("group-search").value.trim().toLowerCase();
+    if (!term){
+      statusGroup.textContent="Aramak için bir isim yaz.";
+      return;
+    }
+    groupSuggestionsBox.innerHTML="Yükleniyor...";
+    try{
+      const snap = await getDocs(collection(db,"users"));
+      const arr=[];
+      snap.forEach(d=>{
+        const u = d.data();
+        if (d.id === currentUser.id) return;
+        const name = (u.name || "").toLowerCase();
+        if (name.includes(term)) {
+          arr.push({id:d.id, ...u});
+        }
+      });
+      if (!arr.length){
+        groupSuggestionsBox.innerHTML="<div class='notif-item'>Uygun kişi bulunamadı.</div>";
+        return;
+      }
+      groupSuggestionsBox.innerHTML = arr.map(u=>{
+        const cls = getNameClassByUser(u);
+        return `<div class="notif-item">
+          <div class="notif-meta">${u.email || ""}</div>
+          <div><span class="${cls}">${u.name || ""}</span></div>
+          <div class="admin-actions" style="margin-top:4px;">
+            <button class="btn-small btn-approve" data-add-member="${u.id}">Ekle</button>
+          </div>
+        </div>`;
+      }).join("");
+      groupSuggestionsBox.querySelectorAll("button[data-add-member]").forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          const id = btn.dataset.addMember;
+          const u = arr.find(x=>x.id===id);
+          if (!u) return;
+          if (!pendingGroupMembers.find(m=>m.id===u.id)){
+            pendingGroupMembers.push({id:u.id,name:u.name,planType:u.planType || "free"});
+            renderSelectedGroupMembers();
+          }
+        });
+      });
+    }catch(e){
+      console.error(e);
+      groupSuggestionsBox.innerHTML="<div class='notif-item'>Kişiler yüklenemedi.</div>";
+    }
+  });
+
+  function renderSelectedGroupMembers() {
+    if (!pendingGroupMembers.length){
+      groupSelectedBox.innerHTML="<div class='notif-item'>Henüz üye seçilmedi. Grup kurduğunda sen otomatik üye olursun.</div>";
+      return;
+    }
+    groupSelectedBox.innerHTML = pendingGroupMembers.map(m=>{
+      const cls = getNameClassByPlan(m.planType || "free");
+      return `<div class="notif-item">
+        <div><span class="${cls}">${m.name}</span></div>
+      </div>`;
+    }).join("");
+  }
+  renderSelectedGroupMembers();
+
+  document.getElementById("btn-create-group").addEventListener("click", async () => {
+    statusGroup.textContent="";
+    if (!currentUser){
+      statusGroup.textContent="Önce giriş yapmalısın.";
+      return;
+    }
+    const groupName = document.getElementById("group-name").value.trim();
+    if (!groupName){
+      statusGroup.textContent="Grup adı yazmalısın.";
+      return;
+    }
+    try{
+      const now = new Date().toLocaleString("tr-TR");
+      const memberIds = [currentUser.id, ...pendingGroupMembers.map(m=>m.id)];
+      const memberNames = [currentUser.name, ...pendingGroupMembers.map(m=>m.name)];
+      await addDoc(collection(db,"groups"),{
+        ownerId: currentUser.id,
+        ownerName: currentUser.name,
+        groupName,
+        memberIds,
+        memberNames,
+        createdAt: now
+      });
+      statusGroup.textContent="Grubun oluşturuldu.";
+      pendingGroupMembers = [];
+      renderSelectedGroupMembers();
+      groupSuggestionsBox.innerHTML="";
+      document.getElementById("group-name").value="";
+      loadUserGroups();
+    }catch(e){
+      console.error(e);
+      statusGroup.textContent="Grup oluşturulurken hata oluştu.";
+    }
+  });
+
+  function normalizePlanName(name) {
+    const n = (name || "").toLowerCase();
+    if (n.includes("influencer")) return "influencer";
+    if (n.includes("spark") && n.includes("pro")) return "sparkpro";
+    if (n.includes("beginner") || n.includes("başlangıç")) return "beginner";
+    if (n === "pro") return "pro";
+    return "free";
+  }
+
+  async function loadFeed() {
+    feedList.innerHTML="Yükleniyor...";
+    try{
+      const snap = await getDocs(collection(db,"posts"));
+      const arr=[];
+      snap.forEach(d=> arr.push({id:d.id,...d.data()}));
+      arr.sort((a,b)=>(b.createdAt||"").localeCompare(a.createdAt||""));
+      if (!arr.length){
+        feedList.innerHTML="<div class='feed-post'>Henüz topluluk gönderisi yok.</div>";
+        return;
+      }
+      feedList.innerHTML = arr.map(p=>{
+        const cls = getNameClassByPlan(p.userPlanType || "free");
+        return `<div class="feed-post">
+          <div class="notif-meta">${p.createdAt || ""} – <span class="${cls}">${p.userName || ""}</span></div>
+          <div><strong>${p.title || ""}</strong></div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">${p.text || ""}</div>
+          ${p.link ? `<div style="margin-top:4px;font-size:12px;"><a href="${p.link}" target="_blank">Bağlantı</a></div>`:""}
+        </div>`;
+      }).join("");
     }catch(e){
       console.error(e);
       feedList.innerHTML="<div class='feed-post'>Gönderiler yüklenemedi.</div>";
@@ -1321,8 +1648,10 @@
     if (subs.length){
       html += "<h4 style='margin:10px 0 6px;'>Abonelikler</h4>";
       subs.forEach(p=>{
+        const planType = normalizePlanName(p.name);
+        const cls = getNameClassByPlan(planType);
         html += `<div class="notif-item">
-          <div class="notif-meta">${p.name} – abonelik</div>
+          <div class="notif-meta"><span class="${cls}">${p.name}</span> – abonelik</div>
           <div>${formatPrice(p)}</div>
           <button class="btn-small btn-approve" data-buy="${p.id}" style="margin-top:6px;">Aboneliği başlat</button>
         </div>`;
@@ -1366,6 +1695,12 @@
         localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
         renderProfile();
         updateStudioAccess();
+      } else if (plan.type === "subscription") {
+        const planType = normalizePlanName(plan.name);
+        currentUser.planType = planType;
+        await updateDoc(doc(db,"users",currentUser.id),{planType});
+        localStorage.setItem("spark_current_user", JSON.stringify(currentUser));
+        renderProfile();
       }
       statusPlans.textContent = `${plan.name} satın alındı.`;
       loadNotificationsForUser();
@@ -1492,14 +1827,15 @@
           status==="rejected" ? "<span class='pill-status s-rejected'>Reddedildi</span>" :
           "<span class='pill-status s-pending'>Beklemede</span>";
         const disabled = status==="approved" ? "disabled" : "";
+        const cls = getNameClassByPlan(r.userPlanType || "free");
         return `<div class="admin-item">
-          <div class="admin-meta">${r.createdAt || ""} – ${r.userName || ""} ${statusHtml}</div>
+          <div class="admin-meta">${r.createdAt || ""} – <span class="${cls}">${r.userName || ""}</span> ${statusHtml}</div>
           <div><strong>${r.brand || ""}</strong> / ${r.product || ""}</div>
           <div style="font-size:12px;color:var(--muted);margin-top:2px;">${r.desc || ""}</div>
           <div class="admin-actions">
             <input type="text" placeholder="Yönetici notu" data-note="${r.id}" value="${r.adminNote || ""}">
             <button class="btn-small btn-approve" data-approve="${r.id}" ${disabled}>Onayla</button>
-            <button class="btn-small btn-reject" data-reject="${r.id}" ${disabled && "disabled"}>Reddet</button>
+            <button class="btn-small btn-reject" data-reject="${r.id}" ${status==="approved" ? "disabled" : ""}>Reddet</button>
           </div>
         </div>`;
       }).join("") || "<div class='admin-item'>Reklam isteği yok.</div>";
@@ -1517,8 +1853,9 @@
       snap.forEach(d=> arr.push({id:d.id,...d.data()}));
       arr.sort((a,b)=>(b.createdAt||"").localeCompare(a.createdAt||""));
       adminMessagesBox.innerHTML = arr.map(m=>{
+        const cls = getNameClassByPlan(m.userPlanType || "free");
         return `<div class="admin-item">
-          <div class="admin-meta">${m.createdAt || ""} – ${m.userName || ""}</div>
+          <div class="admin-meta">${m.createdAt || ""} – <span class="${cls}">${m.userName || ""}</span></div>
           <div><strong>${m.subject || ""}</strong></div>
           <div style="font-size:12px;color:var(--muted);margin-top:2px;">${m.body || ""}</div>
           <div class="admin-actions">
@@ -1537,13 +1874,20 @@
       const arr=[];
       snap.forEach(d=> arr.push({id:d.id,...d.data()}));
       arr.sort((a,b)=>(a.name||"").localeCompare(b.name||""));
-      adminUsersBox.innerHTML = arr.map(u=>`
-        <div class="admin-item">
+      adminUsersBox.innerHTML = arr.map(u=>{
+        const cls = getNameClassByUser(u);
+        const planLabel =
+          (u.planType === "beginner") ? "Beginner" :
+          (u.planType === "pro") ? "Pro" :
+          (u.planType === "sparkpro") ? "Spark Pro" :
+          (u.planType === "influencer") ? "Influencer" :
+          "Free";
+        return `<div class="admin-item">
           <div class="admin-meta">${u.createdAt || ""} – ID: ${u.id}</div>
-          <div><strong>${u.name}</strong> – ${u.email}</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Rol: ${u.role || "user"} – Kredi: ${u.credits || 0}</div>
-        </div>
-      `).join("") || "<div class='admin-item'>Üye yok.</div>";
+          <div><strong class="${cls}">${u.name}</strong> – ${u.email}</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Rol: ${u.role || "user"} – Kredi: ${u.credits || 0} – Paket: ${planLabel}</div>
+        </div>`;
+      }).join("") || "<div class='admin-item'>Üye yok.</div>";
       refreshStats();
     });
 
@@ -1551,12 +1895,13 @@
       const arr=[];
       snap.forEach(d=> arr.push({id:d.id,...d.data()}));
       arr.sort((a,b)=>(b.createdAt||"").localeCompare(a.createdAt||""));
-      adminPostsBox.innerHTML = arr.map(p=>`
-        <div class="admin-item">
-          <div class="admin-meta">${p.createdAt || ""} – ${p.userName || ""}</div>
+      adminPostsBox.innerHTML = arr.map(p=>{
+        const cls = getNameClassByPlan(p.userPlanType || "free");
+        return `<div class="admin-item">
+          <div class="admin-meta">${p.createdAt || ""} – <span class="${cls}">${p.userName || ""}</span></div>
           <div><strong>${p.title}</strong></div>
-        </div>
-      `).join("") || "<div class='admin-item'>Gönderi yok.</div>";
+        </div>`;
+      }).join("") || "<div class='admin-item'>Gönderi yok.</div>";
       refreshStats();
     });
   }
@@ -1567,24 +1912,7 @@
       const noteInput = adminRequestsBox.querySelector(`input[data-note='${id}']`);
       const adminNote = noteInput ? noteInput.value.trim() : "";
       const ref = doc(db,"requests",id);
-      const newData = { status, adminNote };
-      await updateDoc(ref,newData);
-      if (status === "approved") {
-        const snap = await getDocs(collection(db,"requests"));
-        let rData=null;
-        snap.forEach(d=>{ if (d.id===id) rData=d.data(); });
-        if (rData && rData.userId) {
-          const userRef = doc(db,"users",rData.userId);
-          const usersSnap = await getDocs(collection(db,"users"));
-          usersSnap.forEach(d=>{
-            if (d.id===rData.userId){
-              const u=d.data();
-              const credits=u.credits || 0;
-              updateDoc(userRef,{credits});
-            }
-          });
-        }
-      }
+      await updateDoc(ref,{ status, adminNote });
       loadNotificationsForUser();
     }catch(e){
       console.error(e);
@@ -1685,8 +2013,8 @@
     }
 
     const pick = ideas[Math.floor(Math.random()*ideas.length)];
-    const closing = "İstersen bana hedef kitleyi, bütçeyi ve hangi platformu kullanacağını da söylersen daha nokta atışı bir senaryo yazabilirim.";
-    return pick + " " + closing;
+    const closing = " İstersen bana hedef kitleyi, bütçeyi ve hangi platformu kullanacağını da söylersen daha nokta atışı bir senaryo yazabilirim.";
+    return pick + closing;
   }
 
   function handleAssistantSend() {
