@@ -20,6 +20,29 @@
       --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
+    /* PLAN TEMALI RENKLER */
+
+    body.plan-free {
+      --accent: #38bdf8;
+      --accent-soft: rgba(56,189,248,0.18);
+    }
+    body.plan-starter {
+      --accent: #38bdf8;
+      --accent-soft: rgba(56,189,248,0.22);
+    }
+    body.plan-pro {
+      --accent: #a855f7;
+      --accent-soft: rgba(168,85,247,0.26);
+    }
+    body.plan-influencer {
+      --accent: #fbbf24;
+      --accent-soft: rgba(251,191,36,0.26);
+    }
+    body.plan-admin {
+      --accent: #22c55e;
+      --accent-soft: rgba(34,197,94,0.26);
+    }
+
     *{box-sizing:border-box;}
 
     body{
@@ -300,9 +323,9 @@
       color:var(--muted);
     }
     .tag.standard{border-color:#38bdf8;color:#bae6fd;}
-    .tag.pro{border-color:#22c55e;color:#bbf7d0;}
-    .tag.influencer{border-color:#f97316;color:#fed7aa;}
-    .tag.admin{border-color:#e5e7eb;color:#e5e7eb;}
+    .tag.pro{border-color:#a855f7;color:#e9d5ff;}
+    .tag.influencer{border-color:#fbbf24;color:#fef9c3;}
+    .tag.admin{border-color:#22c55e;color:#bbf7d0;}
 
     .user-inline{
       display:flex;
@@ -396,6 +419,7 @@
     .pill-small.green{border-color:#22c55e;color:#bbf7d0;}
     .pill-small.blue{border-color:#38bdf8;color:#bae6fd;}
     .pill-small.orange{border-color:#f97316;color:#fed7aa;}
+    .pill-small.gold{border-color:#fbbf24;color:#fef9c3;}
     .pill-small.gray{border-color:#4b5563;color:#9ca3af;}
 
     .admin-actions{display:flex;gap:6px;margin-top:4px;flex-wrap:wrap;}
@@ -405,7 +429,7 @@
       border-radius:999px;
       border:1px solid #1f2937;
       background:#020617;
-      color:var(--muted);
+      color:#9ca3af;
       cursor:pointer;
     }
 
@@ -445,6 +469,47 @@
       gap:12px;
       align-items:center;
       margin-bottom:10px;
+      position:relative;
+      z-index:2;
+    }
+
+    /* PROFİL KARTI ANİMASYONLU ÇERÇEVE */
+
+    #profile-card{
+      position:relative;
+      overflow:hidden;
+      border-radius:18px;
+      z-index:1;
+    }
+    #profile-card::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:linear-gradient(130deg,#38bdf8,#0ea5e9);
+      opacity:0;
+      z-index:-1;
+    }
+    #profile-card.profile-starter::before{
+      opacity:0.7;
+    }
+    #profile-card.profile-pro::before{
+      opacity:0.9;
+      background:linear-gradient(130deg,#a855f7,#38bdf8);
+    }
+    #profile-card.profile-influencer::before{
+      opacity:1;
+      background:conic-gradient(from 0deg,#fbbf24,#f97316,#fb7185,#fbbf24);
+      animation:spin-gold 6s linear infinite;
+    }
+
+    @keyframes spin-gold{
+      from{transform:rotate(0deg);}
+      to{transform:rotate(360deg);}
+    }
+
+    #profile-card > *{
+      position:relative;
+      z-index:2;
     }
 
     @media(max-width:900px){
@@ -728,7 +793,7 @@
 
       <!-- PROFİL -->
       <section id="screen-profile" class="screen">
-        <div class="card">
+        <div class="card" id="profile-card">
           <div class="profile-row">
             <div class="avatar-circle" id="profile-avatar">SA</div>
             <div>
@@ -828,33 +893,24 @@
         <div class="card">
           <div class="section-title">Ayarlar</div>
           <div class="section-sub">
-            Tema sadece bu cihazda geçerlidir. Aboneler listede zaten renkli görünecek.
+            Tema, abonelik paketine göre otomatik olarak altın / mor / mavi tona geçer. Bu bölüm demo amaçlıdır.
           </div>
-          <div class="form-grid">
-            <div>
-              <label for="settings-theme">Tema</label>
-              <select id="settings-theme">
-                <option value="default">Klasik Koyu</option>
-                <option value="neon">Neon Mavi</option>
-                <option value="soft">Yumuşak Gece</option>
-              </select>
-            </div>
-          </div>
-          <p class="hint" id="settings-hint"></p>
+          <p class="hint" id="settings-hint">
+            Starter → mavi, Spark Pro → mor, Influencer → gold animasyonlu çerçeve ile görünür.
+          </p>
         </div>
       </section>
     </main>
   </div>
 
   <script>
-    /* Basit localStorage "database" */
-    const STORAGE_KEY = "spark_ad_studio_local_db_v1";
+    const STORAGE_KEY = "spark_ad_studio_local_db_v2";
 
     const DEFAULT_DB = {
-      users: [],          // {id,name,email,pass,plan,credits}
-      requests: [],       // reklam istekleri
-      messages: [],       // ai mesaj geçmişi
-      communityPosts: [], // topluluk mesajları
+      users: [],
+      requests: [],
+      messages: [],
+      communityPosts: [],
       plans: [
         {
           id:"starter",
@@ -866,10 +922,10 @@
         },
         {
           id:"pro",
-          name:"Pro",
+          name:"Spark Pro",
           type:"subscription",
           priceTl:1100,
-          perks:"Aylık 4–5 video, gelişmiş AI, öncelikli teslim",
+          perks:"Aylık 4–5 video, mor–mavi AI fikirleri, öncelikli teslim",
           color:"pro"
         },
         {
@@ -877,7 +933,7 @@
           name:"Influencer",
           type:"subscription",
           priceTl:1600,
-          perks:"Yoğun kullanım, detaylı AI fikirleri, öne çıkan isim rengi",
+          perks:"Gold premium görünüm, en detaylı AI ve öne çıkan isim rengi",
           color:"influencer"
         },
         {
@@ -906,7 +962,6 @@
         const parsed = JSON.parse(raw);
         return Object.assign(structuredClone(DEFAULT_DB), parsed);
       }catch(e){
-        console.warn("DB okunamadı, sıfırlanıyor",e);
         return structuredClone(DEFAULT_DB);
       }
     }
@@ -914,8 +969,7 @@
     const DB = loadDB();
     function saveDB(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(DB)); }
 
-    /* Kullanıcı durumu */
-    let currentUser = null; // {name,email,plan}
+    let currentUser = null;
 
     const screens = {
       info:document.getElementById("screen-info"),
@@ -937,7 +991,6 @@
       if(screens[name]) screens[name].classList.add("active");
     }
 
-    /* NAV ELEMANLARI */
     const btnAuth = document.getElementById("btn-auth");
     const btnLogout = document.getElementById("btn-logout");
     const navInfo = document.getElementById("nav-info");
@@ -969,7 +1022,6 @@
       }
     }
 
-    /* YÖNETİCİ BİLGİSİ (SADECE KODDA) */
     const ADMIN_EMAIL = "admin@sparkad.studio";
     const ADMIN_PASS  = "spark123";
 
@@ -977,7 +1029,16 @@
       return DB.users.find(u => u.email.toLowerCase() === email.toLowerCase());
     }
 
-    /* AUTH */
+    function applyPlanTheme(plan){
+      const b=document.body;
+      b.classList.remove("plan-starter","plan-pro","plan-influencer","plan-admin","plan-free");
+      if(plan==="starter") b.classList.add("plan-starter");
+      else if(plan==="pro") b.classList.add("plan-pro");
+      else if(plan==="influencer") b.classList.add("plan-influencer");
+      else if(plan==="admin") b.classList.add("plan-admin");
+      else b.classList.add("plan-free");
+    }
+
     const TAB_LOGIN = document.getElementById("tab-login");
     const TAB_REGISTER = document.getElementById("tab-register");
     const VIEW_LOGIN = document.getElementById("auth-login");
@@ -1046,16 +1107,15 @@
         authMsg.textContent="E-posta ve şifreyi gir.";
         return;
       }
-      // Yönetici
       if(email===ADMIN_EMAIL && pass===ADMIN_PASS){
         currentUser={name:"Yönetici",email:ADMIN_EMAIL,plan:"admin"};
         authMsg.textContent="Yönetici olarak giriş yapıldı.";
         updateTopbar();
+        applyPlanTheme("admin");
         renderAdmin();
         showScreen("admin");
         return;
       }
-      // Normal kullanıcı
       const u = findUserByEmail(email);
       if(!u || u.pass!==pass){
         authMsg.textContent="E-posta veya şifre hatalı.";
@@ -1063,6 +1123,7 @@
       }
       currentUser={name:u.name,email:u.email,plan:u.plan||"starter"};
       updateTopbar();
+      applyPlanTheme(currentUser.plan);
       renderUserDashboard();
       renderHome();
       showScreen("home");
@@ -1075,7 +1136,6 @@
       authMsg.textContent="Bu demo sürümde gerçek şifre sıfırlama yok, istersen yeni hesap açabilirsin.";
     });
 
-    /* HOME */
     const homeTitle = document.getElementById("home-title");
     const homeSub = document.getElementById("home-sub");
     const homeSummary = document.getElementById("home-summary");
@@ -1089,14 +1149,14 @@
         return {label:"Starter Üye",color:"standard",perks:["Temel haklar"]};
       }
       let label = p.name+" Üyesi";
-      if(p.id==="influencer") label="Influencer Müşterisi";
+      if(p.id==="influencer") label="Influencer Müşterisi 👑";
       const perks = [];
       if(p.id==="starter"){
         perks.push("Aylık 1–2 kısa reklam brifi","Temel yapay zekâ önerileri","Standart hız");
       }else if(p.id==="pro"){
-        perks.push("Aylık 4–5 brif","Daha detaylı AI cevapları","Panelde yeşil rozet");
+        perks.push("Aylık 4–5 brif","Mor–mavi neon AI fikirleri","Panelde mor rozet");
       }else if(p.id==="influencer"){
-        perks.push("En detaylı AI fikirleri","İsim turuncu/altın tonlarıyla öne çıkar","Toplulukta daha “önemli” görünür");
+        perks.push("Gold animasyonlu profil kartı","En detaylı AI kampanya fikirleri","İsim altın tonlarıyla öne çıkar");
       }else{
         perks.push(p.perks);
       }
@@ -1128,7 +1188,6 @@
       homeSummary.appendChild(li3);
     }
 
-    /* USER DASHBOARD */
     const userWelcome = document.getElementById("user-welcome");
     const userPlanBadge = document.getElementById("user-plan-badge");
     const userPerksList = document.getElementById("user-perks");
@@ -1148,7 +1207,6 @@
       renderProfile();
     }
 
-    /* REKLAM İSTEĞİ */
     const reqBrand = document.getElementById("req-brand");
     const reqProduct = document.getElementById("req-product");
     const reqDetails = document.getElementById("req-details");
@@ -1183,7 +1241,6 @@
       renderHome();
     });
 
-    /* ASİSTAN / AI DEMO */
     const chatLog = document.getElementById("chat-log");
     const assistantInput = document.getElementById("assistant-input");
     const assistantSend = document.getElementById("assistant-send");
@@ -1268,7 +1325,6 @@
       if(e.key==="Enter"){e.preventDefault();handleAssistant("full");}
     });
 
-    /* TOPLULUK */
     const communityText = document.getElementById("community-text");
     const communityHint = document.getElementById("community-hint");
     const communityList = document.getElementById("community-list");
@@ -1331,7 +1387,6 @@
       renderCommunity();
     });
 
-    /* ADMIN GÖRÜNÜMÜ */
     const adminUsersEl = document.getElementById("admin-users");
     const adminRequestsEl = document.getElementById("admin-requests");
     const adminMessagesEl = document.getElementById("admin-messages");
@@ -1347,18 +1402,25 @@
         const label=document.createElement("div");
         label.className="label-row";
         const strong=document.createElement("strong");
-        strong.textContent=u.name;
-        strong.style.color = meta.color==="influencer"
-          ? "#fed7aa"
-          : meta.color==="pro"
-            ? "#bbf7d0"
-            : "#e5e7eb";
+        if(meta.color==="influencer"){
+          strong.textContent="👑 "+u.name;
+          strong.style.color="#fbbf24";
+        }else if(meta.color==="pro"){
+          strong.textContent=u.name;
+          strong.style.color="#c4b5fd";
+        }else{
+          strong.textContent=u.name;
+          strong.style.color="#e5e7eb";
+        }
 
         const pill=document.createElement("span");
-        pill.className = "pill-small "+(
-          meta.color==="influencer" ? "orange" :
-          meta.color==="pro" ? "green" : "blue"
-        );
+        if(meta.color==="influencer"){
+          pill.className="pill-small gold";
+        }else if(meta.color==="pro"){
+          pill.className="pill-small green";
+        }else{
+          pill.className="pill-small blue";
+        }
         pill.textContent=meta.label;
 
         label.appendChild(strong);
@@ -1411,7 +1473,7 @@
         const okBtn=document.createElement("button");
         okBtn.textContent="Onayla";
         okBtn.addEventListener("click",()=>{
-          if(r.status==="rejected") return; // reddedilmişse tekrar oynama
+          if(r.status==="rejected") return;
           r.status="approved";
           saveDB();
           renderAdminRequests();
@@ -1421,7 +1483,7 @@
         const noBtn=document.createElement("button");
         noBtn.textContent="Reddet";
         noBtn.addEventListener("click",()=>{
-          if(r.status==="approved") return; // onaylanmış tekrar reddedilmesin
+          if(r.status==="approved") return;
           r.status="rejected";
           saveDB();
           renderAdminRequests();
@@ -1536,7 +1598,6 @@
       renderAdminPricing();
     }
 
-    /* PROFİL */
     const profileAvatar=document.getElementById("profile-avatar");
     const profileName=document.getElementById("profile-name");
     const profileEmail=document.getElementById("profile-email");
@@ -1544,6 +1605,7 @@
     const profileNameInput=document.getElementById("profile-name-input");
     const groupNameInput=document.getElementById("group-name-input");
     const groupSuggestions=document.getElementById("group-suggestions");
+    const profileCard=document.getElementById("profile-card");
 
     function renderProfile(){
       if(!currentUser) return;
@@ -1552,6 +1614,16 @@
       profileEmail.textContent=currentUser.email;
       profilePlan.textContent=meta.label;
       profilePlan.className="tag "+(meta.color||"standard");
+
+      profileCard.classList.remove("profile-starter","profile-pro","profile-influencer");
+      if(currentUser.plan==="starter"){
+        profileCard.classList.add("profile-starter");
+      }else if(currentUser.plan==="pro"){
+        profileCard.classList.add("profile-pro");
+      }else if(currentUser.plan==="influencer"){
+        profileCard.classList.add("profile-influencer");
+      }
+
       const initials=currentUser.name.split(" ").map(p=>p[0]).join("").slice(0,2).toUpperCase()||"SA";
       profileAvatar.textContent=initials;
     }
@@ -1589,7 +1661,6 @@
       });
     });
 
-    /* PRICING (KULLANICI GÖRÜNÜM) */
     const userPricingEl=document.getElementById("user-pricing");
     function renderUserPricing(){
       userPricingEl.innerHTML="";
@@ -1607,7 +1678,6 @@
         value.textContent=p.priceTl.toLocaleString("tr-TR")+" TL";
         const note=document.createElement("div");
         note.className="price-note";
-        // Basit kur notu
         const usd=(p.priceTl/42.45).toFixed(1);
         const eur=(p.priceTl/49.6).toFixed(1);
         note.textContent=`${p.perks} • Yaklaşık ${usd} $ / ${eur} € (sadece bilgi).`;
@@ -1638,6 +1708,7 @@
         u.plan=planId;
         currentUser.plan=planId;
         saveDB();
+        applyPlanTheme(planId);
         renderUserDashboard();
         renderUserPricing();
         renderAdminUsers();
@@ -1651,40 +1722,8 @@
       }
     }
 
-    /* AYARLAR / TEMA */
-    const settingsTheme=document.getElementById("settings-theme");
     const settingsHint=document.getElementById("settings-hint");
 
-    function applyTheme(name){
-      const root=document.documentElement;
-      if(name==="neon"){
-        root.style.setProperty("--bg","#020617");
-        root.style.setProperty("--bg-soft","#020617");
-        root.style.setProperty("--bg-softer","#020617");
-        root.style.setProperty("--accent","#38bdf8");
-        root.style.setProperty("--accent-soft","rgba(56,189,248,0.28)");
-      }else if(name==="soft"){
-        root.style.setProperty("--bg","#020617");
-        root.style.setProperty("--bg-soft","#020617");
-        root.style.setProperty("--bg-softer","#020617");
-        root.style.setProperty("--accent","#a855f7");
-        root.style.setProperty("--accent-soft","rgba(168,85,247,0.28)");
-      }else{
-        root.style.setProperty("--bg","#050816");
-        root.style.setProperty("--bg-soft","#0b1120");
-        root.style.setProperty("--bg-softer","#111827");
-        root.style.setProperty("--accent","#38bdf8");
-        root.style.setProperty("--accent-soft","rgba(56,189,248,0.18)");
-      }
-      localStorage.setItem("spark_theme",name);
-      if(settingsHint) settingsHint.textContent="Tema güncellendi: "+name;
-    }
-
-    if(settingsTheme){
-      settingsTheme.addEventListener("change",()=>applyTheme(settingsTheme.value));
-    }
-
-    /* NAV OLAYLARI */
     document.getElementById("btn-info-start").addEventListener("click",()=>showScreen("auth"));
     document.getElementById("btn-info-pricing").addEventListener("click",()=>{
       renderUserPricing();
@@ -1694,6 +1733,7 @@
     btnLogout.addEventListener("click",()=>{
       currentUser=null;
       updateTopbar();
+      applyPlanTheme("free");
       showScreen("info");
     });
 
@@ -1734,18 +1774,18 @@
       showScreen("profile");
     });
     navSettings.addEventListener("click",()=>{
+      if(settingsHint){
+        settingsHint.textContent="Tema pakete göre otomatik: Starter=mavi, Spark Pro=mor, Influencer=gold animasyonlu.";
+      }
       showScreen("settings");
     });
 
-    /* UYGULAMA BAŞLANGIÇ */
     updateTopbar();
     renderUserPricing();
     renderCommunity();
-    const savedTheme=localStorage.getItem("spark_theme")||"default";
-    applyTheme(savedTheme);
-    if(settingsTheme) settingsTheme.value=savedTheme;
+    applyPlanTheme("free");
 
-    console.log("Spark Ad Studio demo arayüzü yüklendi ✅");
+    console.log("Spark Ad Studio premium tema sürümü yüklendi ✅");
   </script>
 </body>
 </html>
