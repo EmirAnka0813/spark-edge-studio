@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SparkAd Studio (Local)</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Arial;margin:24px;max-width:900px}
+    h1{margin:0 0 12px}
+    textarea{width:100%;height:120px;padding:12px;font-size:16px}
+    button{padding:10px 14px;font-size:16px;cursor:pointer;margin-top:10px}
+    pre{white-space:pre-wrap;background:#f5f5f5;padding:12px;border-radius:10px;min-height:120px}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    select{padding:10px}
+    .small{opacity:.7;font-size:13px}
+  </style>
+</head>
+<body>
+  <h1>SparkAd Studio (Limitsiz / Local)</h1>
+  <p class="small">Bu uygulama kendi bilgisayarındaki AI (Ollama) ile çalışır.</p>
+
+  <textarea id="prompt" placeholder="Örn: 13 yaş için komik bir oyun reklam fikri üret."></textarea>
+
+  <div class="row">
+    <select id="style">
+      <option value="Kısa ve komik yaz.">Kısa + Komik</option>
+      <option value="Gençlere hitap eden sokak diliyle yaz.">Genç dili</option>
+      <option value="Daha ciddi ve profesyonel yaz.">Ciddi + Profesyonel</option>
+      <option value="3 seçenekli başlık öner, sonra 1 kısa açıklama yaz.">Başlık + Açıklama</option>
+    </select>
+    <button id="run">ÜRET</button>
+    <span id="status"></span>
+  </div>
+
+  <h3>Sonuç</h3>
+  <pre id="out"></pre>
+
+<script>
+const $ = (id) => document.getElementById(id);
+
+$("run").onclick = async () => {
+  const userPrompt = $("prompt").value.trim();
+  if (!userPrompt) return alert("Bir şey yaz önce 🙂");
+
+  $("status").textContent = "Üretiliyor...";
+  $("out").textContent = "";
+
+  const system = "Türkçe konuş. Küfür yok. Net, anlaşılır ve yaratıcı ol.";
+  const style = $("style").value;
+
+  try {
+    const res = await fetch("http://localhost:3000/generate", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({
+        prompt: `${system}\nStil: ${style}\nİstek: ${userPrompt}`
+      })
+    });
+
+    if (!res.ok) throw new Error("Server cevap vermedi. HTTP " + res.status);
+    const data = await res.json();
+    $("out").textContent = data.response || "(Boş cevap)";
+    $("status").textContent = "Bitti ✅";
+  } catch (e) {
+    $("status").textContent = "Hata ❌";
+    $("out").textContent = "Hata: " + e.message;
+  }
+};
+</script>
+</body>
+</html>
