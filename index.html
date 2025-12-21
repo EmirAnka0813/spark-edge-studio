@@ -20,28 +20,15 @@
       --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    /* PLAN TEMALI RENKLER */
+    /* PLAN TEMALI RENKLER (paketler renk belirlemez; renkler kullanıcı seçimine göre uygulanır) */
 
-    body.plan-free {
-      --accent: #38bdf8;
-      --accent-soft: rgba(56,189,248,0.18);
-    }
-    body.plan-starter {
-      --accent: #38bdf8;
-      --accent-soft: rgba(56,189,248,0.22);
-    }
-    body.plan-pro {
-      --accent: #a855f7;
-      --accent-soft: rgba(168,85,247,0.26);
-    }
-    body.plan-influencer {
-      --accent: #fbbf24;
-      --accent-soft: rgba(251,191,36,0.26);
-    }
-    body.plan-admin {
-      --accent: #22c55e;
-      --accent-soft: rgba(34,197,94,0.26);
-    }
+    body.plan-free {}
+    body.plan-starter {}
+    body.plan-pro {}
+    body.plan-influencer {}
+    body.plan-admin {}
+
+    /* NOTE: Paketleri ayırmak isterseniz paket etiketleri `tag` sınıfıyla gösterilir; renkler ortak `--accent` değişkeninden gelir. */
 
     *{box-sizing:border-box;}
 
@@ -108,7 +95,7 @@
       background-image:url('sparkad-logo.png'); /* logonun adı bu olsun */
       background-size:cover;
       background-position:center;
-      box-shadow:0 0 18px rgba(249,115,22,0.5);
+      box-shadow:0 0 18px var(--accent-soft);
       flex-shrink:0;
     }
 
@@ -242,11 +229,15 @@
       transition:0.2s;
     }
     .btn-big.primary{
-      background:linear-gradient(135deg,#0ea5e9,#22c55e);
+      background:linear-gradient(135deg,var(--accent),var(--accent));
       color:#020617;
-      box-shadow:0 18px 32px rgba(56,189,248,0.45);
+      box-shadow:0 18px 32px var(--accent-soft);
     }
-    .btn-big.primary:hover{filter:brightness(1.05);}
+    .btn-big.primary:hover{filter:brightness(1.05);transform:translateY(-1px);}
+
+    /* Card accent top stripe to make accent color more visible */
+    .card{position:relative}
+    .card::before{content:'';display:block;height:6px;border-top-left-radius:16px;border-top-right-radius:16px;margin:-16px -16px 8px -16px;background:linear-gradient(90deg,var(--accent),transparent);}
     .btn-big.ghost{
       background:#020617;
       border-color:#1f2937;
@@ -256,7 +247,13 @@
     .hint{font-size:11px;color:var(--muted);margin-top:6px;}
 
     /* AUTH */
-    .auth-layout{max-width:600px;margin:0 auto;}
+    .auth-layout{max-width:640px;margin:0 auto;padding:18px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);box-shadow:inset 0 1px 0 rgba(255,255,255,0.02);}
+    .auth-hero{display:flex;align-items:center;gap:12px;margin-bottom:12px;padding:10px;border-radius:10px;background:linear-gradient(180deg,rgba(56,189,248,0.06),rgba(255,255,255,0.01));border:1px solid rgba(56,189,248,0.06);}
+    .auth-avatar{width:48px;height:48px;border-radius:999px;background:linear-gradient(45deg,var(--accent),#6ee7b7);box-shadow:0 6px 20px rgba(34,197,94,0.06) inset;display:flex;align-items:center;justify-content:center;font-weight:700;color:#020617}
+    .auth-hero .hero-title{font-weight:700;font-size:15px;background:linear-gradient(90deg,#ffffff,#e0f2fe,#fef3c7);-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200% 100%;animation:heroShine 3s linear infinite}
+    .auth-hero .hero-sub{font-size:12px;color:var(--muted)}
+    @keyframes heroShine{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
     .tabs{display:flex;gap:6px;margin-bottom:10px;}
     .tab-btn{
       flex:1;
@@ -275,6 +272,26 @@
       color:#e0f2fe;
       font-weight:600;
     }
+
+    .auth-layout input{padding:11px 12px;border-radius:10px;font-size:14px;border:1px solid #111827;background:#020617}
+    .auth-layout input:focus{box-shadow:0 0 0 4px rgba(56,189,248,0.06);border-color:var(--accent)}
+    .auth-layout .form-actions{justify-content:space-between}
+    .remember-row{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+    .btn-sm.primary{padding:8px 16px;border-radius:999px;transition:transform .18s,box-shadow .18s}
+    .btn-sm.primary:active{transform:translateY(1px);}
+
+    /* Welcome overlay to create immersive login transition */
+    .welcome-overlay{position:fixed;left:0;top:0;width:100%;height:100%;display:none;align-items:center;justify-content:center;z-index:60;pointer-events:none}
+    .welcome-overlay.show{display:flex;pointer-events:auto}
+    .welcome-card{background:linear-gradient(135deg,var(--accent),rgba(255,255,255,0.08));padding:18px 24px;border-radius:12px;color:#020617;font-weight:700;letter-spacing:0.02em;box-shadow:0 20px 40px rgba(0,0,0,0.5);transform:translateY(20px) scale(0.98);opacity:0;transition:transform .36s ease,opacity .36s}
+    .welcome-overlay.show .welcome-card{transform:translateY(0) scale(1);opacity:1}
+
+    #app.immersive{transform:scale(1.01);transition:transform .36s}
+    #app{transition:transform .36s}
+
+    .card.pulse{animation:pulseCard .9s ease}
+    @keyframes pulseCard{0%{transform:translateY(0);box-shadow:0 12px 32px rgba(0,0,0,0.45)}20%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+    
 
     .form-grid{display:grid;gap:8px;margin-top:8px;}
     label{
@@ -338,14 +355,15 @@
       font-size:10px;
       padding:2px 6px;
       border-radius:999px;
-      border:1px solid #1f2937;
-      background:#020617;
-      color:var(--muted);
+      border:1px solid var(--accent);
+      background:var(--accent-soft);
+      color:#e0f2fe;
     }
-    .tag.standard{border-color:#38bdf8;color:#bae6fd;}
-    .tag.pro{border-color:#a855f7;color:#e9d5ff;}
-    .tag.influencer{border-color:#fbbf24;color:#fef9c3;}
-    .tag.admin{border-color:#22c55e;color:#bbf7d0;}
+    /* Paketlere bağlı özel renkler kaldırıldı; her paket aynı accent rengini kullanır */
+    .tag.standard{}
+    .tag.pro{}
+    .tag.influencer{}
+    .tag.admin{}
 
     .user-inline{
       display:flex;
@@ -387,8 +405,8 @@
       background:#020617;
     }
     .chat-line.me .chat-bubble{
-      background:rgba(56,189,248,0.16);
-      border-color:rgba(56,189,248,0.6);
+      background:var(--accent-soft);
+      border-color:var(--accent);
     }
     .chat-line.ai .chat-bubble{
       background:rgba(15,23,42,0.96);
@@ -436,10 +454,10 @@
       border:1px solid #4b5563;
       color:#9ca3af;
     }
-    .pill-small.green{border-color:#22c55e;color:#bbf7d0;}
-    .pill-small.blue{border-color:#38bdf8;color:#bae6fd;}
-    .pill-small.orange{border-color:#f97316;color:#fed7aa;}
-    .pill-small.gold{border-color:#fbbf24;color:#fef9c3;}
+    .pill-small.green{border-color:var(--accent);color:#e0f2fe;}
+    .pill-small.blue{border-color:var(--accent);color:#e0f2fe;}
+    .pill-small.orange{border-color:var(--accent);color:#e0f2fe;}
+    .pill-small.gold{border-color:var(--accent);color:#e0f2fe;}
     .pill-small.gray{border-color:#4b5563;color:#9ca3af;}
 
     .admin-actions{display:flex;gap:6px;margin-top:4px;flex-wrap:wrap;}
@@ -466,7 +484,10 @@
       display:flex;
       flex-direction:column;
       justify-content:space-between;
+      box-shadow:inset 0 0 0 1px rgba(0,0,0,0.2);
     }
+    .price-card .price-name{display:flex;align-items:center;gap:8px}
+    .price-card .price-name:before{content:'';width:8px;height:8px;border-radius:3px;background:var(--accent);display:inline-block;margin-right:6px}
     .price-name{font-size:14px;font-weight:600;margin-bottom:3px;}
     .price-tag{font-size:11px;color:var(--muted);margin-bottom:6px;}
     .price-value{font-size:18px;font-weight:700;margin-bottom:2px;}
@@ -476,13 +497,14 @@
       width:52px;
       height:52px;
       border-radius:999px;
-      background:radial-gradient(circle at 30% 0,#22c55e,#38bdf8);
+      background:radial-gradient(circle at 30% 0,var(--accent),rgba(255,255,255,0.08));
       display:flex;
       align-items:center;
       justify-content:center;
       font-weight:700;
       font-size:20px;
       color:#020617;
+      box-shadow:inset 0 -6px 24px var(--accent-soft);
     }
     .profile-row{
       display:flex;
@@ -505,22 +527,14 @@
       content:"";
       position:absolute;
       inset:-2px;
-      background:linear-gradient(130deg,#38bdf8,#0ea5e9);
+      background:linear-gradient(130deg,var(--accent),rgba(255,255,255,0.04));
       opacity:0;
       z-index:-1;
     }
-    #profile-card.profile-starter::before{
-      opacity:0.7;
-    }
-    #profile-card.profile-pro::before{
-      opacity:0.9;
-      background:linear-gradient(130deg,#a855f7,#38bdf8);
-    }
-    #profile-card.profile-influencer::before{
-      opacity:1;
-      background:conic-gradient(from 0deg,#fbbf24,#f97316,#fb7185,#fbbf24);
-      animation:spin-gold 6s linear infinite;
-    }
+    #profile-card.profile-starter::before{opacity:0.7;}
+    #profile-card.profile-pro::before{opacity:0.9;}
+    #profile-card.profile-influencer::before{opacity:1;}
+    @keyframes spin-gold{from{transform:rotate(0deg);}
 
     @keyframes spin-gold{
       from{transform:rotate(0deg);}
@@ -605,8 +619,8 @@
               <button class="btn-big ghost" id="btn-info-pricing">Paketlere Bak</button>
             </div>
             <p class="hint">
-              Yönetici (sen 😄) pakete göre renkleri ve fiyatları değiştirebilir. Normal kullanıcılar
-              “yönetici” kelimesini hiç görmez, sadece sen görürsün.
+              Yönetici pakete göre renkleri ve fiyatları değiştirebilir. Normal kullanıcılar
+              “yönetici” kelimesini hiç görmez, sadece yöneticiler görür.
             </p>
           </div>
           <div class="card">
@@ -644,6 +658,14 @@
             e-posta/şifre kombinasyonu ile çalışır.
           </div>
 
+          <div class="auth-hero" id="auth-hero" aria-hidden="true">
+            <div class="auth-avatar">SA</div>
+            <div>
+              <div class="hero-title">Hızlı, basit ve eğlenceli</div>
+              <div class="hero-sub">Hesabına giriş yaparak fikir üretimine hemen başla.</div>
+            </div>
+          </div>
+
           <div class="tabs">
             <button class="tab-btn active" id="tab-login">Giriş Yap</button>
             <button class="tab-btn" id="tab-register">Üye Ol</button>
@@ -659,6 +681,9 @@
                 <label for="login-pass">Şifre</label>
                 <input id="login-pass" type="password" placeholder="••••••••" />
               </div>
+            </div>
+            <div class="form-grid" style="margin-top:8px;">
+              <label class="remember-row"><input type="checkbox" id="remember-me" /> Beni hatırla</label>
             </div>
             <div class="form-actions">
               <button class="btn-sm" id="btn-forgot">Şifremi unuttum</button>
@@ -938,6 +963,11 @@
         </div>
       </section>
     </main>
+
+    <div id="welcome-overlay" class="welcome-overlay" aria-hidden="true">
+      <div class="welcome-card">Hoş geldin, <span id="welcome-name"></span>!</div>
+    </div>
+
   </div>
 
   <script>
@@ -1021,12 +1051,7 @@
       settings:document.getElementById("screen-settings")
     };
 
-    function showScreen(name){
-      for(const key in screens){
-        screens[key].classList.remove("active");
-      }
-      if(screens[name]) screens[name].classList.add("active");
-    }
+
 
     const btnAuth = document.getElementById("btn-auth");
     const btnLogout = document.getElementById("btn-logout");
@@ -1094,15 +1119,17 @@
     }
     function applyAccentChoice(choice){
       if(!choice) return;
-      if(choice.type==='plan'){
-        applyPlanTheme(choice.value);
-        // clear custom CSS variables to allow plan classes to control look
-        document.documentElement.style.removeProperty('--accent');
-        document.documentElement.style.removeProperty('--accent-soft');
-      }else if(choice.type==='custom'){
+      // normalize: accept previous 'plan' payloads and map them to fixed colors
+      const THEME_MAP = { free:'#38bdf8', starter:'#38bdf8', pro:'#a855f7', influencer:'#fbbf24', admin:'#22c55e', 'custom-red':'#ef4444' };
+      let color = null;
+      if(choice.type==='custom') color = choice.value;
+      else if(choice.type==='plan') color = THEME_MAP[choice.value] || THEME_MAP['free'];
+      else if(choice.type==='auto' && THEME_MAP[choice.value]) color = THEME_MAP[choice.value];
+
+      if(color){
         document.body.classList.remove("plan-starter","plan-pro","plan-influencer","plan-admin","plan-free");
-        document.documentElement.style.setProperty('--accent', choice.value);
-        document.documentElement.style.setProperty('--accent-soft', hexToSoft(choice.value));
+        document.documentElement.style.setProperty('--accent', color);
+        document.documentElement.style.setProperty('--accent-soft', hexToSoft(color));
       }
     }
 
@@ -1120,18 +1147,14 @@
       btnColors.addEventListener('click', (e)=>{ e.stopPropagation(); if(colorMenu.style.display==='block') closeMenu(); else openMenu(); });
       document.addEventListener('click',(e)=>{ if(!colorMenu.contains(e.target) && e.target!==btnColors) closeMenu(); });
 
+      const THEME_MAP = { free:'#38bdf8', starter:'#38bdf8', pro:'#a855f7', influencer:'#fbbf24', admin:'#22c55e', 'custom-red':'#ef4444' };
       swatches.forEach(s=>{
         s.addEventListener('click', ()=>{
           const theme = s.dataset.theme;
-          if(theme==='custom-red'){
-            const color = '#ef4444';
-            applyAccentChoice({type:'custom',value:color});
-            saveAccentChoice({type:'custom',value:color});
-            customPicker.value = color;
-          } else {
-            applyAccentChoice({type:'plan',value:theme});
-            saveAccentChoice({type:'plan',value:theme});
-          }
+          const color = THEME_MAP[theme] || '#38bdf8';
+          applyAccentChoice({type:'custom',value:color});
+          saveAccentChoice({type:'custom',value:color});
+          if(customPicker) customPicker.value = color;
           closeMenu();
         });
       });
@@ -1174,6 +1197,7 @@
 
     const loginEmail = document.getElementById("login-email");
     const loginPass = document.getElementById("login-pass");
+    const rememberMe = document.getElementById("remember-me");
     const regName = document.getElementById("reg-name");
     const regEmail = document.getElementById("reg-email");
     const regPass = document.getElementById("reg-pass");
@@ -1211,6 +1235,39 @@
       setTimeout(()=>loginUser(),300);
     }
 
+    // Show a small immersive welcome card when user logs in
+    function showWelcome(name){
+      const overlay = document.getElementById('welcome-overlay');
+      const nm = document.getElementById('welcome-name');
+      nm.textContent = name;
+      overlay.classList.add('show');
+      overlay.setAttribute('aria-hidden','false');
+      document.getElementById('app').classList.add('immersive');
+      setTimeout(()=>{
+        overlay.classList.remove('show');
+        overlay.setAttribute('aria-hidden','true');
+        document.getElementById('app').classList.remove('immersive');
+      },1200);
+    }
+
+    // Improve tab and screen UX: focus input when auth opened
+    TAB_LOGIN.addEventListener("click",()=>{
+      TAB_LOGIN.classList.add("active");
+      TAB_REGISTER.classList.remove("active");
+      VIEW_LOGIN.style.display="";
+      VIEW_REGISTER.style.display="none";
+      authMsg.textContent="";
+      setTimeout(()=>loginEmail.focus(),70);
+    });
+
+    function showScreen(name){
+      for(const key in screens){
+        screens[key].classList.remove("active");
+      }
+      if(screens[name]) screens[name].classList.add("active");
+      if(name==='auth') setTimeout(()=>loginEmail.focus(),90);
+    }
+
     function loginUser(){
       const email = loginEmail.value.trim();
       const pass = loginPass.value.trim();
@@ -1221,10 +1278,13 @@
       if(email===ADMIN_EMAIL && pass===ADMIN_PASS){
         currentUser={name:"Yönetici",email:ADMIN_EMAIL,plan:"admin"};
         authMsg.textContent="Yönetici olarak giriş yapıldı.";
-        updateTopbar();
-        applyPlanTheme("admin");
-        renderAdmin();
-        showScreen("admin");
+        showWelcome('Yönetici');
+        setTimeout(()=>{
+          updateTopbar();
+          applyPlanTheme("admin");
+          renderAdmin();
+          showScreen("admin");
+        },600);
         return;
       }
       const u = findUserByEmail(email);
@@ -1233,11 +1293,23 @@
         return;
       }
       currentUser={name:u.name,email:u.email,plan:u.plan||"starter"};
-      updateTopbar();
-      applyPlanTheme(currentUser.plan);
-      renderUserDashboard();
-      renderHome();
-      showScreen("home");
+      saveDB();
+      // remember me: persist user's email for convenience (demo only)
+      try{ if(rememberMe && rememberMe.checked) localStorage.setItem('sparkad-last-email', currentUser.email); else localStorage.removeItem('sparkad-last-email'); }catch(e){}
+
+      showWelcome(currentUser.name);
+      setTimeout(()=>{
+        updateTopbar();
+        applyPlanTheme(currentUser.plan);
+        renderUserDashboard();
+        renderHome();
+        showScreen("home");
+        const firstCard = document.querySelector('#screen-home .card');
+        if(firstCard){
+          firstCard.classList.add('pulse');
+          setTimeout(()=>firstCard.classList.remove('pulse'),1000);
+        }
+      },700);
     }
 
     btnRegister.addEventListener("click",registerUser);
@@ -1895,6 +1967,7 @@
     renderUserPricing();
     renderCommunity();
     initAccentPicker();
+    try{ const __last = localStorage.getItem('sparkad-last-email'); if(__last && document.getElementById('login-email')) document.getElementById('login-email').value=__last; }catch(e){}
     applyPlanTheme("free");
 
     console.log("Spark Ad Studio premium tema sürümü yüklendi ✅");
