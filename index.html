@@ -78,7 +78,27 @@
       background:radial-gradient(circle at 0 50%,#0b1120 0,#020617 55%);
       gap:10px;
       flex-wrap:wrap;
+      position:relative;
     }
+
+    /* Renk seçici (color picker) */
+    .color-picker-wrap{position:relative;display:inline-block;}
+    .color-menu{
+      position:absolute;
+      right:0;
+      top:calc(100% + 8px);
+      background:#020617;
+      border:1px solid #111827;
+      border-radius:10px;
+      padding:10px;
+      min-width:180px;
+      box-shadow:0 12px 32px rgba(0,0,0,0.5);
+      z-index:40;
+    }
+    .color-menu .swatches{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+    .swatch{width:28px;height:28px;border-radius:6px;border:1px solid #111827;cursor:pointer;box-shadow:inset 0 0 0 2px rgba(0,0,0,0.12);}
+    .swatch:focus{outline:2px solid rgba(255,255,255,0.06);}
+    .custom-color input[type="color"]{background:transparent;border:none;padding:0;width:34px;height:28px;border-radius:6px;cursor:pointer;}
 
     .logo{
       width:36px;
@@ -539,6 +559,23 @@
         <button class="nav-btn" data-nav="profile" id="nav-profile" style="display:none;">Profil</button>
         <button class="nav-btn" data-nav="settings" id="nav-settings" style="display:none;">Ayarlar</button>
         <button class="nav-btn danger" id="btn-logout" style="display:none;">Çıkış</button>
+
+        <div class="color-picker-wrap" style="display:inline-flex;">
+          <button class="nav-btn" id="btn-colors" aria-haspopup="true" aria-expanded="false">Renkler ▾</button>
+          <div id="color-menu" class="color-menu" style="display:none;">
+            <div class="swatches" role="list">
+              <button class="swatch" data-theme="free" title="Mavi" style="background:#38bdf8;" aria-label="Mavi"></button>
+              <button class="swatch" data-theme="pro" title="Mor" style="background:#a855f7;" aria-label="Mor"></button>
+              <button class="swatch" data-theme="influencer" title="Sarı" style="background:#fbbf24;" aria-label="Sarı"></button>
+              <button class="swatch" data-theme="admin" title="Yeşil" style="background:#22c55e;" aria-label="Yeşil"></button>
+              <button class="swatch" data-theme="custom-red" title="Kırmızı" style="background:#ef4444;" aria-label="Kırmızı"></button>
+              <label class="custom-color" title="Özel renk">
+                <input id="customAccentPicker" type="color" value="#38bdf8" />
+              </label>
+            </div>
+          </div>
+        </div>
+
         <button class="nav-btn primary" id="btn-auth">Üye Ol / Giriş Yap</button>
       </nav>
     </header>
@@ -1037,6 +1074,80 @@
       else if(plan==="influencer") b.classList.add("plan-influencer");
       else if(plan==="admin") b.classList.add("plan-admin");
       else b.classList.add("plan-free");
+    }
+
+    // Accent/theme helpers for manual color choices
+    function saveAccentChoice(choice){
+      try{ localStorage.setItem('sparkad-accent', JSON.stringify(choice)); }catch(e){}
+    }
+    function loadAccentChoice(){
+      try{ return JSON.parse(localStorage.getItem('sparkad-accent')); }catch(e){return null;}
+    }
+    function hexToSoft(hex){
+      try{
+        const c = (hex||'#38bdf8').replace('#','');
+        const r = parseInt(c.substring(0,2),16);
+        const g = parseInt(c.substring(2,4),16);
+        const b = parseInt(c.substring(4,6),16);
+        return `rgba(${r},${g},${b},0.18)`;
+      }catch(e){return 'rgba(56,189,248,0.18)';}
+    }
+    function applyAccentChoice(choice){
+      if(!choice) return;
+      if(choice.type==='plan'){
+        applyPlanTheme(choice.value);
+        // clear custom CSS variables to allow plan classes to control look
+        document.documentElement.style.removeProperty('--accent');
+        document.documentElement.style.removeProperty('--accent-soft');
+      }else if(choice.type==='custom'){
+        document.body.classList.remove("plan-starter","plan-pro","plan-influencer","plan-admin","plan-free");
+        document.documentElement.style.setProperty('--accent', choice.value);
+        document.documentElement.style.setProperty('--accent-soft', hexToSoft(choice.value));
+      }
+    }
+
+    function initAccentPicker(){
+      const btnColors = document.getElementById('btn-colors');
+      const colorMenu = document.getElementById('color-menu');
+      const swatches = document.querySelectorAll('.swatch');
+      const customPicker = document.getElementById('customAccentPicker');
+
+      function closeMenu(){ colorMenu.style.display='none'; btnColors.setAttribute('aria-expanded','false'); }
+      function openMenu(){ colorMenu.style.display='block'; btnColors.setAttribute('aria-expanded','true'); }
+
+      if(!btnColors || !colorMenu) return;
+
+      btnColors.addEventListener('click', (e)=>{ e.stopPropagation(); if(colorMenu.style.display==='block') closeMenu(); else openMenu(); });
+      document.addEventListener('click',(e)=>{ if(!colorMenu.contains(e.target) && e.target!==btnColors) closeMenu(); });
+
+      swatches.forEach(s=>{
+        s.addEventListener('click', ()=>{
+          const theme = s.dataset.theme;
+          if(theme==='custom-red'){
+            const color = '#ef4444';
+            applyAccentChoice({type:'custom',value:color});
+            saveAccentChoice({type:'custom',value:color});
+            customPicker.value = color;
+          } else {
+            applyAccentChoice({type:'plan',value:theme});
+            saveAccentChoice({type:'plan',value:theme});
+          }
+          closeMenu();
+        });
+      });
+
+      customPicker.addEventListener('input',(e)=>{
+        const c = e.target.value;
+        applyAccentChoice({type:'custom',value:c});
+        saveAccentChoice({type:'custom',value:c});
+      });
+
+      // apply saved or keep plan-based
+      const saved = loadAccentChoice();
+      if(saved){
+        applyAccentChoice(saved);
+        if(saved.type==='custom') customPicker.value = saved.value;
+      }
     }
 
     const TAB_LOGIN = document.getElementById("tab-login");
@@ -1783,6 +1894,7 @@
     updateTopbar();
     renderUserPricing();
     renderCommunity();
+    initAccentPicker();
     applyPlanTheme("free");
 
     console.log("Spark Ad Studio premium tema sürümü yüklendi ✅");
