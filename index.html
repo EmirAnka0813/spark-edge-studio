@@ -1284,13 +1284,8 @@
         applyPlanTheme("admin");
         renderAdmin();
         // Ensure auth screen is fully deactivated and admin screen visible
-        try{
-          if(screens && screens['auth']) screens['auth'].classList.remove('active');
-        }catch(e){}
-        try{
-          if(screens && screens['admin']) screens['admin'].classList.add('active');
-        }catch(e){}
-        showScreen("admin");
+        try{ if(screens && screens['auth']) screens['auth'].classList.remove('active'); }catch(e){}
+        showAdminUsers();
         const overlay = document.getElementById('welcome-overlay');
         if(overlay){ overlay.classList.remove('show'); overlay.setAttribute('aria-hidden','true'); }
         document.getElementById('app').classList.remove('immersive');
@@ -1721,7 +1716,7 @@
         controls.appendChild(planSel);
 
         // Credit input + button
-        const creditInput = document.createElement('input'); creditInput.type='number'; creditInput.min=1; creditInput.value=10; creditInput.style.width='84px'; creditInput.style.padding='6px';
+        const creditInput = document.createElement('input'); creditInput.type='number'; creditInput.min=1; creditInput.value=10; creditInput.style.width='84px'; creditInput.style.padding='6px'; creditInput.className='admin-credit-input'; creditInput.setAttribute('data-email', u.email);
         const creditBtn = document.createElement('button'); creditBtn.className='btn-sm'; creditBtn.textContent='Kredi Ver';
         creditBtn.addEventListener('click',()=>{ const amt=Number(creditInput.value||0); if(!amt) return; u.credits=(u.credits||0)+amt; saveDB(); renderAdminUsers(); alert(u.name+' kullanıcısına '+amt+' kredi verildi.'); });
         controls.appendChild(creditInput); controls.appendChild(creditBtn);
@@ -1738,6 +1733,20 @@
       // populate admin gift select with Everyone option + users
       const sel = document.getElementById('admin-gift-target');
       if(sel){ sel.innerHTML=''; const o0=document.createElement('option'); o0.value='__everyone__'; o0.textContent='Herkes (tüm kullanıcılara)'; sel.appendChild(o0); DB.users.forEach(u=>{ const o=document.createElement('option'); o.value=u.email; o.textContent=u.name+' ('+u.email+')'; sel.appendChild(o); }); }
+
+      // Focus & highlight first user's credit input for quick admin action
+      setTimeout(()=>{
+        const usersEl = document.getElementById('admin-users');
+        if(!usersEl) return;
+        const firstInput = usersEl.querySelector('.admin-credit-input');
+        if(firstInput){
+          // focus & select value
+          firstInput.focus(); firstInput.select();
+          // highlight its parent list-item briefly
+          const listItem = firstInput.closest('.list-item');
+          if(listItem){ listItem.classList.add('admin-highlight'); setTimeout(()=>listItem.classList.remove('admin-highlight'),1200); listItem.scrollIntoView({behavior:'smooth',block:'center'}); }
+        }
+      },80);
     }
 
     function renderAdminRequests(){
@@ -1797,8 +1806,21 @@
     document.getElementById('btn-add-plan').addEventListener('click',()=>{ if(!ensureAdmin()) return; const name=document.getElementById('new-plan-name').value.trim(); const type=document.getElementById('new-plan-type').value; const price=Number(document.getElementById('new-plan-price').value||'0'); const perks=document.getElementById('new-plan-perks').value.trim(); if(!name||!perks) return; DB.plans.push({ id:'p_'+Date.now(), name, type, priceTl:price, perks, color:type==='subscription'?'pro':'standard' }); saveDB(); renderAdminPricing(); renderUserPricing(); document.getElementById('new-plan-name').value=''; document.getElementById('new-plan-perks').value=''; });
     document.getElementById('btn-gift-credits').addEventListener('click',()=>{ if(!ensureAdmin()) return; const target=document.getElementById('admin-gift-target').value; const amt=Number(document.getElementById('admin-gift-amount').value||'0'); if(!target||!amt) return; if(target==='__everyone__'){ DB.users.forEach(u=>{ if(u.email!==ADMIN_EMAIL){ u.credits=(u.credits||0)+amt; } }); saveDB(); renderAdminUsers(); alert('Tüm kullanıcılara '+amt+' kredi verildi.'); return; } const u=findUserByEmail(target); if(!u) return; u.credits=(u.credits||0)+amt; saveDB(); renderAdminUsers(); alert(u.name+' kullanıcısına '+amt+' kredi eklendi.'); });
 
+    function showAdminUsers(){
+      if(!ensureAdmin()) return;
+      showScreen('admin');
+      renderAdminUsers();
+      // small safety: focus first control after render
+      setTimeout(()=>{
+        const usersEl = document.getElementById('admin-users');
+        if(!usersEl) return;
+        const firstInput = usersEl.querySelector('.admin-credit-input');
+        if(firstInput){ firstInput.focus(); firstInput.select(); const li = firstInput.closest('.list-item'); if(li){ li.classList.add('admin-highlight'); setTimeout(()=>li.classList.remove('admin-highlight'),1200); li.scrollIntoView({behavior:'smooth',block:'center'}); } }
+      },90);
+    }
+
     const navAdminBtn = document.getElementById('nav-admin');
-    if(navAdminBtn) navAdminBtn.addEventListener('click',()=>{ if(!ensureAdmin()) return; renderAdmin(); showScreen('admin'); });
+    if(navAdminBtn) navAdminBtn.addEventListener('click',()=>{ showAdminUsers(); });
 
     const settingsHint=document.getElementById("settings-hint");
 
