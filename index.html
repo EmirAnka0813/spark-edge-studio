@@ -1283,9 +1283,17 @@
         updateTopbar();
         applyPlanTheme("admin");
         renderAdmin();
-        // Ensure auth screen is fully deactivated and admin screen visible
-        try{ if(screens && screens['auth']) screens['auth'].classList.remove('active'); }catch(e){}
-        showAdminUsers();
+        // Try to hide auth and explicitly show admin; add debug logs to help trace issues
+        try{
+          console.log('[debug] admin-login: hiding auth screen');
+          if(screens && screens['auth']) { screens['auth'].classList.remove('active'); screens['auth'].style.display='none'; }
+          console.log('[debug] admin-login: calling showScreen("admin")');
+          showScreen('admin');
+        }catch(e){ console.warn('[debug] admin-login error hiding auth', e); }
+        // run showAdminUsers a tick later to ensure DOM is updated
+        setTimeout(()=>{
+          try{ showAdminUsers(); }catch(e){ console.warn('[debug] showAdminUsers failed', e); }
+        },40);
         const overlay = document.getElementById('welcome-overlay');
         if(overlay){ overlay.classList.remove('show'); overlay.setAttribute('aria-hidden','true'); }
         document.getElementById('app').classList.remove('immersive');
@@ -1293,7 +1301,8 @@
         setTimeout(()=>{
           const first = document.querySelector('#screen-admin .card input, #screen-admin .card button, #screen-admin .card select');
           if(first) first.focus();
-        },80);
+          console.log('[debug] admin-login: screen-admin active?', screens && screens['admin'] && screens['admin'].classList.contains('active'), 'display=', screens && screens['admin'] && screens['admin'].style.display);
+        },120);
         return;
       }
 
@@ -1879,7 +1888,8 @@
     renderCommunity();
 
     try{ const __last = localStorage.getItem('sparkad-last-email'); if(__last && document.getElementById('login-email')) document.getElementById('login-email').value=__last; }catch(e){}
-    applyPlanTheme("free");
+    // Apply default accent based on current user plan (if logged in) or free otherwise
+    try{ if(currentUser && currentUser.plan) applyPlanTheme(currentUser.plan); else applyPlanTheme('free'); }catch(e){ applyPlanTheme('free'); }
 
     console.log("Spark Ad Studio premium tema sürümü yüklendi ✅");
   </script>
