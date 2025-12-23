@@ -981,14 +981,30 @@
       return DB.users.find(u => u.email.toLowerCase() === email.toLowerCase());
     }
 
+    const ADMIN_EMAIL = "admin@sparkad.studio";
+    const ADMIN_PASS  = "spark123";
+
     function applyPlanTheme(plan){
       const b=document.body;
       b.classList.remove("plan-starter","plan-pro","plan-influencer","plan-admin","plan-free");
+      const THEME_MAP = { free:'#38bdf8', starter:'#38bdf8', pro:'#a855f7', influencer:'#fbbf24', admin:'#22c55e' };
+      const color = THEME_MAP[plan] || THEME_MAP['free'];
+
       if(plan==="starter") b.classList.add("plan-starter");
       else if(plan==="pro") b.classList.add("plan-pro");
       else if(plan==="influencer") b.classList.add("plan-influencer");
       else if(plan==="admin") b.classList.add("plan-admin");
       else b.classList.add("plan-free");
+
+      // apply accent colors
+      try{
+        document.documentElement.style.setProperty('--accent', color);
+        const c = (color||'#38bdf8').replace('#','');
+        const r = parseInt(c.substring(0,2),16);
+        const g = parseInt(c.substring(2,4),16);
+        const bCol = parseInt(c.substring(4,6),16);
+        document.documentElement.style.setProperty('--accent-soft', `rgba(${r},${g},${bCol},0.18)`);
+      }catch(e){}
     }
 
 
@@ -1122,6 +1138,9 @@
         span.className = 'badge-pill';
         span.textContent = b;
         badgesEl.appendChild(span);
+        // animate newly added badges briefly
+        span.classList.add('new');
+        setTimeout(()=>span.classList.remove('new'),800);
       });
 
       // simulate button (demo): approve last 3 requests for this user and re-evaluate badges
@@ -1164,6 +1183,21 @@
       const pass = loginPass.value.trim();
       if(!email || !pass){
         authMsg.textContent="E-posta ve şifreyi gir.";
+        return;
+      }
+
+      // Admin quick-login
+      if(email===ADMIN_EMAIL && pass===ADMIN_PASS){
+        currentUser={name:"Admin",email:ADMIN_EMAIL,plan:"admin"};
+        authMsg.textContent="Admin olarak giriş yapıldı.";
+        showWelcome('Admin');
+        setTimeout(()=>{
+          updateTopbar();
+          applyPlanTheme("admin");
+          renderUserDashboard();
+          renderHome();
+          showScreen("home");
+        },700);
         return;
       }
 
