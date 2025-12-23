@@ -1274,13 +1274,14 @@
       if(email===ADMIN_EMAIL && pass===ADMIN_PASS){
         currentUser={name:"Admin",email:ADMIN_EMAIL,plan:"admin"};
         authMsg.textContent="Admin olarak giriş yapıldı.";
-        showWelcome('Admin');
-        setTimeout(()=>{
-          updateTopbar();
-          applyPlanTheme("admin");
-          renderAdmin();
-          showScreen("admin");
-        },700);
+        // Immediately show admin panel and ensure overlay is hidden
+        updateTopbar();
+        applyPlanTheme("admin");
+        renderAdmin();
+        showScreen("admin");
+        const overlay = document.getElementById('welcome-overlay');
+        if(overlay){ overlay.classList.remove('show'); overlay.setAttribute('aria-hidden','true'); }
+        document.getElementById('app').classList.remove('immersive');
         return;
       }
 
