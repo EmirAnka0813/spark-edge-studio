@@ -752,6 +752,8 @@
               <div class="section-title" id="profile-name">Kullanıcı</div>
               <div class="section-sub" id="profile-email">mail@ornek.com</div>
               <span class="tag standard" id="profile-plan">Starter Üye</span>
+              <div id="profile-badges" style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;"></div>
+              <div style="margin-top:8px;"><button class="btn-sm" id="btn-sim-badges">Rozetleri Test Et</button></div>
             </div>
           </div>
           <div class="columns-2">
@@ -991,19 +993,7 @@
 
 
 
-      customPicker.addEventListener('input',(e)=>{
-        const c = e.target.value;
-        applyAccentChoice({type:'custom',value:c});
-        saveAccentChoice({type:'custom',value:c});
-      });
 
-      // apply saved or keep plan-based
-      const saved = loadAccentChoice();
-      if(saved){
-        applyAccentChoice(saved);
-        if(saved.type==='custom') customPicker.value = saved.value;
-      }
-    }
 
     const TAB_LOGIN = document.getElementById("tab-login");
     const TAB_REGISTER = document.getElementById("tab-register");
@@ -1058,7 +1048,8 @@
         email,
         pass,
         plan:"starter",
-        credits:0
+        credits:0,
+        badges:[]
       });
       saveDB();
       authMsg.textContent="Kayıt başarılı, giriş yapılıyor...";
@@ -1080,6 +1071,74 @@
         overlay.setAttribute('aria-hidden','true');
         document.getElementById('app').classList.remove('immersive');
       },1200);
+    }
+
+    // Rozet kontrolü: eğer kullanıcının en son 3 isteği ardışık olarak onaylandıysa rozet ver
+    function awardBadgesForUser(email){
+      if(!email) return;
+      const u = DB.users.find(x=>x.email===email);
+      if(!u) return;
+      const userReqs = DB.requests.filter(r=>r.userEmail===email).sort((a,b)=>b.createdAt.localeCompare(a.createdAt));
+      if(userReqs.length<3) return;
+      const recent3 = userReqs.slice(0,3);
+      if(recent3.every(r=>r.status==='approved')){
+        u.badges = u.badges||[];
+        if(!u.badges.includes('Şimşek Fikir Rozeti')){
+          u.badges.push('Şimşek Fikir Rozeti');
+          saveDB();
+          // show small notice
+          if(currentUser && currentUser.email===email){
+            const reqHintLocal = document.getElementById('req-hint');
+            if(reqHintLocal) reqHintLocal.textContent = 'Tebrikler! Yeni rozet: Şimşek Fikir Rozeti';
+          }
+        }
+      }
+    }
+
+    // Update profile badges area
+    function renderProfile(){
+      if(!currentUser) return;
+      const meta=getPlanMeta(currentUser.plan);
+      profileName.textContent=currentUser.name;
+      profileEmail.textContent=currentUser.email;
+      profilePlan.textContent=meta.label;
+      profilePlan.className="tag "+(meta.color||"standard");
+
+      profileCard.classList.remove("profile-starter","profile-pro","profile-influencer");
+      if(currentUser.plan==="starter"){
+        profileCard.classList.add("profile-starter");
+      }else if(currentUser.plan==="pro"){
+        profileCard.classList.add("profile-pro");
+      }else if(currentUser.plan==="influencer"){
+        profileCard.classList.add("profile-influencer");
+      }
+
+      // render badges
+      const badgesEl = document.getElementById('profile-badges');
+      badgesEl.innerHTML = '';
+      const u = DB.users.find(x=>x.email===currentUser.email) || {};
+      (u.badges||[]).forEach(b=>{
+        const span = document.createElement('span');
+        span.className = 'badge-pill';
+        span.textContent = b;
+        badgesEl.appendChild(span);
+      });
+
+      // simulate button (demo): approve last 3 requests for this user and re-evaluate badges
+      const simBtn = document.getElementById('btn-sim-badges');
+      if(simBtn){
+        simBtn.addEventListener('click',()=>{
+          const userReqs = DB.requests.filter(r=>r.userEmail===currentUser.email).sort((a,b)=>b.createdAt.localeCompare(a.createdAt));
+          for(let i=0;i<3 && i<userReqs.length;i++) userReqs[i].status='approved';
+          saveDB();
+          awardBadgesForUser(currentUser.email);
+          renderProfile();
+        });
+      }
+
+      // initials/avatar
+      const initials=currentUser.name.split(" ").map(p=>p[0]).join("").slice(0,2).toUpperCase()||"SA";
+      profileAvatar.textContent=initials;
     }
 
     // Improve tab and screen UX: focus input when auth opened
@@ -1237,11 +1296,10 @@
         createdAt:new Date().toISOString()
       });
       saveDB();
-      reqHint.textContent="İstek gönderildi, yönetici paneline düştü.";
+      reqHint.textContent="İstek gönderildi; onay bekleniyor.";
       reqBrand.value="";
       reqProduct.value="";
       reqDetails.value="";
-      renderAdminRequests();
       renderHome();
     });
 
@@ -1316,7 +1374,6 @@
           createdAt:new Date().toISOString()
         });
         saveDB();
-        renderAdminMessages();
       },200);
     }
 
@@ -1402,26 +1459,7 @@
     const groupSuggestions=document.getElementById("group-suggestions");
     const profileCard=document.getElementById("profile-card");
 
-    function renderProfile(){
-      if(!currentUser) return;
-      const meta=getPlanMeta(currentUser.plan);
-      profileName.textContent=currentUser.name;
-      profileEmail.textContent=currentUser.email;
-      profilePlan.textContent=meta.label;
-      profilePlan.className="tag "+(meta.color||"standard");
 
-      profileCard.classList.remove("profile-starter","profile-pro","profile-influencer");
-      if(currentUser.plan==="starter"){
-        profileCard.classList.add("profile-starter");
-      }else if(currentUser.plan==="pro"){
-        profileCard.classList.add("profile-pro");
-      }else if(currentUser.plan==="influencer"){
-        profileCard.classList.add("profile-influencer");
-      }
-
-      const initials=currentUser.name.split(" ").map(p=>p[0]).join("").slice(0,2).toUpperCase()||"SA";
-      profileAvatar.textContent=initials;
-    }
 
     document.getElementById("btn-save-profile").addEventListener("click",()=>{
       if(!currentUser) return;
@@ -1434,7 +1472,6 @@
       profileNameInput.value="";
       renderProfile();
       renderUserDashboard();
-      renderAdminUsers();
       renderHome();
     });
 
@@ -1506,13 +1543,12 @@
         applyPlanTheme(planId);
         renderUserDashboard();
         renderUserPricing();
-        renderAdminUsers();
         alert(p.name+" paketine geçtin (demo).");
       }else{
         const add = p.id==="credits10"?10:p.id==="credits25"?25:5;
         u.credits=(u.credits||0)+add;
         saveDB();
-        renderAdminUsers();
+        renderUserDashboard();
         alert(p.name+" demo kredisi eklendi. Toplam kredin: "+u.credits);
       }
     }
