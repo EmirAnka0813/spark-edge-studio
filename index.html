@@ -953,6 +953,18 @@
     }
 
     const DB = loadDB();
+    // Demo helper: ensure an admin user exists so admin login works after refactor
+    try{
+      if(!DB.users.find(u=>u && (u.role==='admin' || (u.email && u.email.toLowerCase()==='admin@sparkad.studio')))){
+        DB.users.unshift({ id:'u_admin', name:'Admin', email:'admin@sparkad.studio', pass:'spark123', plan:'admin', role:'admin', credits:0, badges:[] });
+        console.log('[seed] Admin user created: admin@sparkad.studio');
+        saveDB();
+      }else{
+        const au = DB.users.find(u=>u && u.email && u.email.toLowerCase()==='admin@sparkad.studio');
+        if(au) au.role='admin';
+      }
+    }catch(e){ console.warn('[seed] ensure admin failed', e); }
+
     function saveDB(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(DB)); }
 
     let currentUser = null;
@@ -1228,6 +1240,7 @@
 
       const u = findUserByEmail(email);
       if(!u || u.pass!==pass){
+        console.warn('[auth] failed login attempt for', email);
         authMsg.textContent="E-posta veya şifre hatalı.";
         return;
       }
