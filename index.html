@@ -554,7 +554,8 @@
         <button class="nav-btn" data-nav="assistant" id="nav-assistant" style="display:none;">Asistan</button>
         <button class="nav-btn" data-nav="pricing" id="nav-pricing">Fiyatlandırma</button>
         <button class="nav-btn" data-nav="profile" id="nav-profile" style="display:none;">Profil</button>
-        <button class="nav-btn" data-nav="settings" id="nav-settings" style="display:none;">Ayarlar</button>
+        <button class="nav-btn" data-nav="admin" id="nav-admin" style="display:none;">Admin</button>
+        <button class="nav-btn" data-nav="settings" id="nav-settings" style="display:none;">Ayarlar</button> 
         <button class="nav-btn danger" id="btn-logout" style="display:none;">Çıkış</button>
 
 
@@ -697,7 +698,7 @@
             </div>
             <div class="section-title">Reklam İsteği Oluştur</div>
             <div class="section-sub">
-              Kulüp / marka adı, ürün / kampanya ve kısa açıklama gir. İstek “Yönetici” paneline düşer.
+              Kulüp / marka adı, ürün / kampanya ve kısa açıklama gir. İstek onay bekleyen listesine düşer.
             </div>
             <div class="form-grid">
               <div>
@@ -745,81 +746,28 @@
 
       <!-- YÖNETİCİ PANELİ -->
       <section id="screen-admin" class="screen">
-        <div class="card" style="margin-bottom:10px;">
-          <div class="section-title">Admin Paneli</div>
-          <div class="section-sub">Üyeleri, reklam isteklerini, mesajları ve paketleri yönet.</div>
-        </div>
-        <div class="columns-2">
-          <div>
-            <div class="card" style="margin-bottom:10px;">
-              <div class="section-title">Üyeler</div>
-              <div class="section-sub">Kullanıcı listesi ve kredi yönetimi.</div>
-              <div id="admin-users" class="list"></div>
-            </div>
-            <div class="card">
-              <div class="section-title">Mesajlar / Asistan Sohbetleri</div>
-              <div class="section-sub">Kullanıcıların asistan sohbetlerini burada görebilirsin.</div>
-              <div id="admin-messages" class="list"></div>
-              <div class="form-actions">
-                <button class="btn-sm danger" id="btn-clear-messages">Geçmişi Sil</button>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div class="card" style="margin-bottom:10px;">
-              <div class="section-title">Reklam İstekleri</div>
-              <div class="section-sub">Kullanıcı isteklerini onayla / reddet.</div>
-              <div id="admin-requests" class="list"></div>
-              <div class="form-actions">
-                <button class="btn-sm danger" id="btn-clear-requests">Tüm Geçmişi Sil</button>
-              </div>
-            </div>
-            <div class="card">
-              <div class="section-title">Paketler ve Hediye Krediler</div>
-              <div class="section-sub">Yeni paket ekle; kullanıcılara kredi hediye et.</div>
-              <div id="admin-pricing" class="pricing-grid"></div>
-              <div class="form-grid" style="margin-top:8px;">
-                <div>
-                  <label for="new-plan-name">Yeni Paket Adı</label>
-                  <input id="new-plan-name" placeholder="Spark Pro Plus" />
-                </div>
-                <div>
-                  <label for="new-plan-type">Tür</label>
-                  <select id="new-plan-type">
-                    <option value="subscription">Abonelik</option>
-                    <option value="credits">Kredi Paketi</option>
-                  </select>
-                </div>
-                <div>
-                  <label for="new-plan-price">Fiyat (TL)</label>
-                  <input id="new-plan-price" type="number" min="0" value="1450" />
-                </div>
-                <div>
-                  <label for="new-plan-perks">Kısa Not</label>
-                  <input id="new-plan-perks" placeholder="Ayrıcalık özetini yaz" />
-                </div>
-              </div>
-              <div class="form-actions">
-                <button class="btn-sm primary" id="btn-add-plan">Paket Ekle</button>
-              </div>
-              <hr style="margin:12px 0;" />
-              <div class="form-grid">
-                <div>
-                  <label for="admin-gift-target">Kime hediye edeceksin?</label>
-                  <select id="admin-gift-target"></select>
-                </div>
-                <div>
-                  <label for="admin-gift-amount">Kredi miktarı</label>
-                  <input id="admin-gift-amount" type="number" min="1" value="10" />
-                </div>
-              </div>
-              <div class="form-actions">
-                <button class="btn-sm primary" id="btn-gift-credits">Kredi Hediye Et</button>
-              </div>
-            </div>
+        <div class="card">
+          <div class="section-title">Yönetici Paneli</div>
+          <div class="section-sub">Üyeler, istekler, mesajlar, paketler ve topluluk yönetimi.</div>
+          <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;" id="admin-topnav">
+            <button class="btn-sm" id="admin-tab-users">Üyeler</button>
+            <button class="btn-sm" id="admin-tab-requests">İstekler</button>
+            <button class="btn-sm" id="admin-tab-community">Topluluk</button>
+            <button class="btn-sm" id="admin-tab-messages">Mesajlar</button>
+            <button class="btn-sm" id="admin-tab-pricing">Paketler</button>
+            <button class="btn-sm" id="admin-tab-logs">Loglar</button>
           </div>
         </div>
-      </section>
+
+        <div class="card" style="margin-top:10px;">
+          <div id="admin-users" class="admin-section"></div>
+          <div id="admin-requests" class="admin-section" style="display:none"></div>
+          <div id="admin-community" class="admin-section" style="display:none"></div>
+          <div id="admin-messages" class="admin-section" style="display:none"></div>
+          <div id="admin-pricing" class="admin-section" style="display:none"></div>
+          <div id="admin-logs" class="admin-section" style="display:none"></div>
+        </div>
+      </section> 
 
       <!-- PROFİL -->
       <section id="screen-profile" class="screen">
@@ -944,10 +892,11 @@
     const STORAGE_KEY = "spark_ad_studio_local_db_v2";
 
     const DEFAULT_DB = {
-      users: [],
+      users: [{ id:'u_admin', name:'Admin', email:'admin@sparkad.studio', pass:'spark123', plan:'admin', role:'admin', credits:0, badges:[] }],
       requests: [],
       messages: [],
       communityPosts: [],
+      adminLogs: [],
       plans: [
         {
           id:"starter",
@@ -1032,8 +981,8 @@
     const navAssistant = document.getElementById("nav-assistant");
     const navPricing = document.getElementById("nav-pricing");
     const navProfile = document.getElementById("nav-profile");
-    const navSettings = document.getElementById("nav-settings");
     const navAdmin = document.getElementById("nav-admin");
+    const navSettings = document.getElementById("nav-settings");
 
     function updateTopbar(){
       if(currentUser){
@@ -1044,7 +993,7 @@
         navAssistant.style.display="inline-flex";
         navProfile.style.display="inline-flex";
         navSettings.style.display="inline-flex";
-        if(currentUser.email===ADMIN_EMAIL){ navAdmin.style.display="inline-flex"; } else { navAdmin.style.display="none"; }
+        if(currentUser.role==='admin') navAdmin.style.display="inline-flex"; else navAdmin.style.display="none";
       }else{
         btnAuth.style.display="inline-flex";
         btnLogout.style.display="none";
@@ -1065,8 +1014,7 @@
       return DB.users.find(u => u.email.toLowerCase() === email.toLowerCase());
     }
 
-    const ADMIN_EMAIL = "admin@sparkad.studio";
-    const ADMIN_PASS  = "spark123";
+
 
     function applyPlanTheme(plan){
       const b=document.body;
@@ -1149,7 +1097,8 @@
         pass,
         plan:"starter",
         credits:0,
-        badges:[]
+        badges:[],
+        role:'user'
       });
       saveDB();
       authMsg.textContent="Kayıt başarılı, giriş yapılıyor...";
@@ -1275,46 +1224,26 @@
         return;
       }
 
-      // Admin quick-login
-      if(email===ADMIN_EMAIL && pass===ADMIN_PASS){
-        currentUser={name:"Admin",email:ADMIN_EMAIL,plan:"admin"};
-        authMsg.textContent="Admin olarak giriş yapıldı.";
-        // Immediately show admin panel and ensure overlay is hidden
-        updateTopbar();
-        applyPlanTheme("admin");
-        renderAdmin();
-        // Try to hide auth and explicitly show admin; add debug logs to help trace issues
-        try{
-          console.log('[debug] admin-login: hiding auth screen');
-          if(screens && screens['auth']) { screens['auth'].classList.remove('active'); screens['auth'].style.display='none'; }
-          console.log('[debug] admin-login: calling showScreen("admin")');
-          showScreen('admin');
-        }catch(e){ console.warn('[debug] admin-login error hiding auth', e); }
-        // run showAdminUsers a tick later to ensure DOM is updated
-        setTimeout(()=>{
-          try{ showAdminUsers(); }catch(e){ console.warn('[debug] showAdminUsers failed', e); }
-        },40);
-        const overlay = document.getElementById('welcome-overlay');
-        if(overlay){ overlay.classList.remove('show'); overlay.setAttribute('aria-hidden','true'); }
-        document.getElementById('app').classList.remove('immersive');
-        // give focus to admin first control
-        setTimeout(()=>{
-          const first = document.querySelector('#screen-admin .card input, #screen-admin .card button, #screen-admin .card select');
-          if(first) first.focus();
-          console.log('[debug] admin-login: screen-admin active?', screens && screens['admin'] && screens['admin'].classList.contains('active'), 'display=', screens && screens['admin'] && screens['admin'].style.display);
-        },120);
-        return;
-      }
+      // (admin quick-login removed) 
 
       const u = findUserByEmail(email);
       if(!u || u.pass!==pass){
         authMsg.textContent="E-posta veya şifre hatalı.";
         return;
       }
-      currentUser={name:u.name,email:u.email,plan:u.plan||"starter"};
+      currentUser={name:u.name,email:u.email,plan:u.plan||"starter", role:u.role||'user'};
       saveDB();
       // remember me: persist user's email for convenience (demo only)
       try{ if(rememberMe && rememberMe.checked) localStorage.setItem('sparkad-last-email', currentUser.email); else localStorage.removeItem('sparkad-last-email'); }catch(e){}
+
+      // If admin, go straight to admin panel
+      if(currentUser.role==='admin'){
+        authMsg.textContent='Admin olarak giriş yapıldı.';
+        updateTopbar();
+        applyPlanTheme(currentUser.plan||'admin');
+        setTimeout(()=>{ try{ renderAdmin(); }catch(e){} },120);
+        return;
+      }
 
       showWelcome(currentUser.name);
       setTimeout(()=>{
@@ -1343,9 +1272,6 @@
     const homeSummary = document.getElementById("home-summary");
 
     function getPlanMeta(planId){
-      if(planId==="admin"){
-        return {label:"Yönetici",color:"admin",perks:["Her şeye erişim"]};
-      }
       const p = DB.plans.find(pl=>pl.id===planId);
       if(!p){
         return {label:"Starter Üye",color:"standard",perks:["Temel haklar"]};
@@ -1364,6 +1290,109 @@
       }
       return {label,color:p.color||"standard",perks};
     }
+
+    // --- ADMIN: role-tabanlı yetkilendirme ve render fonksiyonları ---
+    function ensureAdmin(){ return currentUser && currentUser.role && currentUser.role==='admin'; }
+
+    function logAdmin(action,target,note){ try{ DB.adminLogs = DB.adminLogs || []; DB.adminLogs.unshift({ admin: currentUser ? currentUser.email : 'unknown', action, target, note:note||'', ts: Date.now() }); saveDB(); }catch(e){}
+    }
+
+    function showAdminSection(section){
+      const sections = ['users','requests','community','messages','pricing','logs'];
+      sections.forEach(s=>{ const el=document.getElementById('admin-'+s); if(el) el.style.display = (s===section ? '' : 'none'); });
+      // active tab
+      sections.forEach(s=>{ const btn = document.getElementById('admin-tab-'+s); if(btn){ if(s===section) btn.classList.add('primary'); else btn.classList.remove('primary'); } });
+      // render section content when shown
+      if(section==='users') renderAdminUsers();
+      if(section==='requests') renderAdminRequests();
+      if(section==='community') renderAdminCommunity();
+      if(section==='messages') renderAdminMessages();
+      if(section==='pricing') renderAdminPricing();
+      if(section==='logs') renderAdminLogs();
+    }
+
+    function renderAdmin(){ if(!ensureAdmin()) return; showScreen('admin'); showAdminSection('users'); }
+
+    function renderAdminUsers(){ if(!ensureAdmin()) return; const el=document.getElementById('admin-users'); el.innerHTML='';
+      // bulk actions row
+      const bulk = document.createElement('div'); bulk.style.display='flex'; bulk.style.gap='8px'; bulk.style.alignItems='center'; bulk.style.marginBottom='6px';
+      const selectAll = document.createElement('button'); selectAll.className='btn-sm'; selectAll.textContent='Tümünü seç'; selectAll.addEventListener('click',()=>{ document.querySelectorAll('#admin-users input[type=checkbox]').forEach(cb=>cb.checked=true); });
+      const deselectAll = document.createElement('button'); deselectAll.className='btn-sm'; deselectAll.textContent='Seçimi kaldır'; deselectAll.addEventListener('click',()=>{ document.querySelectorAll('#admin-users input[type=checkbox]').forEach(cb=>cb.checked=false); });
+      const bulkCreditBtn = document.createElement('button'); bulkCreditBtn.className='btn-sm primary'; bulkCreditBtn.textContent='Seçililere Kredi Ver'; bulkCreditBtn.addEventListener('click',()=>{
+        const amt = Number(prompt('Kaç kredi verilsin?','10')||'0'); if(!amt) return; const note = prompt('Hediye notu (opsiyonel):','')||''; const checked = Array.from(document.querySelectorAll('#admin-users input[type=checkbox]:checked')).map(x=>x.getAttribute('data-email'));
+        if(!checked.length){ alert('Lütfen önce kullanıcı seçin.'); return; }
+        DB.users.forEach(u=>{ if(checked.includes(u.email)) u.credits=(u.credits||0)+amt; }); saveDB(); logAdmin('bulk-credit', JSON.stringify(checked), note); renderAdminUsers(); alert('Kredi verildi.');
+      });
+      const everyoneCreditBtn = document.createElement('button'); everyoneCreditBtn.className='btn-sm'; everyoneCreditBtn.textContent='Herkese Kredi Ver'; everyoneCreditBtn.addEventListener('click',()=>{
+        const amt = Number(prompt('Kaç kredi verilsin herkes için?','10')||'0'); if(!amt) return; const note = prompt('Hediye notu (opsiyonel):','')||''; DB.users.forEach(u=>{ if(u.role!=='admin') u.credits=(u.credits||0)+amt; }); saveDB(); logAdmin('global-credit','all',note); renderAdminUsers(); alert('Tüm kullanıcılara kredi verildi.');
+      });
+      bulk.appendChild(selectAll); bulk.appendChild(deselectAll); bulk.appendChild(bulkCreditBtn); bulk.appendChild(everyoneCreditBtn); el.appendChild(bulk);
+
+      DB.users.forEach(u=>{
+        const row = document.createElement('div'); row.className='list-item';
+        const left = document.createElement('div'); left.style.display='flex'; left.style.alignItems='center'; left.style.gap='10px';
+        const cb = document.createElement('input'); cb.type='checkbox'; cb.setAttribute('data-email', u.email);
+        const strong = document.createElement('strong'); strong.textContent = u.name + (u.role==='admin' ? ' (Admin)' : '');
+        left.appendChild(cb); left.appendChild(strong);
+        const meta = document.createElement('div'); meta.className='muted small'; meta.style.marginTop='6px'; meta.textContent = u.email + ' • krediler: '+(u.credits||0);
+        // per-user controls
+        const controls = document.createElement('div'); controls.style.marginTop='8px'; controls.style.display='flex'; controls.style.gap='6px';
+        const creditInput = document.createElement('input'); creditInput.type='number'; creditInput.min=1; creditInput.value=10; creditInput.style.width='84px';
+        const creditBtn = document.createElement('button'); creditBtn.className='btn-sm'; creditBtn.textContent='Kredi Ver'; creditBtn.addEventListener('click',()=>{ const amt=Number(creditInput.value||0); if(!amt) return; u.credits=(u.credits||0)+amt; saveDB(); logAdmin('credit',u.email,'Per-user credit'); renderAdminUsers(); alert(u.name+' kullanıcısına '+amt+' kredi verildi.'); });
+        const planSel = document.createElement('select'); DB.plans.filter(p=>p.type==='subscription').forEach(p=>{ const opt=document.createElement('option'); opt.value=p.id; opt.textContent=p.name; if(p.id===u.plan) opt.selected=true; planSel.appendChild(opt); }); planSel.addEventListener('change',()=>{ u.plan = planSel.value; saveDB(); logAdmin('plan-change',u.email,u.plan); renderAdminUsers(); alert(u.name+' paket değişti.'); });
+        const delBtn = document.createElement('button'); delBtn.className='btn-sm danger'; delBtn.textContent='Sil'; delBtn.addEventListener('click',()=>{ if(u.role==='admin'){ alert('Admin kullanıcı silinemez.'); return; } if(!confirm('Kullanıcıyı silmek istediğine emin misin?')) return; DB.users=DB.users.filter(x=>x.email!==u.email); saveDB(); logAdmin('delete-user',u.email); renderAdminUsers(); });
+        controls.appendChild(creditInput); controls.appendChild(creditBtn); controls.appendChild(planSel); controls.appendChild(delBtn);
+
+        row.appendChild(left); row.appendChild(meta); row.appendChild(controls);
+        el.appendChild(row);
+      });
+    }
+
+    function renderAdminRequests(){ if(!ensureAdmin()) return; const el=document.getElementById('admin-requests'); el.innerHTML='';
+      DB.requests.forEach(r=>{
+        const item=document.createElement('div'); item.className='list-item';
+        const head=document.createElement('div'); head.style.display='flex'; head.style.justifyContent='space-between';
+        const strong=document.createElement('strong'); strong.textContent = r.brand + ' – '+r.product;
+        const status=document.createElement('span'); status.className='pill-small '+(r.status==='approved'?'green':r.status==='rejected'?'orange':'gray'); status.textContent = r.status==='approved'?'Onaylandı': r.status==='rejected'?'Reddedildi':'Bekliyor';
+        head.appendChild(strong); head.appendChild(status);
+        const meta=document.createElement('div'); meta.className='muted small'; meta.textContent = r.userName + ' ('+r.userEmail+') • '+new Date(r.createdAt).toLocaleString('tr-TR');
+        const body=document.createElement('div'); body.style.marginTop='6px'; body.textContent = r.details;
+        const actions=document.createElement('div'); actions.style.marginTop='8px'; actions.style.display='flex'; actions.style.gap='6px';
+        const ok = document.createElement('button'); ok.className='btn-sm primary'; ok.textContent='Onayla'; ok.addEventListener('click',()=>{ if(r.status==='approved') return; const note = prompt('Onay notu (opsiyonel):','')||''; r.status='approved'; r.adminNote=note; saveDB(); logAdmin('approve-request',r.id,note); renderAdminRequests(); });
+        const no = document.createElement('button'); no.className='btn-sm danger'; no.textContent='Reddet'; no.addEventListener('click',()=>{ if(r.status==='rejected') return; const note = prompt('Reddetme notu (opsiyonel):','')||''; r.status='rejected'; r.adminNote=note; saveDB(); logAdmin('reject-request',r.id,note); renderAdminRequests(); });
+        actions.appendChild(ok); actions.appendChild(no);
+        item.appendChild(head); item.appendChild(meta); item.appendChild(body); item.appendChild(actions); el.appendChild(item);
+      });
+    }
+
+    function renderAdminCommunity(){ if(!ensureAdmin()) return; const el=document.getElementById('admin-community'); el.innerHTML='';
+      const tools = document.createElement('div'); tools.style.display='flex'; tools.style.gap='8px'; tools.style.marginBottom='8px';
+      const clearAll = document.createElement('button'); clearAll.className='btn-sm danger'; clearAll.textContent='Tümünü Temizle'; clearAll.addEventListener('click',()=>{ if(!confirm('Topluluk mesajlarını tamamen silmek istediğine emin misin?')) return; DB.communityPosts=[]; saveDB(); logAdmin('clear-community','all'); renderAdminCommunity(); alert('Topluluk mesajları silindi.'); });
+      tools.appendChild(clearAll); el.appendChild(tools);
+      DB.communityPosts.forEach(p=>{ const item=document.createElement('div'); item.className='list-item'; const strong=document.createElement('strong'); strong.textContent=p.author+' • '+new Date(p.createdAt).toLocaleString('tr-TR'); const body=document.createElement('div'); body.style.marginTop='6px'; body.textContent=p.text; const del=document.createElement('button'); del.className='btn-sm danger'; del.textContent='Sil'; del.addEventListener('click',()=>{ if(!confirm('Bu mesajı silmek istediğine emin misin?')) return; DB.communityPosts=DB.communityPosts.filter(x=>x!==p); saveDB(); logAdmin('delete-community',p.id||p.createdAt); renderAdminCommunity(); }); item.appendChild(strong); item.appendChild(body); item.appendChild(del); el.appendChild(item); });
+    }
+
+    function renderAdminMessages(){ if(!ensureAdmin()) return; const el=document.getElementById('admin-messages'); el.innerHTML='';
+      const tools = document.createElement('div'); tools.style.display='flex'; tools.style.gap='8px'; tools.style.marginBottom='8px';
+      const clearAll = document.createElement('button'); clearAll.className='btn-sm danger'; clearAll.textContent='Tümünü Temizle'; clearAll.addEventListener('click',()=>{ if(!confirm('Tüm mesajları silmek istediğine emin misin?')) return; DB.messages=[]; saveDB(); logAdmin('clear-messages','all'); renderAdminMessages(); alert('Mesajlar silindi.'); });
+      tools.appendChild(clearAll); el.appendChild(tools);
+      DB.messages.forEach(m=>{ const item=document.createElement('div'); item.className='list-item'; const strong=document.createElement('strong'); strong.textContent=m.userEmail+' • '+new Date(m.createdAt).toLocaleString('tr-TR'); const body=document.createElement('div'); body.style.marginTop='6px'; body.textContent=m.text; const del=document.createElement('button'); del.className='btn-sm danger'; del.textContent='Sil'; del.addEventListener('click',()=>{ if(!confirm('Bu mesajı silmek istediğine emin misin?')) return; DB.messages=DB.messages.filter(x=>x!==m); saveDB(); logAdmin('delete-message',m.id||m.createdAt); renderAdminMessages(); }); item.appendChild(strong); item.appendChild(body); item.appendChild(del); el.appendChild(item); });
+    }
+
+    function renderAdminPricing(){ if(!ensureAdmin()) return; const el=document.getElementById('admin-pricing'); el.innerHTML='';
+      DB.plans.forEach(p=>{ const card=document.createElement('div'); card.className='price-card'; const name=document.createElement('div'); name.className='price-name'; name.textContent=p.name; const tag=document.createElement('div'); tag.className='price-tag'; tag.textContent=p.type==='subscription'?'Abonelik Paketi':'Kredi Paketi'; const value=document.createElement('div'); value.className='price-value'; value.textContent=p.priceTl.toLocaleString('tr-TR')+' TL'; const note=document.createElement('div'); note.className='price-note'; note.textContent=p.perks; const btn=document.createElement('button'); btn.className='btn-sm danger'; btn.textContent='Sil'; btn.addEventListener('click',()=>{ if(!confirm('Paketi silmek istediğine emin misin?')) return; DB.plans=DB.plans.filter(x=>x.id!==p.id); saveDB(); logAdmin('delete-plan',p.id); renderAdminPricing(); renderUserPricing(); }); card.appendChild(name); card.appendChild(tag); card.appendChild(value); card.appendChild(note); card.appendChild(btn); el.appendChild(card); });
+      // Add plan form
+      const form = document.createElement('div'); form.style.marginTop='12px'; form.innerHTML = '<div class="form-grid" style="margin-top:8px;"><div><label>Yeni Paket Adı</label><input id="admin-new-plan-name" placeholder="Spark Pro Plus" /></div><div><label>Tür</label><select id="admin-new-plan-type"><option value="subscription">Abonelik</option><option value="credits">Kredi Paketi</option></select></div><div><label>Fiyat (TL)</label><input id="admin-new-plan-price" type="number" min="0" value="1450" /></div><div><label>Kısa Not</label><input id="admin-new-plan-perks" placeholder="Ayrıcalık özetini yaz" /></div></div><div class="form-actions"><button class="btn-sm primary" id="admin-add-plan">Paket Ekle</button></div>';
+      el.appendChild(form);
+      setTimeout(()=>{ const addBtn=document.getElementById('admin-add-plan'); if(addBtn){ addBtn.addEventListener('click',()=>{ const name=document.getElementById('admin-new-plan-name').value.trim(); const type=document.getElementById('admin-new-plan-type').value; const price=Number(document.getElementById('admin-new-plan-price').value||'0'); const perks=document.getElementById('admin-new-plan-perks').value.trim(); if(!name||!perks) return; DB.plans.push({ id:'p_'+Date.now(), name, type, priceTl:price, perks, color:type==='subscription'?'pro':'standard' }); saveDB(); logAdmin('add-plan',name); renderAdminPricing(); renderUserPricing(); document.getElementById('admin-new-plan-name').value=''; document.getElementById('admin-new-plan-perks').value=''; }); } },40);
+    }
+
+    function renderAdminLogs(){ if(!ensureAdmin()) return; const el=document.getElementById('admin-logs'); el.innerHTML=''; (DB.adminLogs||[]).forEach(l=>{ const item=document.createElement('div'); item.className='list-item'; const head=document.createElement('div'); head.style.display='flex'; head.style.justifyContent='space-between'; const strong=document.createElement('strong'); strong.textContent = l.action; const meta=document.createElement('div'); meta.className='muted small'; meta.textContent = l.admin + ' • ' + new Date(l.ts).toLocaleString('tr-TR'); const note=document.createElement('div'); note.style.marginTop='6px'; note.textContent = l.target + (l.note?(' • '+l.note):''); item.appendChild(head); item.appendChild(meta); item.appendChild(note); el.appendChild(item); }); }
+
+    // admin tab buttons
+    ['users','requests','community','messages','pricing','logs'].forEach(s=>{ const btn=document.getElementById('admin-tab-'+s); if(btn) btn.addEventListener('click',()=>{ if(!ensureAdmin()) return; showAdminSection(s); }); });
+
+
 
     function renderHome(){
       if(!currentUser){
@@ -1693,143 +1722,11 @@
       }
     }
 
-    // --- ADMIN HELPERS & ACTIONS ---
-    const adminUsersEl = document.getElementById("admin-users");
-    const adminRequestsEl = document.getElementById("admin-requests");
-    const adminMessagesEl = document.getElementById("admin-messages");
-    const adminPricingEl = document.getElementById("admin-pricing");
+    // Admin fonksiyonları kaldırıldı — yeniden tasarlanacak.
 
-    function ensureAdmin(){ return currentUser && currentUser.email===ADMIN_EMAIL; }
 
-    function renderAdminUsers(){
-      if(!ensureAdmin()) return;
-      adminUsersEl.innerHTML = "";
-      DB.users.forEach(u=>{
-        const item = document.createElement('div');
-        item.className = 'list-item';
 
-        const label = document.createElement('div'); label.className='label-row';
-        const strong = document.createElement('strong'); strong.textContent = u.name + (u.email===ADMIN_EMAIL? ' (Admin)':'');
-        const pill = document.createElement('span'); pill.className='pill-small blue'; pill.textContent = getPlanMeta(u.plan).label;
-        label.appendChild(strong); label.appendChild(pill);
-
-        const meta = document.createElement('div'); meta.className='list-meta'; meta.textContent = u.email + ' • krediler: '+(u.credits||0);
-
-        const controls = document.createElement('div'); controls.style.marginTop='6px'; controls.style.display='flex'; controls.style.gap='6px'; controls.style.alignItems='center';
-
-        // Plan selector
-        const planSel = document.createElement('select');
-        planSel.style.padding='6px';
-        DB.plans.filter(p=>p.type==='subscription').forEach(p=>{ const o=document.createElement('option'); o.value=p.id; o.textContent=p.name; if(u.plan===p.id) o.selected=true; planSel.appendChild(o); });
-        planSel.addEventListener('change',()=>{ u.plan = planSel.value; if(currentUser.email===u.email) currentUser.plan=u.plan; saveDB(); renderAdminUsers(); renderUserDashboard(); });
-        controls.appendChild(planSel);
-
-        // Credit input + button
-        const creditInput = document.createElement('input'); creditInput.type='number'; creditInput.min=1; creditInput.value=10; creditInput.style.width='84px'; creditInput.style.padding='6px'; creditInput.className='admin-credit-input'; creditInput.setAttribute('data-email', u.email);
-        const creditBtn = document.createElement('button'); creditBtn.className='btn-sm'; creditBtn.textContent='Kredi Ver';
-        creditBtn.addEventListener('click',()=>{ const amt=Number(creditInput.value||0); if(!amt) return; u.credits=(u.credits||0)+amt; saveDB(); renderAdminUsers(); alert(u.name+' kullanıcısına '+amt+' kredi verildi.'); });
-        controls.appendChild(creditInput); controls.appendChild(creditBtn);
-
-        // Remove user (safety: cannot remove admin email)
-        const delBtn = document.createElement('button'); delBtn.className='btn-sm danger'; delBtn.textContent='Sil';
-        delBtn.addEventListener('click',()=>{ if(u.email===ADMIN_EMAIL){ alert('Admin kullanıcı silinemez.'); return; } if(!confirm('Kullanıcıyı silmek istediğine emin misin?')) return; DB.users=DB.users.filter(x=>x.email!==u.email); saveDB(); renderAdminUsers(); });
-        controls.appendChild(delBtn);
-
-        item.appendChild(label); item.appendChild(meta); item.appendChild(controls);
-        adminUsersEl.appendChild(item);
-      });
-
-      // populate admin gift select with Everyone option + users
-      const sel = document.getElementById('admin-gift-target');
-      if(sel){ sel.innerHTML=''; const o0=document.createElement('option'); o0.value='__everyone__'; o0.textContent='Herkes (tüm kullanıcılara)'; sel.appendChild(o0); DB.users.forEach(u=>{ const o=document.createElement('option'); o.value=u.email; o.textContent=u.name+' ('+u.email+')'; sel.appendChild(o); }); }
-
-      // Focus & highlight first user's credit input for quick admin action
-      setTimeout(()=>{
-        const usersEl = document.getElementById('admin-users');
-        if(!usersEl) return;
-        const firstInput = usersEl.querySelector('.admin-credit-input');
-        if(firstInput){
-          // focus & select value
-          firstInput.focus(); firstInput.select();
-          // highlight its parent list-item briefly
-          const listItem = firstInput.closest('.list-item');
-          if(listItem){ listItem.classList.add('admin-highlight'); setTimeout(()=>listItem.classList.remove('admin-highlight'),1200); listItem.scrollIntoView({behavior:'smooth',block:'center'}); }
-        }
-      },80);
-    }
-
-    function renderAdminRequests(){
-      if(!ensureAdmin()) return;
-      adminRequestsEl.innerHTML='';
-      DB.requests.forEach(r=>{
-        const item=document.createElement('div'); item.className='list-item';
-        const label=document.createElement('div'); label.className='label-row';
-        const strong=document.createElement('strong'); strong.textContent=r.brand+' – '+r.product;
-        const status=document.createElement('span'); status.className='pill-small '+(r.status==='approved'?'green':r.status==='rejected'?'orange':'gray');
-        status.textContent = r.status==='approved'?'Onaylandı': r.status==='rejected'?'Reddedildi':'Bekliyor';
-        label.appendChild(strong); label.appendChild(status);
-        const meta=document.createElement('div'); meta.className='list-meta'; meta.textContent=r.userName+' ('+r.userEmail+') • '+new Date(r.createdAt).toLocaleString('tr-TR');
-        const body=document.createElement('div'); body.style.marginTop='4px'; body.textContent=r.details;
-        const actions=document.createElement('div'); actions.className='admin-actions';
-        const okBtn=document.createElement('button'); okBtn.textContent='Onayla'; okBtn.addEventListener('click',()=>{ if(r.status==='rejected') return; r.status='approved'; saveDB(); awardBadgesForUser(r.userEmail); renderAdminRequests(); });
-        const noBtn=document.createElement('button'); noBtn.textContent='Reddet'; noBtn.addEventListener('click',()=>{ if(r.status==='approved') return; r.status='rejected'; saveDB(); renderAdminRequests(); });
-        actions.appendChild(okBtn); actions.appendChild(noBtn);
-        item.appendChild(label); item.appendChild(meta); item.appendChild(body); item.appendChild(actions); adminRequestsEl.appendChild(item);
-      });
-    }
-
-    function renderAdminMessages(){
-      if(!ensureAdmin()) return;
-      adminMessagesEl.innerHTML='';
-      DB.messages.forEach(m=>{
-        const item=document.createElement('div'); item.className='list-item';
-        const label=document.createElement('div'); label.className='label-row';
-        const strong=document.createElement('strong'); strong.textContent=m.fromEmail; const pill=document.createElement('span'); pill.className='pill-small blue'; pill.textContent='AI sohbeti'; label.appendChild(strong); label.appendChild(pill);
-        const meta=document.createElement('div'); meta.className='list-meta'; meta.textContent=new Date(m.createdAt).toLocaleString('tr-TR');
-        const q=document.createElement('div'); q.style.marginTop='3px'; q.textContent='Kullanıcı: '+m.text;
-        const a=document.createElement('div'); a.style.marginTop='2px'; a.style.fontSize='11px'; a.style.color='#9ca3af'; a.textContent='AI: '+m.answer;
-        item.appendChild(label); item.appendChild(meta); item.appendChild(q); item.appendChild(a);
-        adminMessagesEl.appendChild(item);
-      });
-    }
-
-    function renderAdminPricing(){
-      if(!ensureAdmin()) return;
-      adminPricingEl.innerHTML='';
-      DB.plans.forEach(p=>{
-        const card=document.createElement('div'); card.className='price-card';
-        const name=document.createElement('div'); name.className='price-name'; name.textContent=p.name;
-        const tag=document.createElement('div'); tag.className='price-tag'; tag.textContent=p.type==='subscription'?'Abonelik Paketi':'Kredi Paketi';
-        const value=document.createElement('div'); value.className='price-value'; value.textContent=p.priceTl.toLocaleString('tr-TR')+' TL';
-        const note=document.createElement('div'); note.className='price-note'; note.textContent=p.perks;
-        const btn=document.createElement('button'); btn.className='btn-sm danger'; btn.textContent='Sil'; btn.addEventListener('click',()=>{ if(!confirm('Paketi silmek istediğine emin misin?')) return; DB.plans = DB.plans.filter(x=>x.id!==p.id); saveDB(); renderAdminPricing(); renderUserPricing(); });
-        card.appendChild(name); card.appendChild(tag); card.appendChild(value); card.appendChild(note); card.appendChild(btn); adminPricingEl.appendChild(card);
-      });
-    }
-
-    function renderAdmin(){ renderAdminUsers(); renderAdminRequests(); renderAdminMessages(); renderAdminPricing(); }
-
-    // Admin controls
-    document.getElementById('btn-clear-messages').addEventListener('click',()=>{ if(!ensureAdmin()) return; if(!confirm('Mesaj geçmişini silmek istediğine emin misin?')) return; DB.messages=[]; saveDB(); renderAdminMessages(); });
-    document.getElementById('btn-clear-requests').addEventListener('click',()=>{ if(!ensureAdmin()) return; if(!confirm('Tüm istek geçmişini silmek istediğine emin misin?')) return; DB.requests=[]; saveDB(); renderAdminRequests(); renderHome(); });
-    document.getElementById('btn-add-plan').addEventListener('click',()=>{ if(!ensureAdmin()) return; const name=document.getElementById('new-plan-name').value.trim(); const type=document.getElementById('new-plan-type').value; const price=Number(document.getElementById('new-plan-price').value||'0'); const perks=document.getElementById('new-plan-perks').value.trim(); if(!name||!perks) return; DB.plans.push({ id:'p_'+Date.now(), name, type, priceTl:price, perks, color:type==='subscription'?'pro':'standard' }); saveDB(); renderAdminPricing(); renderUserPricing(); document.getElementById('new-plan-name').value=''; document.getElementById('new-plan-perks').value=''; });
-    document.getElementById('btn-gift-credits').addEventListener('click',()=>{ if(!ensureAdmin()) return; const target=document.getElementById('admin-gift-target').value; const amt=Number(document.getElementById('admin-gift-amount').value||'0'); if(!target||!amt) return; if(target==='__everyone__'){ DB.users.forEach(u=>{ if(u.email!==ADMIN_EMAIL){ u.credits=(u.credits||0)+amt; } }); saveDB(); renderAdminUsers(); alert('Tüm kullanıcılara '+amt+' kredi verildi.'); return; } const u=findUserByEmail(target); if(!u) return; u.credits=(u.credits||0)+amt; saveDB(); renderAdminUsers(); alert(u.name+' kullanıcısına '+amt+' kredi eklendi.'); });
-
-    function showAdminUsers(){
-      if(!ensureAdmin()) return;
-      showScreen('admin');
-      renderAdminUsers();
-      // small safety: focus first control after render
-      setTimeout(()=>{
-        const usersEl = document.getElementById('admin-users');
-        if(!usersEl) return;
-        const firstInput = usersEl.querySelector('.admin-credit-input');
-        if(firstInput){ firstInput.focus(); firstInput.select(); const li = firstInput.closest('.list-item'); if(li){ li.classList.add('admin-highlight'); setTimeout(()=>li.classList.remove('admin-highlight'),1200); li.scrollIntoView({behavior:'smooth',block:'center'}); } }
-      },90);
-    }
-
-    const navAdminBtn = document.getElementById('nav-admin');
-    if(navAdminBtn) navAdminBtn.addEventListener('click',()=>{ showAdminUsers(); });
+    // Admin navigation helpers removed.
 
     const settingsHint=document.getElementById("settings-hint");
 
