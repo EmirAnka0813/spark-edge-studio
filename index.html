@@ -1278,10 +1278,22 @@
         updateTopbar();
         applyPlanTheme("admin");
         renderAdmin();
+        // Ensure auth screen is fully deactivated and admin screen visible
+        try{
+          if(screens && screens['auth']) screens['auth'].classList.remove('active');
+        }catch(e){}
+        try{
+          if(screens && screens['admin']) screens['admin'].classList.add('active');
+        }catch(e){}
         showScreen("admin");
         const overlay = document.getElementById('welcome-overlay');
         if(overlay){ overlay.classList.remove('show'); overlay.setAttribute('aria-hidden','true'); }
         document.getElementById('app').classList.remove('immersive');
+        // give focus to admin first control
+        setTimeout(()=>{
+          const first = document.querySelector('#screen-admin .card input, #screen-admin .card button, #screen-admin .card select');
+          if(first) first.focus();
+        },80);
         return;
       }
 
@@ -1671,6 +1683,117 @@
         alert(p.name+" demo kredisi eklendi. Toplam kredin: "+u.credits);
       }
     }
+
+    // --- ADMIN HELPERS & ACTIONS ---
+    const adminUsersEl = document.getElementById("admin-users");
+    const adminRequestsEl = document.getElementById("admin-requests");
+    const adminMessagesEl = document.getElementById("admin-messages");
+    const adminPricingEl = document.getElementById("admin-pricing");
+
+    function ensureAdmin(){ return currentUser && currentUser.email===ADMIN_EMAIL; }
+
+    function renderAdminUsers(){
+      if(!ensureAdmin()) return;
+      adminUsersEl.innerHTML = "";
+      DB.users.forEach(u=>{
+        const item = document.createElement('div');
+        item.className = 'list-item';
+
+        const label = document.createElement('div'); label.className='label-row';
+        const strong = document.createElement('strong'); strong.textContent = u.name + (u.email===ADMIN_EMAIL? ' (Admin)':'');
+        const pill = document.createElement('span'); pill.className='pill-small blue'; pill.textContent = getPlanMeta(u.plan).label;
+        label.appendChild(strong); label.appendChild(pill);
+
+        const meta = document.createElement('div'); meta.className='list-meta'; meta.textContent = u.email + ' • krediler: '+(u.credits||0);
+
+        const controls = document.createElement('div'); controls.style.marginTop='6px'; controls.style.display='flex'; controls.style.gap='6px'; controls.style.alignItems='center';
+
+        // Plan selector
+        const planSel = document.createElement('select');
+        planSel.style.padding='6px';
+        DB.plans.filter(p=>p.type==='subscription').forEach(p=>{ const o=document.createElement('option'); o.value=p.id; o.textContent=p.name; if(u.plan===p.id) o.selected=true; planSel.appendChild(o); });
+        planSel.addEventListener('change',()=>{ u.plan = planSel.value; if(currentUser.email===u.email) currentUser.plan=u.plan; saveDB(); renderAdminUsers(); renderUserDashboard(); });
+        controls.appendChild(planSel);
+
+        // Credit input + button
+        const creditInput = document.createElement('input'); creditInput.type='number'; creditInput.min=1; creditInput.value=10; creditInput.style.width='84px'; creditInput.style.padding='6px';
+        const creditBtn = document.createElement('button'); creditBtn.className='btn-sm'; creditBtn.textContent='Kredi Ver';
+        creditBtn.addEventListener('click',()=>{ const amt=Number(creditInput.value||0); if(!amt) return; u.credits=(u.credits||0)+amt; saveDB(); renderAdminUsers(); alert(u.name+' kullanıcısına '+amt+' kredi verildi.'); });
+        controls.appendChild(creditInput); controls.appendChild(creditBtn);
+
+        // Remove user (safety: cannot remove admin email)
+        const delBtn = document.createElement('button'); delBtn.className='btn-sm danger'; delBtn.textContent='Sil';
+        delBtn.addEventListener('click',()=>{ if(u.email===ADMIN_EMAIL){ alert('Admin kullanıcı silinemez.'); return; } if(!confirm('Kullanıcıyı silmek istediğine emin misin?')) return; DB.users=DB.users.filter(x=>x.email!==u.email); saveDB(); renderAdminUsers(); });
+        controls.appendChild(delBtn);
+
+        item.appendChild(label); item.appendChild(meta); item.appendChild(controls);
+        adminUsersEl.appendChild(item);
+      });
+
+      // populate admin gift select with Everyone option + users
+      const sel = document.getElementById('admin-gift-target');
+      if(sel){ sel.innerHTML=''; const o0=document.createElement('option'); o0.value='__everyone__'; o0.textContent='Herkes (tüm kullanıcılara)'; sel.appendChild(o0); DB.users.forEach(u=>{ const o=document.createElement('option'); o.value=u.email; o.textContent=u.name+' ('+u.email+')'; sel.appendChild(o); }); }
+    }
+
+    function renderAdminRequests(){
+      if(!ensureAdmin()) return;
+      adminRequestsEl.innerHTML='';
+      DB.requests.forEach(r=>{
+        const item=document.createElement('div'); item.className='list-item';
+        const label=document.createElement('div'); label.className='label-row';
+        const strong=document.createElement('strong'); strong.textContent=r.brand+' – '+r.product;
+        const status=document.createElement('span'); status.className='pill-small '+(r.status==='approved'?'green':r.status==='rejected'?'orange':'gray');
+        status.textContent = r.status==='approved'?'Onaylandı': r.status==='rejected'?'Reddedildi':'Bekliyor';
+        label.appendChild(strong); label.appendChild(status);
+        const meta=document.createElement('div'); meta.className='list-meta'; meta.textContent=r.userName+' ('+r.userEmail+') • '+new Date(r.createdAt).toLocaleString('tr-TR');
+        const body=document.createElement('div'); body.style.marginTop='4px'; body.textContent=r.details;
+        const actions=document.createElement('div'); actions.className='admin-actions';
+        const okBtn=document.createElement('button'); okBtn.textContent='Onayla'; okBtn.addEventListener('click',()=>{ if(r.status==='rejected') return; r.status='approved'; saveDB(); awardBadgesForUser(r.userEmail); renderAdminRequests(); });
+        const noBtn=document.createElement('button'); noBtn.textContent='Reddet'; noBtn.addEventListener('click',()=>{ if(r.status==='approved') return; r.status='rejected'; saveDB(); renderAdminRequests(); });
+        actions.appendChild(okBtn); actions.appendChild(noBtn);
+        item.appendChild(label); item.appendChild(meta); item.appendChild(body); item.appendChild(actions); adminRequestsEl.appendChild(item);
+      });
+    }
+
+    function renderAdminMessages(){
+      if(!ensureAdmin()) return;
+      adminMessagesEl.innerHTML='';
+      DB.messages.forEach(m=>{
+        const item=document.createElement('div'); item.className='list-item';
+        const label=document.createElement('div'); label.className='label-row';
+        const strong=document.createElement('strong'); strong.textContent=m.fromEmail; const pill=document.createElement('span'); pill.className='pill-small blue'; pill.textContent='AI sohbeti'; label.appendChild(strong); label.appendChild(pill);
+        const meta=document.createElement('div'); meta.className='list-meta'; meta.textContent=new Date(m.createdAt).toLocaleString('tr-TR');
+        const q=document.createElement('div'); q.style.marginTop='3px'; q.textContent='Kullanıcı: '+m.text;
+        const a=document.createElement('div'); a.style.marginTop='2px'; a.style.fontSize='11px'; a.style.color='#9ca3af'; a.textContent='AI: '+m.answer;
+        item.appendChild(label); item.appendChild(meta); item.appendChild(q); item.appendChild(a);
+        adminMessagesEl.appendChild(item);
+      });
+    }
+
+    function renderAdminPricing(){
+      if(!ensureAdmin()) return;
+      adminPricingEl.innerHTML='';
+      DB.plans.forEach(p=>{
+        const card=document.createElement('div'); card.className='price-card';
+        const name=document.createElement('div'); name.className='price-name'; name.textContent=p.name;
+        const tag=document.createElement('div'); tag.className='price-tag'; tag.textContent=p.type==='subscription'?'Abonelik Paketi':'Kredi Paketi';
+        const value=document.createElement('div'); value.className='price-value'; value.textContent=p.priceTl.toLocaleString('tr-TR')+' TL';
+        const note=document.createElement('div'); note.className='price-note'; note.textContent=p.perks;
+        const btn=document.createElement('button'); btn.className='btn-sm danger'; btn.textContent='Sil'; btn.addEventListener('click',()=>{ if(!confirm('Paketi silmek istediğine emin misin?')) return; DB.plans = DB.plans.filter(x=>x.id!==p.id); saveDB(); renderAdminPricing(); renderUserPricing(); });
+        card.appendChild(name); card.appendChild(tag); card.appendChild(value); card.appendChild(note); card.appendChild(btn); adminPricingEl.appendChild(card);
+      });
+    }
+
+    function renderAdmin(){ renderAdminUsers(); renderAdminRequests(); renderAdminMessages(); renderAdminPricing(); }
+
+    // Admin controls
+    document.getElementById('btn-clear-messages').addEventListener('click',()=>{ if(!ensureAdmin()) return; if(!confirm('Mesaj geçmişini silmek istediğine emin misin?')) return; DB.messages=[]; saveDB(); renderAdminMessages(); });
+    document.getElementById('btn-clear-requests').addEventListener('click',()=>{ if(!ensureAdmin()) return; if(!confirm('Tüm istek geçmişini silmek istediğine emin misin?')) return; DB.requests=[]; saveDB(); renderAdminRequests(); renderHome(); });
+    document.getElementById('btn-add-plan').addEventListener('click',()=>{ if(!ensureAdmin()) return; const name=document.getElementById('new-plan-name').value.trim(); const type=document.getElementById('new-plan-type').value; const price=Number(document.getElementById('new-plan-price').value||'0'); const perks=document.getElementById('new-plan-perks').value.trim(); if(!name||!perks) return; DB.plans.push({ id:'p_'+Date.now(), name, type, priceTl:price, perks, color:type==='subscription'?'pro':'standard' }); saveDB(); renderAdminPricing(); renderUserPricing(); document.getElementById('new-plan-name').value=''; document.getElementById('new-plan-perks').value=''; });
+    document.getElementById('btn-gift-credits').addEventListener('click',()=>{ if(!ensureAdmin()) return; const target=document.getElementById('admin-gift-target').value; const amt=Number(document.getElementById('admin-gift-amount').value||'0'); if(!target||!amt) return; if(target==='__everyone__'){ DB.users.forEach(u=>{ if(u.email!==ADMIN_EMAIL){ u.credits=(u.credits||0)+amt; } }); saveDB(); renderAdminUsers(); alert('Tüm kullanıcılara '+amt+' kredi verildi.'); return; } const u=findUserByEmail(target); if(!u) return; u.credits=(u.credits||0)+amt; saveDB(); renderAdminUsers(); alert(u.name+' kullanıcısına '+amt+' kredi eklendi.'); });
+
+    const navAdminBtn = document.getElementById('nav-admin');
+    if(navAdminBtn) navAdminBtn.addEventListener('click',()=>{ if(!ensureAdmin()) return; renderAdmin(); showScreen('admin'); });
 
     const settingsHint=document.getElementById("settings-hint");
 
