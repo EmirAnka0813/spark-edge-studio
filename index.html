@@ -68,24 +68,7 @@
       position:relative;
     }
 
-    /* Renk seçici (color picker) */
-    .color-picker-wrap{position:relative;display:inline-block;}
-    .color-menu{
-      position:absolute;
-      right:0;
-      top:calc(100% + 8px);
-      background:#020617;
-      border:1px solid #111827;
-      border-radius:10px;
-      padding:10px;
-      min-width:180px;
-      box-shadow:0 12px 32px rgba(0,0,0,0.5);
-      z-index:40;
-    }
-    .color-menu .swatches{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
-    .swatch{width:28px;height:28px;border-radius:6px;border:1px solid #111827;cursor:pointer;box-shadow:inset 0 0 0 2px rgba(0,0,0,0.12);}
-    .swatch:focus{outline:2px solid rgba(255,255,255,0.06);}
-    .custom-color input[type="color"]{background:transparent;border:none;padding:0;width:34px;height:28px;border-radius:6px;cursor:pointer;}
+
 
     .logo{
       width:36px;
@@ -574,21 +557,6 @@
         <button class="nav-btn" data-nav="settings" id="nav-settings" style="display:none;">Ayarlar</button>
         <button class="nav-btn danger" id="btn-logout" style="display:none;">Çıkış</button>
 
-        <div class="color-picker-wrap" style="display:inline-flex;">
-          <button class="nav-btn" id="btn-colors" aria-haspopup="true" aria-expanded="false">Renkler ▾</button>
-          <div id="color-menu" class="color-menu" style="display:none;">
-            <div class="swatches" role="list">
-              <button class="swatch" data-theme="free" title="Mavi" style="background:#38bdf8;" aria-label="Mavi"></button>
-              <button class="swatch" data-theme="pro" title="Mor" style="background:#a855f7;" aria-label="Mor"></button>
-              <button class="swatch" data-theme="influencer" title="Sarı" style="background:#fbbf24;" aria-label="Sarı"></button>
-              <button class="swatch" data-theme="admin" title="Yeşil" style="background:#22c55e;" aria-label="Yeşil"></button>
-              <button class="swatch" data-theme="custom-red" title="Kırmızı" style="background:#ef4444;" aria-label="Kırmızı"></button>
-              <label class="custom-color" title="Özel renk">
-                <input id="customAccentPicker" type="color" value="#38bdf8" />
-              </label>
-            </div>
-          </div>
-        </div>
 
         <button class="nav-btn primary" id="btn-auth">Üye Ol / Giriş Yap</button>
       </nav>
@@ -618,10 +586,7 @@
               <button class="btn-big primary" id="btn-info-start">Hemen Başla</button>
               <button class="btn-big ghost" id="btn-info-pricing">Paketlere Bak</button>
             </div>
-            <p class="hint">
-              Yönetici pakete göre renkleri ve fiyatları değiştirebilir. Normal kullanıcılar
-              “yönetici” kelimesini hiç görmez, sadece yöneticiler görür.
-            </p>
+
           </div>
           <div class="card">
             <div class="section-title">Örnek yıllık kulüp özeti</div>
@@ -654,8 +619,7 @@
         <div class="card auth-layout">
           <div class="section-title">Hesabına giriş yap</div>
           <div class="section-sub">
-            Stüdyoyu kullanmak için giriş yap veya yeni hesap oluştur. Yönetici girişi sadece senin bildiğin
-            e-posta/şifre kombinasyonu ile çalışır.
+            Stüdyoyu kullanmak için giriş yap veya yeni hesap oluştur.
           </div>
 
           <div class="auth-hero" id="auth-hero" aria-hidden="true">
@@ -712,8 +676,7 @@
               <button class="btn-sm primary" id="btn-register">Üye Ol ve Giriş Yap</button>
             </div>
             <p class="hint">
-              Yeni hesaplar varsayılan olarak <b>Starter</b> paketi ile açılır. Yönetici isterse seni
-              Pro veya Influencer yapar.
+              Yeni hesaplar varsayılan olarak <b>Starter</b> paketi ile açılır.
             </p>
           </div>
         </div>
@@ -727,7 +690,7 @@
               <div>
                 <div class="section-title" id="user-welcome">Hoş geldin!</div>
                 <div class="section-sub">
-                  Kulübün için reklam isteği bırak, yönetici onaylasın, sonra bu fikirleri videoya dönüştür.
+                  Kulübün için reklam isteği bırak; onaylandıktan sonra bu fikirleri videoya dönüştürelim.
                 </div>
               </div>
               <span class="tag standard" id="user-plan-badge">Starter Üye</span>
@@ -778,80 +741,7 @@
         </div>
       </section>
 
-      <!-- YÖNETİCİ PANELİ -->
-      <section id="screen-admin" class="screen">
-        <div class="card" style="margin-bottom:10px;">
-          <div class="section-title">Yönetici Paneli</div>
-          <div class="section-sub">
-            Burada üyeleri, reklam isteklerini, mesajları ve paketleri yönetebilirsin.
-            Normal kullanıcılar bu paneli hiç görmez.
-          </div>
-        </div>
-        <div class="columns-2">
-          <div>
-            <div class="card" style="margin-bottom:10px;">
-              <div class="section-title">Üyeler</div>
-              <div class="section-sub">
-                Paket almayanların ismi temaya göre beyaz/siyah; paket alanlar renkli rozet ile görünür.
-              </div>
-              <div id="admin-users" class="list"></div>
-            </div>
-            <div class="card">
-              <div class="section-title">Mesajlar / Asistan Sohbetleri</div>
-              <div class="section-sub">
-                Yapay zekâyla yapılan konuşmaların özeti burada listelenir.
-              </div>
-              <div id="admin-messages" class="list"></div>
-              <div class="form-actions">
-                <button class="btn-sm danger" id="btn-clear-messages">Geçmişi Sil</button>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div class="card" style="margin-bottom:10px;">
-              <div class="section-title">Reklam İstekleri</div>
-              <div class="section-sub">
-                Kullanıcıların gönderdiği istekleri onayla / reddet. Bir kez onaylanan tekrar reddedilmez.
-              </div>
-              <div id="admin-requests" class="list"></div>
-              <div class="form-actions">
-                <button class="btn-sm danger" id="btn-clear-requests">Tüm Geçmişi Sil</button>
-              </div>
-            </div>
-            <div class="card">
-              <div class="section-title">Paketler ve Abonelikler</div>
-              <div class="section-sub">
-                Fiyatlar TL üzerinden girilir; kullanıcı tarafında dolar / euro karşılığı bilgi olarak gösterilir.
-              </div>
-              <div id="admin-pricing" class="pricing-grid"></div>
-              <div class="form-grid" style="margin-top:8px;">
-                <div>
-                  <label for="new-plan-name">Yeni Paket Adı</label>
-                  <input id="new-plan-name" placeholder="Spark Pro Plus" />
-                </div>
-                <div>
-                  <label for="new-plan-type">Tür</label>
-                  <select id="new-plan-type">
-                    <option value="subscription">Abonelik</option>
-                    <option value="credits">Kredi Paketi</option>
-                  </select>
-                </div>
-                <div>
-                  <label for="new-plan-price">Fiyat (TL)</label>
-                  <input id="new-plan-price" type="number" min="0" value="1450" />
-                </div>
-                <div>
-                  <label for="new-plan-perks">Kısa Not</label>
-                  <input id="new-plan-perks" placeholder="Ayrıcalık özetini yaz" />
-                </div>
-              </div>
-              <div class="form-actions">
-                <button class="btn-sm primary" id="btn-add-plan">Paket Ekle</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       <!-- PROFİL -->
       <section id="screen-profile" class="screen">
@@ -1043,7 +933,6 @@
       home:document.getElementById("screen-home"),
       auth:document.getElementById("screen-auth"),
       user:document.getElementById("screen-user"),
-      admin:document.getElementById("screen-admin"),
       profile:document.getElementById("screen-profile"),
       pricing:document.getElementById("screen-pricing"),
       community:document.getElementById("screen-community"),
@@ -1084,8 +973,7 @@
       }
     }
 
-    const ADMIN_EMAIL = "admin@sparkad.studio";
-    const ADMIN_PASS  = "spark123";
+
 
     function findUserByEmail(email){
       return DB.users.find(u => u.email.toLowerCase() === email.toLowerCase());
@@ -1101,63 +989,7 @@
       else b.classList.add("plan-free");
     }
 
-    // Accent/theme helpers for manual color choices
-    function saveAccentChoice(choice){
-      try{ localStorage.setItem('sparkad-accent', JSON.stringify(choice)); }catch(e){}
-    }
-    function loadAccentChoice(){
-      try{ return JSON.parse(localStorage.getItem('sparkad-accent')); }catch(e){return null;}
-    }
-    function hexToSoft(hex){
-      try{
-        const c = (hex||'#38bdf8').replace('#','');
-        const r = parseInt(c.substring(0,2),16);
-        const g = parseInt(c.substring(2,4),16);
-        const b = parseInt(c.substring(4,6),16);
-        return `rgba(${r},${g},${b},0.18)`;
-      }catch(e){return 'rgba(56,189,248,0.18)';}
-    }
-    function applyAccentChoice(choice){
-      if(!choice) return;
-      // normalize: accept previous 'plan' payloads and map them to fixed colors
-      const THEME_MAP = { free:'#38bdf8', starter:'#38bdf8', pro:'#a855f7', influencer:'#fbbf24', admin:'#22c55e', 'custom-red':'#ef4444' };
-      let color = null;
-      if(choice.type==='custom') color = choice.value;
-      else if(choice.type==='plan') color = THEME_MAP[choice.value] || THEME_MAP['free'];
-      else if(choice.type==='auto' && THEME_MAP[choice.value]) color = THEME_MAP[choice.value];
 
-      if(color){
-        document.body.classList.remove("plan-starter","plan-pro","plan-influencer","plan-admin","plan-free");
-        document.documentElement.style.setProperty('--accent', color);
-        document.documentElement.style.setProperty('--accent-soft', hexToSoft(color));
-      }
-    }
-
-    function initAccentPicker(){
-      const btnColors = document.getElementById('btn-colors');
-      const colorMenu = document.getElementById('color-menu');
-      const swatches = document.querySelectorAll('.swatch');
-      const customPicker = document.getElementById('customAccentPicker');
-
-      function closeMenu(){ colorMenu.style.display='none'; btnColors.setAttribute('aria-expanded','false'); }
-      function openMenu(){ colorMenu.style.display='block'; btnColors.setAttribute('aria-expanded','true'); }
-
-      if(!btnColors || !colorMenu) return;
-
-      btnColors.addEventListener('click', (e)=>{ e.stopPropagation(); if(colorMenu.style.display==='block') closeMenu(); else openMenu(); });
-      document.addEventListener('click',(e)=>{ if(!colorMenu.contains(e.target) && e.target!==btnColors) closeMenu(); });
-
-      const THEME_MAP = { free:'#38bdf8', starter:'#38bdf8', pro:'#a855f7', influencer:'#fbbf24', admin:'#22c55e', 'custom-red':'#ef4444' };
-      swatches.forEach(s=>{
-        s.addEventListener('click', ()=>{
-          const theme = s.dataset.theme;
-          const color = THEME_MAP[theme] || '#38bdf8';
-          applyAccentChoice({type:'custom',value:color});
-          saveAccentChoice({type:'custom',value:color});
-          if(customPicker) customPicker.value = color;
-          closeMenu();
-        });
-      });
 
       customPicker.addEventListener('input',(e)=>{
         const c = e.target.value;
@@ -1275,18 +1107,7 @@
         authMsg.textContent="E-posta ve şifreyi gir.";
         return;
       }
-      if(email===ADMIN_EMAIL && pass===ADMIN_PASS){
-        currentUser={name:"Yönetici",email:ADMIN_EMAIL,plan:"admin"};
-        authMsg.textContent="Yönetici olarak giriş yapıldı.";
-        showWelcome('Yönetici');
-        setTimeout(()=>{
-          updateTopbar();
-          applyPlanTheme("admin");
-          renderAdmin();
-          showScreen("admin");
-        },600);
-        return;
-      }
+
       const u = findUserByEmail(email);
       if(!u || u.pass!==pass){
         authMsg.textContent="E-posta veya şifre hatalı.";
@@ -1570,216 +1391,7 @@
       renderCommunity();
     });
 
-    const adminUsersEl = document.getElementById("admin-users");
-    const adminRequestsEl = document.getElementById("admin-requests");
-    const adminMessagesEl = document.getElementById("admin-messages");
-    const adminPricingEl = document.getElementById("admin-pricing");
 
-    function renderAdminUsers(){
-      adminUsersEl.innerHTML="";
-      DB.users.forEach(u=>{
-        const meta=getPlanMeta(u.plan||"starter");
-        const item=document.createElement("div");
-        item.className="list-item";
-
-        const label=document.createElement("div");
-        label.className="label-row";
-        const strong=document.createElement("strong");
-        if(meta.color==="influencer"){
-          strong.textContent="👑 "+u.name;
-          strong.style.color="#fbbf24";
-        }else if(meta.color==="pro"){
-          strong.textContent=u.name;
-          strong.style.color="#c4b5fd";
-        }else{
-          strong.textContent=u.name;
-          strong.style.color="#e5e7eb";
-        }
-
-        const pill=document.createElement("span");
-        if(meta.color==="influencer"){
-          pill.className="pill-small gold";
-        }else if(meta.color==="pro"){
-          pill.className="pill-small green";
-        }else{
-          pill.className="pill-small blue";
-        }
-        pill.textContent=meta.label;
-
-        label.appendChild(strong);
-        label.appendChild(pill);
-
-        const metaLine=document.createElement("div");
-        metaLine.className="list-meta";
-        metaLine.textContent=u.email+" • paket: "+(u.plan||"starter")+
-          (u.credits?(" • krediler: "+u.credits):"");
-
-        item.appendChild(label);
-        item.appendChild(metaLine);
-        adminUsersEl.appendChild(item);
-      });
-    }
-
-    function renderAdminRequests(){
-      adminRequestsEl.innerHTML="";
-      DB.requests.forEach(r=>{
-        const item=document.createElement("div");
-        item.className="list-item";
-        const label=document.createElement("div");
-        label.className="label-row";
-        const strong=document.createElement("strong");
-        strong.textContent=r.brand+" – "+r.product;
-        const status=document.createElement("span");
-        status.className="pill-small "+(
-          r.status==="approved" ? "green" :
-          r.status==="rejected" ? "orange" : "gray"
-        );
-        status.textContent = r.status==="approved"
-          ? "Onaylandı"
-          : r.status==="rejected"
-            ? "Reddedildi"
-            : "Bekliyor";
-        label.appendChild(strong);
-        label.appendChild(status);
-
-        const meta=document.createElement("div");
-        meta.className="list-meta";
-        meta.textContent=r.userName+" ("+r.userEmail+") • "+
-          new Date(r.createdAt).toLocaleString("tr-TR");
-        const body=document.createElement("div");
-        body.style.marginTop="4px";
-        body.textContent=r.details;
-
-        const actions=document.createElement("div");
-        actions.className="admin-actions";
-
-        const okBtn=document.createElement("button");
-        okBtn.textContent="Onayla";
-        okBtn.addEventListener("click",()=>{
-          if(r.status==="rejected") return;
-          r.status="approved";
-          saveDB();
-          renderAdminRequests();
-          renderHome();
-        });
-
-        const noBtn=document.createElement("button");
-        noBtn.textContent="Reddet";
-        noBtn.addEventListener("click",()=>{
-          if(r.status==="approved") return;
-          r.status="rejected";
-          saveDB();
-          renderAdminRequests();
-        });
-
-        actions.appendChild(okBtn);
-        actions.appendChild(noBtn);
-
-        item.appendChild(label);
-        item.appendChild(meta);
-        item.appendChild(body);
-        item.appendChild(actions);
-        adminRequestsEl.appendChild(item);
-      });
-    }
-
-    function renderAdminMessages(){
-      adminMessagesEl.innerHTML="";
-      DB.messages.forEach(m=>{
-        const item=document.createElement("div");
-        item.className="list-item";
-        const label=document.createElement("div");
-        label.className="label-row";
-        const strong=document.createElement("strong");
-        strong.textContent=m.fromEmail;
-        const pill=document.createElement("span");
-        pill.className="pill-small blue";
-        pill.textContent="AI sohbeti";
-        label.appendChild(strong);
-        label.appendChild(pill);
-
-        const meta=document.createElement("div");
-        meta.className="list-meta";
-        meta.textContent=new Date(m.createdAt).toLocaleString("tr-TR");
-
-        const q=document.createElement("div");
-        q.style.marginTop="3px";
-        q.textContent="Kullanıcı: "+m.text;
-        const a=document.createElement("div");
-        a.style.marginTop="2px";
-        a.style.fontSize="11px";
-        a.style.color="#9ca3af";
-        a.textContent="AI: "+m.answer;
-
-        item.appendChild(label);
-        item.appendChild(meta);
-        item.appendChild(q);
-        item.appendChild(a);
-        adminMessagesEl.appendChild(item);
-      });
-    }
-
-    function renderAdminPricing(){
-      adminPricingEl.innerHTML="";
-      DB.plans.forEach(p=>{
-        const card=document.createElement("div");
-        card.className="price-card";
-        const name=document.createElement("div");
-        name.className="price-name";
-        name.textContent=p.name;
-        const tag=document.createElement("div");
-        tag.className="price-tag";
-        tag.textContent=p.type==="subscription"?"Abonelik Paketi":"Kredi Paketi";
-        const value=document.createElement("div");
-        value.className="price-value";
-        value.textContent=p.priceTl.toLocaleString("tr-TR")+" TL";
-        const note=document.createElement("div");
-        note.className="price-note";
-        note.textContent=p.perks;
-        card.appendChild(name);
-        card.appendChild(tag);
-        card.appendChild(value);
-        card.appendChild(note);
-        adminPricingEl.appendChild(card);
-      });
-    }
-
-    document.getElementById("btn-clear-messages").addEventListener("click",()=>{
-      DB.messages=[];
-      saveDB();
-      renderAdminMessages();
-    });
-    document.getElementById("btn-clear-requests").addEventListener("click",()=>{
-      DB.requests=[];
-      saveDB();
-      renderAdminRequests();
-      renderHome();
-    });
-    document.getElementById("btn-add-plan").addEventListener("click",()=>{
-      const name=document.getElementById("new-plan-name").value.trim();
-      const type=document.getElementById("new-plan-type").value;
-      const price=Number(document.getElementById("new-plan-price").value||"0");
-      const perks=document.getElementById("new-plan-perks").value.trim();
-      if(!name||!perks) return;
-      DB.plans.push({
-        id:"p_"+Date.now(),
-        name,
-        type,
-        priceTl:price,
-        perks,
-        color:type==="subscription"?"pro":"standard"
-      });
-      saveDB();
-      renderAdminPricing();
-      renderUserPricing();
-    });
-
-    function renderAdmin(){
-      renderAdminUsers();
-      renderAdminRequests();
-      renderAdminMessages();
-      renderAdminPricing();
-    }
 
     const profileAvatar=document.getElementById("profile-avatar");
     const profileName=document.getElementById("profile-name");
@@ -1922,10 +1534,7 @@
 
     navInfo.addEventListener("click",()=>showScreen("info"));
     navHome.addEventListener("click",()=>{
-      if(currentUser && currentUser.email===ADMIN_EMAIL){
-        renderAdmin();
-        showScreen("admin");
-      }else if(currentUser){
+      if(currentUser){
         renderHome();
         showScreen("home");
       }else{
@@ -1933,10 +1542,7 @@
       }
     });
     navStudio.addEventListener("click",()=>{
-      if(currentUser && currentUser.email===ADMIN_EMAIL){
-        renderAdmin();
-        showScreen("admin");
-      }else if(currentUser){
+      if(currentUser){
         renderUserDashboard();
         showScreen("user");
       }else{
@@ -1966,7 +1572,7 @@
     updateTopbar();
     renderUserPricing();
     renderCommunity();
-    initAccentPicker();
+
     try{ const __last = localStorage.getItem('sparkad-last-email'); if(__last && document.getElementById('login-email')) document.getElementById('login-email').value=__last; }catch(e){}
     applyPlanTheme("free");
 
