@@ -743,6 +743,84 @@
 
 
 
+      <!-- YÖNETİCİ PANELİ -->
+      <section id="screen-admin" class="screen" style="display:none;">
+        <div class="card" style="margin-bottom:10px;">
+          <div class="section-title">Admin Paneli</div>
+          <div class="section-sub">Üyeleri, reklam isteklerini, mesajları ve paketleri yönet.</div>
+        </div>
+        <div class="columns-2">
+          <div>
+            <div class="card" style="margin-bottom:10px;">
+              <div class="section-title">Üyeler</div>
+              <div class="section-sub">Kullanıcı listesi ve kredi yönetimi.</div>
+              <div id="admin-users" class="list"></div>
+            </div>
+            <div class="card">
+              <div class="section-title">Mesajlar / Asistan Sohbetleri</div>
+              <div class="section-sub">Kullanıcıların asistan sohbetlerini burada görebilirsin.</div>
+              <div id="admin-messages" class="list"></div>
+              <div class="form-actions">
+                <button class="btn-sm danger" id="btn-clear-messages">Geçmişi Sil</button>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="card" style="margin-bottom:10px;">
+              <div class="section-title">Reklam İstekleri</div>
+              <div class="section-sub">Kullanıcı isteklerini onayla / reddet.</div>
+              <div id="admin-requests" class="list"></div>
+              <div class="form-actions">
+                <button class="btn-sm danger" id="btn-clear-requests">Tüm Geçmişi Sil</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="section-title">Paketler ve Hediye Krediler</div>
+              <div class="section-sub">Yeni paket ekle; kullanıcılara kredi hediye et.</div>
+              <div id="admin-pricing" class="pricing-grid"></div>
+              <div class="form-grid" style="margin-top:8px;">
+                <div>
+                  <label for="new-plan-name">Yeni Paket Adı</label>
+                  <input id="new-plan-name" placeholder="Spark Pro Plus" />
+                </div>
+                <div>
+                  <label for="new-plan-type">Tür</label>
+                  <select id="new-plan-type">
+                    <option value="subscription">Abonelik</option>
+                    <option value="credits">Kredi Paketi</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="new-plan-price">Fiyat (TL)</label>
+                  <input id="new-plan-price" type="number" min="0" value="1450" />
+                </div>
+                <div>
+                  <label for="new-plan-perks">Kısa Not</label>
+                  <input id="new-plan-perks" placeholder="Ayrıcalık özetini yaz" />
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="btn-sm primary" id="btn-add-plan">Paket Ekle</button>
+              </div>
+              <hr style="margin:12px 0;" />
+              <div class="form-grid">
+                <div>
+                  <label for="admin-gift-target">Kime hediye edeceksin?</label>
+                  <select id="admin-gift-target"></select>
+                </div>
+                <div>
+                  <label for="admin-gift-amount">Kredi miktarı</label>
+                  <input id="admin-gift-amount" type="number" min="1" value="10" />
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="btn-sm primary" id="btn-gift-credits">Kredi Hediye Et</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- PROFİL -->
       <section id="screen-profile" class="screen">
         <div class="card" id="profile-card">
@@ -935,12 +1013,13 @@
       home:document.getElementById("screen-home"),
       auth:document.getElementById("screen-auth"),
       user:document.getElementById("screen-user"),
+      admin:document.getElementById("screen-admin"),
       profile:document.getElementById("screen-profile"),
       pricing:document.getElementById("screen-pricing"),
       community:document.getElementById("screen-community"),
       assistant:document.getElementById("screen-assistant"),
       settings:document.getElementById("screen-settings")
-    };
+    }; 
 
 
 
@@ -954,6 +1033,7 @@
     const navPricing = document.getElementById("nav-pricing");
     const navProfile = document.getElementById("nav-profile");
     const navSettings = document.getElementById("nav-settings");
+    const navAdmin = document.getElementById("nav-admin");
 
     function updateTopbar(){
       if(currentUser){
@@ -964,6 +1044,7 @@
         navAssistant.style.display="inline-flex";
         navProfile.style.display="inline-flex";
         navSettings.style.display="inline-flex";
+        if(currentUser.email===ADMIN_EMAIL){ navAdmin.style.display="inline-flex"; } else { navAdmin.style.display="none"; }
       }else{
         btnAuth.style.display="inline-flex";
         btnLogout.style.display="none";
@@ -972,8 +1053,11 @@
         navAssistant.style.display="none";
         navProfile.style.display="none";
         navSettings.style.display="none";
+        navAdmin.style.display="none";
       }
     }
+
+
 
 
 
@@ -1194,9 +1278,8 @@
         setTimeout(()=>{
           updateTopbar();
           applyPlanTheme("admin");
-          renderUserDashboard();
-          renderHome();
-          showScreen("home");
+          renderAdmin();
+          showScreen("admin");
         },700);
         return;
       }
@@ -1334,6 +1417,7 @@
       reqBrand.value="";
       reqProduct.value="";
       reqDetails.value="";
+      renderAdminRequests();
       renderHome();
     });
 
