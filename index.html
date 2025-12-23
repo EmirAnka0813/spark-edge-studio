@@ -1246,6 +1246,7 @@
       }
       currentUser={name:u.name,email:u.email,plan:u.plan||"starter", role:u.role||'user'};
       saveDB();
+      console.log('[auth] login success', currentUser.email, 'role=', currentUser.role);
       // remember me: persist user's email for convenience (demo only)
       try{ if(rememberMe && rememberMe.checked) localStorage.setItem('sparkad-last-email', currentUser.email); else localStorage.removeItem('sparkad-last-email'); }catch(e){}
 
@@ -1750,10 +1751,13 @@
     });
     btnAuth.addEventListener("click",()=>showScreen("auth"));
     btnLogout.addEventListener("click",()=>{
+      console.log('[auth] logging out user', currentUser && currentUser.email);
       currentUser=null;
       updateTopbar();
       applyPlanTheme("free");
-      showScreen("info");
+      // After logout, go to auth screen so admin can login again quickly
+      showScreen("auth");
+      setTimeout(()=>{ try{ if(document.getElementById('login-email')) document.getElementById('login-email').focus(); }catch(e){} },80);
     });
 
     navInfo.addEventListener("click",()=>showScreen("info"));
