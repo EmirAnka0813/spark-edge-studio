@@ -1256,9 +1256,14 @@
 
     function showScreen(name){
       for(const key in screens){
+        if(!screens[key]) continue;
         screens[key].classList.remove("active");
+        screens[key].style.display = 'none';
       }
-      if(screens[name]) screens[name].classList.add("active");
+      if(screens[name]){
+        screens[name].classList.add("active");
+        screens[name].style.display = 'block';
+      }
       if(name==='auth') setTimeout(()=>loginEmail.focus(),90);
     }
 
