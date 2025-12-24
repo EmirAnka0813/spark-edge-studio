@@ -185,16 +185,30 @@
       <h1>Hoş geldin 👋</h1>
       <div class="muted">Adını yaz, uygulamaya gir. (Tarayıcıda saklanır)</div>
 
-      <div class="row">
+      <div class="row login-main">
         <input id="nameInput" placeholder="Adın (ör: Emir)" maxlength="24" />
       </div>
 
-      <div class="row">
+      <div class="row login-actions">
         <button class="primary" id="enterBtn">Devam</button>
         <button class="ghost" id="skipBtn">Şimdilik geç</button>
         <button class="btn-quick-admin" id="btn-admin-quick" title="Admin hızlı girişi demo">Admin Hızlı Giriş</button>
+        <button class="linkbtn" id="openRegisterBtn" style="margin-left:8px">Üye Ol</button>
         <span class="tiny" id="loginStatus"></span>
       </div>
+
+      <div class="register-section" id="registerSection" style="display:none; margin-top:12px;">
+        <hr />
+        <div style="margin-top:8px" class="field"><label>İsim</label><input id="reg-name" placeholder="Adın" /></div>
+        <div style="margin-top:8px" class="field"><label>E-posta</label><input id="reg-email" placeholder="mail@ornek.com" /></div>
+        <div style="margin-top:8px" class="field"><label>Şifre (min 6)</label><input id="reg-pass" type="password" placeholder="şifre" /></div>
+        <div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+          <button class="primary" id="btn-register">Üye Ol ve Giriş Yap</button>
+          <button class="ghost" id="btn-register-cancel">Geri</button>
+          <span class="tiny" id="regStatus"></span>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -375,6 +389,42 @@
 
   // Admin panel demo
   try{ const btnAdminPanel = document.getElementById('btn-admin-panel'); if(btnAdminPanel){ btnAdminPanel.addEventListener('click', ()=>{ alert('Yönetici paneli (demo): Üyeler, Kredi, Paketler yönetim bölümü.'); }); } }catch(e){}
+
+  // --- Kullanıcılar: basit localStorage tabanlı kayıt (demo) ---
+  function getUsers(){ try{ return JSON.parse(localStorage.getItem('sparkad_users_v1')||'[]'); }catch(e){return [];} }
+  function saveUsers(u){ localStorage.setItem('sparkad_users_v1', JSON.stringify(u)); }
+  function findUserByEmail(email){ if(!email) return null; return getUsers().find(x=>x.email && x.email.toLowerCase()===email.toLowerCase()); }
+
+  // Kayıt formu aç/kapat
+  try{
+    const openReg = document.getElementById('openRegisterBtn');
+    const regSec = document.getElementById('registerSection');
+    const regCancel = document.getElementById('btn-register-cancel');
+    if(openReg) openReg.addEventListener('click', ()=>{ if(regSec) regSec.style.display='block'; });
+    if(regCancel) regCancel.addEventListener('click', ()=>{ if(regSec) regSec.style.display='none'; document.getElementById('reg-name').value=''; document.getElementById('reg-email').value=''; document.getElementById('reg-pass').value=''; document.getElementById('regStatus').textContent=''; });
+  }catch(e){ console.warn('[auth] reg ui init failed', e); }
+
+  // Kayıt işlemi
+  try{
+    const btnReg = document.getElementById('btn-register');
+    if(btnReg) btnReg.addEventListener('click', ()=>{
+      const rn = (document.getElementById('reg-name')||{}).value.trim();
+      const re = (document.getElementById('reg-email')||{}).value.trim();
+      const rp = (document.getElementById('reg-pass')||{}).value;
+      const status = document.getElementById('regStatus');
+      if(!rn || !re || !rp){ status.textContent = 'Lütfen tüm alanları doldur.'; return; }
+      if(rp.length<6){ status.textContent = 'Şifre en az 6 karakter olmalı.'; return; }
+      if(findUserByEmail(re)){ status.textContent = 'Bu e-posta zaten kayıtlı.'; return; }
+      const users = getUsers();
+      const newUser = { id:'u_'+Date.now(), name:rn, email:re, pass:rp, role:'user', credits:5, createdAt:Date.now() };
+      users.push(newUser); saveUsers(users);
+      // auto-login
+      setCurrentUser({ name: newUser.name, email: newUser.email, role: newUser.role, credits:newUser.credits });
+      status.textContent = 'Kayıt başarılı, yönlendiriliyorsun...';
+      try{ document.body.classList.add('auth-success'); setTimeout(()=>document.body.classList.remove('auth-success'),900); }catch(e){}
+      setTimeout(()=>{ closeLogin(); },600);
+    });
+  }catch(e){ console.warn('[auth] register handler failed', e); }
 
   // --- Paket seçimi + kredi ---
   let selectedPack = "free";
