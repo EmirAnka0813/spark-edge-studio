@@ -161,9 +161,27 @@
     @keyframes shimmer{ 0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%} }
 
     /* pack card animations */
-    .pack{ transition: transform .24s ease, box-shadow .24s ease; cursor:pointer; }
+    @keyframes packPulse { 0%{transform:scale(1)}50%{transform:scale(1.03)}100%{transform:scale(1)} }
+    @keyframes goldShine { 0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%} }
+
+    .pack{ transition: transform .24s ease, box-shadow .24s ease, border-color .24s ease; cursor:pointer; }
     .pack:hover{ transform:translateY(-6px) scale(1.01); box-shadow:0 20px 60px rgba(0,0,0,0.36); }
     .pack.active{ box-shadow:0 30px 90px rgba(59,130,246,0.08); transform:translateY(-8px) scale(1.02); border:1px solid rgba(59,130,246,0.18); }
+
+    /* Influencer: gold shimmer tag and entrance */
+    .pack.inf .tag{ background:linear-gradient(90deg,var(--inf1),var(--inf2)); position:relative; overflow:hidden; }
+    .pack.inf .tag::after{ content:''; position:absolute; inset:0; background:linear-gradient(90deg,#fbbf24,#ffd66b,#fbbf24); opacity:0.7; mix-blend-mode:overlay; background-size:200% 100%; animation: goldShine 3.2s linear infinite; }
+    .pack.inf.active{ box-shadow:0 28px 100px rgba(251,191,36,0.08); border-color:rgba(251,191,36,0.22); }
+
+    /* Pro: bright pulse */
+    .pack.pro.active{ animation: packPulse .9s ease; box-shadow:0 36px 120px rgba(248,199,81,0.12); border-color:rgba(245,158,11,0.22); }
+
+    /* small entrance animation when pack selected */
+    body.pack-animate .packs .pack.active{ animation: packPulse .9s cubic-bezier(.22,.9,.3,1); }
+
+    /* subtle label shimmer for active pack */
+    .pack .pname{ transition: color .18s ease; }
+    .pack.active .pname{ color:var(--accent); }
 
   </style>
 </head>
@@ -439,6 +457,19 @@
     $("status").textContent = `Paket: ${selectedPack} • Kredi: ${creditsLeft === Infinity ? "Sınırsız" : creditsLeft}`;
     enforceLocks();
     saveState();
+
+    // apply theme + small animated feedback
+    try{
+      applyPlanTheme(selectedPack);
+      document.body.classList.add('pack-animate');
+      setTimeout(()=>{ document.body.classList.remove('pack-animate'); },1200);
+      // quick status flash for influencer
+      if(selectedPack==='influencer'){
+        const old = $("status").textContent;
+        $("status").textContent = 'Influencer etkin: ekstra animasyonlar aktif!';
+        setTimeout(()=>{ $("status").textContent = old; },1400);
+      }
+    }catch(e){ console.warn('[ui] pack animation failed', e); }
   }
   packEls.forEach(el => el.addEventListener("click", () => setPack(el)));
 
