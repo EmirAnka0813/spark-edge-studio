@@ -750,10 +750,12 @@
           <div class="section-title">Yönetici Paneli</div>
           <div class="section-sub">Üyeler, istekler, mesajlar, paketler ve topluluk yönetimi.</div>
           <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;" id="admin-topnav">
-            <button class="btn-sm primary" id="admin-tab-users">Üyeler</button>
-            <button class="btn-sm" id="admin-action-credit">Kredi Gönder</button>
-            <button class="btn-sm" id="admin-action-addplan">Paket Ekle</button>
-            <div class="muted small" style="margin-left:8px;align-self:center;">(Hızlı komutlar)</div>
+            <button class="btn-sm" id="admin-tab-users">Üyeler</button>
+            <button class="btn-sm" id="admin-tab-requests">İstekler</button>
+            <button class="btn-sm" id="admin-tab-community">Topluluk</button>
+            <button class="btn-sm" id="admin-tab-messages">Mesajlar</button>
+            <button class="btn-sm" id="admin-tab-pricing">Paketler</button>
+            <button class="btn-sm" id="admin-tab-logs">Loglar</button>
           </div>
         </div>
 
@@ -1420,27 +1422,8 @@
     // admin tab buttons
     ['users','requests','community','messages','pricing','logs'].forEach(s=>{ const btn=document.getElementById('admin-tab-'+s); if(btn) btn.addEventListener('click',()=>{ if(!ensureAdmin()) return; showAdminSection(s); }); });
 
-    // Quick admin actions (shortcuts shown in admin topnav)
-    const adminCreditBtn = document.getElementById('admin-action-credit');
-    if(adminCreditBtn) adminCreditBtn.addEventListener('click',()=>{
-      if(!ensureAdmin()) return;
-      const target = prompt('Kime kredi verilsin? (e-posta veya "all" tüm kullanıcılara)');
-      if(!target) return;
-      const amt = Number(prompt('Kaç kredi verilsin?','10')||'0');
-      if(!amt) return;
-      const emails = target.toLowerCase()==='all' ? DB.users.filter(u=>u.role!=='admin').map(u=>u.email) : target.split(',').map(s=>s.trim()).filter(Boolean);
-      const updated=[];
-      DB.users.forEach(u=>{ if(emails.includes(u.email)){ u.credits=(u.credits||0)+amt; updated.push(u.email); }});
-      if(!updated.length){ alert('Hiç kullanıcı bulunamadı'); return; }
-      saveDB(); logAdmin('credit', JSON.stringify(updated), 'Quick credit'); renderAdminUsers(); alert('Kredi verildi: '+updated.join(', '));
-    });
-
-    const adminAddPlanBtn = document.getElementById('admin-action-addplan');
-    if(adminAddPlanBtn) adminAddPlanBtn.addEventListener('click',()=>{
-      if(!ensureAdmin()) return;
-      renderAdminPricing(); showAdminSection('pricing');
-      setTimeout(()=>{ const input=document.getElementById('admin-new-plan-name'); if(input) input.focus(); },120);
-    });
+    // Quick admin actions removed (replaced by full tab UI)
+    // (No-op)
 
 
 
