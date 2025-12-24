@@ -553,6 +553,10 @@
         <button class="nav-btn" data-nav="community" id="nav-community" style="display:none;">Topluluk</button>
         <button class="nav-btn" data-nav="assistant" id="nav-assistant" style="display:none;">Asistan</button>
         <button class="nav-btn" data-nav="pricing" id="nav-pricing">Fiyatlandırma</button>
+        <!-- Admin quick nav (visible only to admins) -->
+        <button class="nav-btn" id="nav-admin-users" style="display:none;">Üyeler</button>
+        <button class="nav-btn" id="nav-admin-credit" style="display:none;">Kredi Ekle</button>
+        <button class="nav-btn" id="nav-admin-addplan" style="display:none;">Paket Ekle</button>
         <button class="nav-btn" data-nav="profile" id="nav-profile" style="display:none;">Profil</button>
         <button class="nav-btn" data-nav="admin" id="nav-admin" style="display:none;">Admin</button>
         <button class="nav-btn" data-nav="settings" id="nav-settings" style="display:none;">Ayarlar</button> 
@@ -998,8 +1002,11 @@
 
     function updateTopbar(){
       console.log('[ui] updateTopbar called, currentUser=', currentUser);
+      const nUsers = document.getElementById('nav-admin-users');
+      const nCredit = document.getElementById('nav-admin-credit');
+      const nAddPlan = document.getElementById('nav-admin-addplan');
       if(currentUser && currentUser.role && String(currentUser.role).toLowerCase()==='admin'){
-        // Admin: keep header minimal and show only admin button + logout
+        // Admin: keep header minimal and show only admin button + logout + admin quick-nav
         btnAuth.style.display="none";
         btnLogout.style.display="inline-flex";
         navStudio.style.display="none";
@@ -1008,7 +1015,11 @@
         navProfile.style.display="none";
         navSettings.style.display="none";
         navAdmin.style.display="inline-flex";
+        if(nUsers) nUsers.style.display='inline-flex';
+        if(nCredit) nCredit.style.display='inline-flex';
+        if(nAddPlan) nAddPlan.style.display='inline-flex';
       }else if(currentUser){
+        // normal logged-in user
         btnAuth.style.display="none";
         btnLogout.style.display="inline-flex";
         navStudio.style.display="inline-flex";
@@ -1017,7 +1028,11 @@
         navProfile.style.display="inline-flex";
         navSettings.style.display="inline-flex";
         navAdmin.style.display="none";
+        if(nUsers) nUsers.style.display='none';
+        if(nCredit) nCredit.style.display='none';
+        if(nAddPlan) nAddPlan.style.display='none';
       }else{
+        // not logged in
         btnAuth.style.display="inline-flex";
         btnLogout.style.display="none";
         navStudio.style.display="none";
@@ -1026,6 +1041,9 @@
         navProfile.style.display="none";
         navSettings.style.display="none";
         navAdmin.style.display="none";
+        if(nUsers) nUsers.style.display='none';
+        if(nCredit) nCredit.style.display='none';
+        if(nAddPlan) nAddPlan.style.display='none';
       }
     }
 
@@ -1816,11 +1834,34 @@
       }
       showScreen("settings");
     });
+
     // Admin top-nav: open admin panel (only when admin logged in)
     navAdmin.addEventListener("click",()=>{
       console.log('[nav] navAdmin clicked, currentUser=', currentUser);
       try{ renderAdmin(); }catch(e){ console.warn('[nav] renderAdmin failed', e); }
     });
+
+    // Admin-specific top-nav buttons
+    const navAdminUsers = document.getElementById('nav-admin-users');
+    const navAdminCredit = document.getElementById('nav-admin-credit');
+    const navAdminAddplan = document.getElementById('nav-admin-addplan');
+
+    if(navAdminUsers) navAdminUsers.addEventListener('click',()=>{ try{ renderAdmin(); showAdminSection('users'); }catch(e){ console.warn('[nav] admin-users click failed', e); } });
+
+    if(navAdminCredit) navAdminCredit.addEventListener('click',()=>{
+      if(!ensureAdmin()) return;
+      const target = prompt('Kime kredi verilsin? (e-posta veya "all" tüm kullanıcılara)');
+      if(!target) return;
+      const amt = Number(prompt('Kaç kredi verilsin?','10')||'0');
+      if(!amt) return;
+      const emails = target.toLowerCase()==='all' ? DB.users.filter(u=>u.role!=='admin').map(u=>u.email) : target.split(',').map(s=>s.trim()).filter(Boolean);
+      const updated = [];
+      DB.users.forEach(u=>{ if(emails.includes(u.email)){ u.credits=(u.credits||0)+amt; updated.push(u.email); }});
+      if(!updated.length){ alert('Hiç kullanıcı bulunamadı'); return; }
+      saveDB(); logAdmin('credit', JSON.stringify(updated), 'Nav credit'); renderAdminUsers(); alert('Kredi verildi: '+updated.join(', '));
+    });
+
+    if(navAdminAddplan) navAdminAddplan.addEventListener('click',()=>{ if(!ensureAdmin()) return; renderAdminPricing(); showAdminSection('pricing'); showScreen('admin'); setTimeout(()=>{ const input=document.getElementById('admin-new-plan-name'); if(input) input.focus(); },120); });
 
     function renderAdmin(){ if(!ensureAdmin()){ console.warn('[nav] renderAdmin blocked: not admin'); return; } showScreen('admin'); showAdminSection('users'); }
 
