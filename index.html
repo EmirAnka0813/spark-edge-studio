@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Spark Ad Studio — Uygulama</title>
+  <meta name="description" content="Spark Ad Studio: fikir yaz, reklam metni üret. (Demo) Paketler, şablonlar, geçmiş, export." />
   <style>
     :root{
       --bg:#0b1220;
@@ -49,6 +50,10 @@
     button.primary{
       border:0; background:linear-gradient(90deg,#22c55e,#3b82f6);
       color:#07151f; padding:10px 14px;
+    }
+    button.warn{
+      border:0; background:linear-gradient(90deg,#f59e0b,#fde68a);
+      color:#111827;
     }
     button.ghost{background:transparent}
     button:disabled{opacity:.55;cursor:not-allowed}
@@ -111,16 +116,80 @@
     .chip.theme-okul{background:linear-gradient(90deg,var(--ok1),var(--ok2)); border:0}
     .card pre{margin:10px 0 0 0;white-space:pre-wrap;line-height:1.35}
     .tiny{font-size:12px;color:var(--muted)}
+
+    /* Giriş ekranı */
+    .overlay{
+      position:fixed; inset:0; display:grid; place-items:center;
+      background:rgba(0,0,0,.55); backdrop-filter: blur(10px);
+      z-index:999;
+    }
+    .login{
+      width:min(520px, 92vw);
+      border:1px solid var(--border);
+      border-radius:22px;
+      background:rgba(255,255,255,.06);
+      box-shadow:var(--sh);
+      padding:18px;
+    }
+    .login h1{margin:0 0 6px 0;font-size:22px}
+    .login .muted{margin-bottom:12px}
+    .login .row{margin-top:10px}
+    .login input{width:100%}
+    .kicker{
+      display:flex; gap:10px; align-items:center; justify-content:space-between;
+      margin-bottom:10px;
+    }
+    .kbadge{
+      font-size:12px; font-weight:900; padding:6px 10px;
+      border-radius:999px; border:1px solid var(--border);
+      background:rgba(255,255,255,.06);
+    }
+
+    /* küçük link gibi buton */
+    .linkbtn{
+      background:transparent; border:0; padding:0; cursor:pointer;
+      color:#93c5fd; font-weight:800;
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
+  <!-- Giriş ekranı (localStorage ile hatırlanır) -->
+  <div class="overlay" id="overlay" style="display:none">
+    <div class="login">
+      <div class="kicker">
+        <div style="display:flex;gap:10px;align-items:center">
+          <div class="logo" style="width:44px;height:44px">S</div>
+          <div>
+            <div style="font-weight:900">Spark Ad Studio</div>
+            <div class="tiny">Demo uygulama • n8n sonra</div>
+          </div>
+        </div>
+        <div class="kbadge">Giriş</div>
+      </div>
+
+      <h1>Hoş geldin 👋</h1>
+      <div class="muted">Adını yaz, uygulamaya gir. (Tarayıcıda saklanır)</div>
+
+      <div class="row">
+        <input id="nameInput" placeholder="Adın (ör: Emir)" maxlength="24" />
+      </div>
+
+      <div class="row">
+        <button class="primary" id="enterBtn">Devam</button>
+        <button class="ghost" id="skipBtn">Şimdilik geç</button>
+        <span class="tiny" id="loginStatus"></span>
+      </div>
+    </div>
+  </div>
+
   <div class="wrap">
     <div class="top">
       <div class="brand">
         <div class="logo">S</div>
         <div>
           <div class="title">Spark Ad Studio</div>
-          <div class="sub">Uygulama (şimdilik demo üretim) — n8n sonra</div>
+          <div class="sub" id="hello">Uygulama (demo) — paket + şablon + geçmiş + export</div>
         </div>
       </div>
 
@@ -138,6 +207,7 @@
           <option value="script">15sn Video Metni</option>
         </select>
 
+        <button class="ghost" id="export">Export (.txt)</button>
         <button class="ghost" id="clear">Geçmişi Temizle</button>
         <button class="primary" id="run">ÜRET</button>
       </div>
@@ -147,7 +217,9 @@
       <!-- Sol: Girdi -->
       <div class="panel">
         <h2>Paket</h2>
-        <div class="muted">Paket seçince stil daha belirgin olur. (Demo)</div>
+        <div class="muted">
+          <b>Paket kilidi:</b> Free paket bazı formatları kilitler. (Demo)
+        </div>
 
         <div class="packs" id="packs">
           <div class="pack free active" data-pack="free" data-credit="5">
@@ -193,6 +265,12 @@
 
         <div class="row" style="margin-top:10px">
           <div class="muted" id="status">Hazır.</div>
+          <button class="warn" id="unlockTip" style="display:none">🔒 Kilit var (bak)</button>
+        </div>
+
+        <div class="tiny" style="margin-top:8px">
+          İpucu: Free pakette <b>Video Metni</b> kilitli. Influencer/Pro ile açılır.
+          <button class="linkbtn" id="whoAmI">Adımı değiştir</button>
         </div>
       </div>
 
@@ -200,7 +278,6 @@
       <div class="panel">
         <h2>Üretilenler (Geçmiş)</h2>
         <div class="muted">Ürettiklerin kart kart burada kalır. (Tarayıcıda saklanır)</div>
-
         <div class="cards" id="cards"></div>
       </div>
     </div>
@@ -209,7 +286,57 @@
 <script>
   const $ = (id) => document.getElementById(id);
 
-  // --- Paket seçimi ---
+  // --- LocalStorage key'leri ---
+  const LS_KEY = "sparkad_history_v2";
+  const LS_STATE = "sparkad_state_v2";
+  const LS_NAME = "sparkad_user_name_v1";
+
+  // --- Kullanıcı adı (giriş ekranı) ---
+  function getName(){
+    return (localStorage.getItem(LS_NAME) || "").trim();
+  }
+  function setName(n){
+    localStorage.setItem(LS_NAME, (n||"").trim());
+  }
+  function updateHello(){
+    const n = getName();
+    $("hello").textContent = n ? `Selam ${n} 👋 • demo: paket + şablon + geçmiş + export` : `Uygulama (demo) — paket + şablon + geçmiş + export`;
+  }
+  function openLogin(){
+    $("overlay").style.display = "grid";
+    $("nameInput").value = getName();
+    $("nameInput").focus();
+  }
+  function closeLogin(){
+    $("overlay").style.display = "none";
+    updateHello();
+  }
+
+  // giriş ilk açılış
+  window.addEventListener("load", () => {
+    updateHello();
+    if(!getName()){
+      $("overlay").style.display = "grid";
+    }
+  });
+
+  $("enterBtn").addEventListener("click", () => {
+    const v = $("nameInput").value.trim();
+    if(!v){
+      $("loginStatus").textContent = "Ad yaz veya Şimdilik geç.";
+      return;
+    }
+    setName(v);
+    $("loginStatus").textContent = "";
+    closeLogin();
+  });
+  $("skipBtn").addEventListener("click", () => {
+    setName(""); // boş bırak
+    closeLogin();
+  });
+  $("whoAmI").addEventListener("click", () => openLogin());
+
+  // --- Paket seçimi + kredi ---
   let selectedPack = "free";
   let creditsLeft = 5;
 
@@ -220,6 +347,7 @@
     selectedPack = el.dataset.pack;
     creditsLeft = el.dataset.credit === "∞" ? Infinity : Number(el.dataset.credit);
     $("status").textContent = `Paket: ${selectedPack} • Kredi: ${creditsLeft === Infinity ? "Sınırsız" : creditsLeft}`;
+    enforceLocks();
     saveState();
   }
   packEls.forEach(el => el.addEventListener("click", () => setPack(el)));
@@ -233,12 +361,36 @@
   });
 
   // --- Tema chip class ---
-  function themeClass(theme){
-    return "theme-" + theme;
+  function themeClass(theme){ return "theme-" + theme; }
+
+  // --- Paket kilidi kuralları ---
+  function isLocked(format){
+    // Free: script kilitli, post açık, ad açık
+    if(selectedPack === "free" && format === "script") return true;
+    // Influencer: her şey açık
+    // Pro: her şey açık
+    return false;
   }
+  function enforceLocks(){
+    const format = $("format").value;
+    const locked = isLocked(format);
+    $("unlockTip").style.display = locked ? "inline-block" : "none";
+    if(locked){
+      $("status").textContent = "🔒 Bu format Free pakette kilitli. Influencer/Pro seç.";
+    }else{
+      $("status").textContent = `Paket: ${selectedPack} • Kredi: ${creditsLeft === Infinity ? "Sınırsız" : creditsLeft}`;
+    }
+  }
+  $("format").addEventListener("change", enforceLocks);
+  $("unlockTip").addEventListener("click", () => {
+    alert("Free pakette 15sn Video Metni kilitli.\nÇözüm: Influencer veya Pro seç.");
+  });
 
   // --- Demo üretici: paket + tema + format etkisi ---
   function demoGenerate({prompt, theme, format, pack}){
+    const name = getName();
+    const hi = name ? `${name}, ` : "";
+
     const tone =
       theme === "oyun" ? "Hype + komik genç dili" :
       theme === "influencer" ? "IG/TikTok enerjik dili" :
@@ -249,38 +401,33 @@
       pack === "influencer" ? " (daha renkli + daha net)" :
       " (daha fazla varyasyon + daha güçlü)";
 
-    const addVary = (pack === "pro") ? 3 : (pack === "influencer" ? 2 : 1);
+    const varyCount = (pack === "pro") ? 3 : (pack === "influencer" ? 2 : 1);
 
     if(format === "ad"){
-      let titles = [];
-      for(let i=0;i<addVary;i++){
-        titles.push(`- ${prompt.replace("____","")} — şimdi keşfet!`);
+      const titles = [];
+      for(let i=0;i<varyCount;i++){
+        titles.push(`- ${prompt.replace("____","").slice(0,70)} — şimdi keşfet!`);
       }
-      return `🎯 Tema: ${theme} (${tone})\n📦 Paket: ${pack}${extra}\n\n1) Başlık Önerileri:\n${titles.join("\n")}\n\n2) Açıklama:\n${prompt} için hızlı, net ve dikkat çekici bir reklam metni. 10 saniyede okut, etki bırak.\n\n3) CTA:\nHemen dene!`;
+      return `${hi}işte reklamın!\n\n🎯 Tema: ${theme} (${tone})\n📦 Paket: ${pack}${extra}\n\n1) Başlık Önerileri:\n${titles.join("\n")}\n\n2) Açıklama:\n${prompt}\n\n3) CTA:\nHemen dene • Paylaş • Kaydet`;
     }
 
     if(format === "post"){
       const hashtags = theme === "oyun" ? "#oyun #gamer #viral" :
                        theme === "influencer" ? "#reels #tiktok #trend" :
                        theme === "marka" ? "#marka #kampanya #urun" : "#okul #duyuru #etkinlik";
-      return `📣 ${prompt}\n\n🔥 Ton: ${tone}${extra}\n\n${hashtags} #sparkadstudio`;
+      return `${hi}hazır post:\n\n${prompt}\n\n🔥 Ton: ${tone}${extra}\n\n${hashtags} #sparkadstudio`;
     }
 
     // script
-    return `🎬 15sn Video Metni\nTema: ${theme} • Paket: ${pack}${extra}\n\nSahne 1: “${prompt}” (hızlı giriş)\nSahne 2: “1-2 vurucu fayda”\nSahne 3: “Hemen dene!”`;
+    return `${hi}15sn video metni:\n\nTema: ${theme} • Paket: ${pack}${extra}\n\nSahne 1 (0-5sn): “${prompt}”\nSahne 2 (5-12sn): 2 vurucu fayda + hızlı tempo\nSahne 3 (12-15sn): “Hemen dene!”`;
   }
 
   // --- Geçmiş (localStorage) ---
-  const LS_KEY = "sparkad_history_v1";
-  const LS_STATE = "sparkad_state_v1";
-
   function loadHistory(){
     try { return JSON.parse(localStorage.getItem(LS_KEY) || "[]"); }
     catch { return []; }
   }
-  function saveHistory(items){
-    localStorage.setItem(LS_KEY, JSON.stringify(items));
-  }
+  function saveHistory(items){ localStorage.setItem(LS_KEY, JSON.stringify(items)); }
 
   function loadState(){
     try { return JSON.parse(localStorage.getItem(LS_STATE) || "{}"); }
@@ -317,25 +464,70 @@
           </div>
           <div class="tiny">${new Date(it.ts).toLocaleString("tr-TR")}</div>
         </div>
-        <pre>${it.text}</pre>
+        <pre>${escapeHtml(it.text)}</pre>
       `;
       cards.appendChild(el);
     }
   }
 
-  // Clear
+  function escapeHtml(s){
+    return (s||"")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;");
+  }
+
+  // --- Geçmiş temizle ---
   $("clear").addEventListener("click", () => {
     if(!confirm("Geçmiş temizlensin mi?")) return;
     saveHistory([]);
     render();
   });
 
-  // Run
+  // --- Export (.txt) ---
+  $("export").addEventListener("click", () => {
+    const items = loadHistory();
+    if(items.length === 0) return alert("Export için önce bir şey üret 🙂");
+
+    let text = `Spark Ad Studio Export\n`;
+    const name = getName();
+    if(name) text += `Kullanıcı: ${name}\n`;
+    text += `Tarih: ${new Date().toLocaleString("tr-TR")}\n`;
+    text += `\n====================\n\n`;
+
+    for(const it of items){
+      text += `[${new Date(it.ts).toLocaleString("tr-TR")}] Tema:${it.theme} • Paket:${it.pack} • Format:${it.format}\n`;
+      text += `${it.text}\n`;
+      text += `\n--------------------\n\n`;
+    }
+
+    const blob = new Blob([text], {type:"text/plain;charset=utf-8"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "sparkad-export.txt";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  });
+
+  // --- ÜRET ---
   $("run").addEventListener("click", async () => {
     const prompt = $("prompt").value.trim();
-    if (!prompt) return alert("Önce bir fikir yaz 🙂");
+    if(!prompt) return alert("Önce bir fikir yaz 🙂");
 
-    if (creditsLeft !== Infinity && creditsLeft <= 0) {
+    const theme = $("theme").value;
+    const format = $("format").value;
+
+    // kilit kontrol
+    if(isLocked(format)){
+      $("status").textContent = "🔒 Bu format Free pakette kilitli. Influencer/Pro seç.";
+      $("unlockTip").style.display = "inline-block";
+      return;
+    }
+
+    if(creditsLeft !== Infinity && creditsLeft <= 0){
       $("status").textContent = "❌ Kredi bitti (demo). Paket değiştir ya da yarın dene.";
       return;
     }
@@ -343,25 +535,23 @@
     $("run").disabled = true;
     $("status").textContent = "Üretiliyor...";
 
-    const theme = $("theme").value;
-    const format = $("format").value;
-
     // Demo üretim
     const result = demoGenerate({prompt, theme, format, pack: selectedPack});
 
-    if (creditsLeft !== Infinity) creditsLeft -= 1;
+    if(creditsLeft !== Infinity) creditsLeft -= 1;
 
     const items = loadHistory();
     items.unshift({ ts: Date.now(), theme, format, pack: selectedPack, text: result });
     saveHistory(items.slice(0, 25)); // en son 25 kayıt
-    saveState();
 
+    saveState();
     render();
+
     $("status").textContent = `Bitti ✅ • Kalan kredi: ${creditsLeft === Infinity ? "Sınırsız" : creditsLeft}`;
     $("run").disabled = false;
   });
 
-  // Başlangıç state
+  // --- Başlangıç state ---
   (function init(){
     const st = loadState();
     if(st.theme) $("theme").value = st.theme;
@@ -374,7 +564,9 @@
       $("status").textContent = `Paket: ${selectedPack} • Kredi: ${creditsLeft}`;
     }
 
+    enforceLocks();
     render();
+    updateHello();
   })();
 </script>
 </body>
