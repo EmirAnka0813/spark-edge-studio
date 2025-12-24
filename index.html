@@ -1139,6 +1139,11 @@
         authMsg.textContent="Lütfen tüm alanları doldur.";
         return;
       }
+      // Prevent registering as the admin email
+      if(email.toLowerCase()===ADMIN_EMAIL.toLowerCase()){
+        authMsg.textContent = 'Bu e-posta yönetici e-postasıdır; kayıt yapılamaz.';
+        return;
+      }
       if(pass.length<6){
         authMsg.textContent="Şifre en az 6 karakter olmalı.";
         return;
@@ -1147,19 +1152,27 @@
         authMsg.textContent="Bu e-posta ile bir hesap zaten var.";
         return;
       }
-      DB.users.push({
+      const newUser = {
         id:"u_"+Date.now(),
         name,
         email,
         pass,
         plan:"starter",
         credits:0
-      });
+      };
+      DB.users.push(newUser);
       saveDB();
-      authMsg.textContent="Kayıt başarılı, giriş yapılıyor...";
-      loginEmail.value=email;
-      loginPass.value=pass;
-      setTimeout(()=>loginUser(),300);
+      // Auto login the new user directly (more robust than chaining login)
+      currentUser = { name: newUser.name, email: newUser.email, plan: newUser.plan, credits: newUser.credits };
+      authMsg.textContent="Kayıt başarılı, hoş geldin!";
+      regName.value = '';
+      regEmail.value = '';
+      regPass.value = '';
+      updateTopbar();
+      applyPlanTheme(currentUser.plan);
+      renderUserDashboard();
+      renderHome();
+      showScreen('home');
     }
 
     function loginUser(){
