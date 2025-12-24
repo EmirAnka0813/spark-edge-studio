@@ -995,7 +995,8 @@
     const navSettings = document.getElementById("nav-settings");
 
     function updateTopbar(){
-      if(currentUser && currentUser.role==='admin'){
+      console.log('[ui] updateTopbar called, currentUser=', currentUser);
+      if(currentUser && currentUser.role && String(currentUser.role).toLowerCase()==='admin'){
         // Admin: keep header minimal and show only admin button + logout
         btnAuth.style.display="none";
         btnLogout.style.display="inline-flex";
@@ -1314,7 +1315,12 @@
     }
 
     // --- ADMIN: role-tabanlı yetkilendirme ve render fonksiyonları ---
-    function ensureAdmin(){ return currentUser && currentUser.role && currentUser.role==='admin'; }
+    function ensureAdmin(){
+      const role = currentUser && currentUser.role;
+      const isAdmin = Boolean(role && String(role).toLowerCase() === 'admin');
+      if(!isAdmin) console.warn('[auth] ensureAdmin=false, currentUser=', currentUser);
+      return isAdmin;
+    }
 
     function logAdmin(action,target,note){ try{ DB.adminLogs = DB.adminLogs || []; DB.adminLogs.unshift({ admin: currentUser ? currentUser.email : 'unknown', action, target, note:note||'', ts: Date.now() }); saveDB(); }catch(e){}
     }
@@ -1828,8 +1834,11 @@
     });
     // Admin top-nav: open admin panel (only when admin logged in)
     navAdmin.addEventListener("click",()=>{
+      console.log('[nav] navAdmin clicked, currentUser=', currentUser);
       try{ renderAdmin(); }catch(e){ console.warn('[nav] renderAdmin failed', e); }
     });
+
+    function renderAdmin(){ if(!ensureAdmin()){ console.warn('[nav] renderAdmin blocked: not admin'); return; } showScreen('admin'); showAdminSection('users'); }
 
     updateTopbar();
     renderUserPricing();
