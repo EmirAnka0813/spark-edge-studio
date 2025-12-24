@@ -538,6 +538,10 @@
         <button class="nav-btn" data-nav="pricing" id="nav-pricing">Fiyatlandırma</button>
         <button class="nav-btn" data-nav="profile" id="nav-profile" style="display:none;">Profil</button>
         <button class="nav-btn" data-nav="settings" id="nav-settings" style="display:none;">Ayarlar</button>
+        <!-- Admin-only quick nav -->
+        <button class="nav-btn" id="nav-admin-users" style="display:none">Üyeler</button>
+        <button class="nav-btn" id="nav-admin-credits" style="display:none">Kredi Gönder</button>
+        <button class="nav-btn" id="nav-admin-plans" style="display:none">Paket Ekle</button>
         <button class="nav-btn danger" id="btn-logout" style="display:none;">Çıkış</button>
         <button class="nav-btn primary" id="btn-auth">Üye Ol / Giriş Yap</button>
       </nav>
@@ -736,16 +740,21 @@
             </div>
             <div class="card" style="margin-bottom:10px;">
               <div class="section-title">Kredi Gönder</div>
-              <div class="section-sub">Hızlı kredi ekle: üyeyi seç, miktarı yaz ve gönder.</div>
+              <div class="section-sub">Hızlı kredi ekle: üyeyi seç, miktarı yaz, not ekle ve gönder.</div>
               <div class="form-grid">
                 <div>
                   <label for="credit-user">Üye</label>
                   <select id="credit-user"></select>
+                  <div style="margin-top:6px"><label style="font-size:12px"><input type="checkbox" id="credit-select-all" /> <strong>Herkesi seç</strong></label></div>
                 </div>
                 <div>
                   <label for="credit-amount">Miktar</label>
                   <input id="credit-amount" type="number" value="10" min="1" />
                 </div>
+              </div>
+              <div style="margin-top:8px">
+                <label for="credit-note">Not (isteğe bağlı)</label>
+                <input id="credit-note" placeholder="Kısa not veya açıklama" />
               </div>
               <div class="form-actions">
                 <button class="btn-sm primary" id="btn-give-credit">Kredi Ver</button>
@@ -1030,14 +1039,36 @@
     const navSettings = document.getElementById("nav-settings");
 
     function updateTopbar(){
+      const navAdminUsers = document.getElementById('nav-admin-users');
+      const navAdminCredits = document.getElementById('nav-admin-credits');
+      const navAdminPlans = document.getElementById('nav-admin-plans');
+
       if(currentUser){
         btnAuth.style.display="none";
         btnLogout.style.display="inline-flex";
-        navStudio.style.display="inline-flex";
-        navCommunity.style.display="inline-flex";
-        navAssistant.style.display="inline-flex";
-        navProfile.style.display="inline-flex";
-        navSettings.style.display="inline-flex";
+        // If admin: hide general nav, show admin-specific buttons
+        if(currentUser.email && currentUser.email.toLowerCase()===ADMIN_EMAIL.toLowerCase()){
+          navStudio.style.display="none";
+          navCommunity.style.display="none";
+          navAssistant.style.display="none";
+          navProfile.style.display="none";
+          navSettings.style.display="none";
+          navPricing.style.display="none";
+          if(navAdminUsers) navAdminUsers.style.display = 'inline-flex';
+          if(navAdminCredits) navAdminCredits.style.display = 'inline-flex';
+          if(navAdminPlans) navAdminPlans.style.display = 'inline-flex';
+        }else{
+          // normal user
+          navStudio.style.display="inline-flex";
+          navCommunity.style.display="inline-flex";
+          navAssistant.style.display="inline-flex";
+          navProfile.style.display="inline-flex";
+          navSettings.style.display="inline-flex";
+          if(navAdminUsers) navAdminUsers.style.display = 'none';
+          if(navAdminCredits) navAdminCredits.style.display = 'none';
+          if(navAdminPlans) navAdminPlans.style.display = 'none';
+          navPricing.style.display = 'inline-flex';
+        }
       }else{
         btnAuth.style.display="inline-flex";
         btnLogout.style.display="none";
@@ -1046,6 +1077,10 @@
         navAssistant.style.display="none";
         navProfile.style.display="none";
         navSettings.style.display="none";
+        if(navAdminUsers) navAdminUsers.style.display = 'none';
+        if(navAdminCredits) navAdminCredits.style.display = 'none';
+        if(navAdminPlans) navAdminPlans.style.display = 'none';
+        navPricing.style.display = 'inline-flex';
       }
     }
 
@@ -1492,6 +1527,7 @@
 
     function renderCreditOptions(){
       const sel = document.getElementById('credit-user');
+      const chk = document.getElementById('credit-select-all');
       if(!sel) return;
       sel.innerHTML = '';
       DB.users.forEach(u=>{
@@ -1500,21 +1536,38 @@
         opt.textContent = u.name + ' ('+u.email+')' + (u.credits?(' • '+u.credits+' kredi'):'');
         sel.appendChild(opt);
       });
+      if(chk){
+        chk.checked = false;
+        chk.addEventListener('change',()=>{
+          if(chk.checked){ sel.disabled = true; } else { sel.disabled = false; }
+        });
+      }
     }
 
     document.getElementById('btn-give-credit').addEventListener('click',()=>{
       const sel = document.getElementById('credit-user');
       const amt = Number(document.getElementById('credit-amount').value||0);
       const status = document.getElementById('credit-status');
-      if(!sel || !sel.value || !amt || amt<=0){ status.textContent='Geçerli bir kullanıcı ve pozitif kredi gir.'; return; }
-      const u = DB.users.find(x=>x.email===sel.value);
-      if(!u){ status.textContent='Kullanıcı bulunamadı.'; return; }
-      u.credits = (u.credits||0)+amt;
-      saveDB();
-      status.textContent = `${u.name} kullanıcısına ${amt} kredi verildi. Yeni toplam: ${u.credits}`;
+      const chkAll = document.getElementById('credit-select-all');
+      const note = (document.getElementById('credit-note')||{}).value.trim();
+      if(!amt || amt<=0){ status.textContent='Pozitif bir kredi miktarı gir.'; return; }
+      if(chkAll && chkAll.checked){
+        DB.users.forEach(u=>{ u.credits = (u.credits||0)+amt; });
+        DB.messages.push({id:'m_credit_'+Date.now(),fromEmail:ADMIN_EMAIL,text:`Admin tarafından herkese +${amt} kredi. Not: ${note||'-'}`,createdAt:new Date().toISOString()});
+        saveDB();
+        status.textContent = `Herkese ${amt} kredi verildi.`;
+      }else{
+        if(!sel || !sel.value){ status.textContent='Lütfen bir kullanıcı seç.'; return; }
+        const u = DB.users.find(x=>x.email===sel.value);
+        if(!u){ status.textContent='Kullanıcı bulunamadı.'; return; }
+        u.credits = (u.credits||0)+amt;
+        DB.messages.push({id:'m_credit_'+Date.now(),fromEmail:ADMIN_EMAIL,text:`Admin tarafından ${u.email} kullanıcısına +${amt} kredi. Not: ${note||'-'}`,createdAt:new Date().toISOString()});
+        saveDB();
+        status.textContent = `${u.name} kullanıcısına ${amt} kredi verildi. Yeni toplam: ${u.credits}`;
+      }
       renderAdminUsers();
       renderCreditOptions();
-      setTimeout(()=>status.textContent='',2400);
+      setTimeout(()=>status.textContent='',3200);
     });
 
     function renderAdminRequests(){
@@ -1839,6 +1892,16 @@
         showScreen("user");
       }else{
         showScreen("auth");
+      }
+    });
+
+    // Admin quick-nav handlers
+    const navAdminUsers = document.getElementById('nav-admin-users');
+    const navAdminCredits = document.getElementById('nav-admin-credits');
+    const navAdminPlans = document.getElementById('nav-admin-plans');
+    if(navAdminUsers) navAdminUsers.addEventListener('click', ()=>{ renderAdminUsers(); renderCreditOptions(); showScreen('admin'); document.getElementById('admin-users').scrollIntoView({behavior:'smooth'}); });
+    if(navAdminCredits) navAdminCredits.addEventListener('click', ()=>{ renderCreditOptions(); showScreen('admin'); document.getElementById('credit-amount').focus(); });
+    if(navAdminPlans) navAdminPlans.addEventListener('click', ()=>{ renderAdminPricing(); showScreen('admin'); document.getElementById('new-plan-name').focus(); });
       }
     });
     navCommunity.addEventListener("click",()=>{
