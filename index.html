@@ -1088,7 +1088,9 @@
     const ADMIN_PASS  = "spark123";
 
     function findUserByEmail(email){
-      return DB.users.find(u => u.email.toLowerCase() === email.toLowerCase());
+      if(!email) return null;
+      const e = String(email).toLowerCase();
+      return DB.users.find(u => (u.email||"").toLowerCase() === e);
     }
 
     function applyPlanTheme(plan){
@@ -1176,32 +1178,42 @@
     }
 
     function loginUser(){
-      const email = loginEmail.value.trim();
-      const pass = loginPass.value.trim();
-      if(!email || !pass){
-        authMsg.textContent="E-posta ve şifreyi gir.";
-        return;
-      }
-      if(email===ADMIN_EMAIL && pass===ADMIN_PASS){
-        currentUser={name:"Yönetici",email:ADMIN_EMAIL,plan:"admin"};
-        authMsg.textContent="Yönetici olarak giriş yapıldı.";
+      try{
+        const emailRaw = (loginEmail.value||"").trim();
+        const pass = (loginPass.value||"").trim();
+        const email = emailRaw.toLowerCase();
+        console.log('[auth] login attempt', {email, passLen: pass.length});
+        if(!email || !pass){
+          authMsg.textContent="E-posta ve şifreyi gir.";
+          return;
+        }
+        // admin check (case-insensitive for email)
+        if(email === ADMIN_EMAIL.toLowerCase() && pass === ADMIN_PASS){
+          currentUser={name:"Yönetici",email:ADMIN_EMAIL,plan:"admin"};
+          authMsg.textContent="Yönetici olarak giriş yapıldı.";
+          updateTopbar();
+          applyPlanTheme("admin");
+          renderAdmin();
+          showScreen("admin");
+          return;
+        }
+        const u = findUserByEmail(email);
+        if(!u || u.pass !== pass){
+          authMsg.textContent="E-posta veya şifre hatalı.";
+          console.warn('[auth] login failed', {email, userFound: !!u});
+          return;
+        }
+        currentUser={name:u.name,email:u.email,plan:u.plan||"starter"};
+        authMsg.textContent = "Giriş başarılı, yönlendiriliyorsun...";
         updateTopbar();
-        applyPlanTheme("admin");
-        renderAdmin();
-        showScreen("admin");
-        return;
+        applyPlanTheme(currentUser.plan);
+        renderUserDashboard();
+        renderHome();
+        showScreen("home");
+      }catch(e){
+        console.error('[auth] login error', e);
+        authMsg.textContent = 'Giriş sırasında hata oluştu.';
       }
-      const u = findUserByEmail(email);
-      if(!u || u.pass!==pass){
-        authMsg.textContent="E-posta veya şifre hatalı.";
-        return;
-      }
-      currentUser={name:u.name,email:u.email,plan:u.plan||"starter"};
-      updateTopbar();
-      applyPlanTheme(currentUser.plan);
-      renderUserDashboard();
-      renderHome();
-      showScreen("home");
     }
 
     btnRegister.addEventListener("click",registerUser);
