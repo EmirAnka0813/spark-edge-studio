@@ -987,6 +987,15 @@
     const DB = loadDB();
     function saveDB(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(DB)); }
 
+    // Seed demo users if none exist so admin has members to manage
+    if(!DB.users || DB.users.length===0){
+      DB.users.push(
+        {id:"u_demo1",name:"Ali Veli",email:"ali@demo.com",pass:"demo",plan:"starter",credits:2},
+        {id:"u_demo2",name:"Ayşe Yılmaz",email:"ayse@demo.com",pass:"demo",plan:"pro",credits:8}
+      );
+      saveDB();
+    }
+
     let currentUser = null;
 
     const screens = {
@@ -1451,6 +1460,32 @@
 
         item.appendChild(label);
         item.appendChild(metaLine);
+        const actions=document.createElement('div');
+        actions.className='admin-actions';
+        const creditBtn=document.createElement('button');
+        creditBtn.textContent='Kredi Ver';
+        creditBtn.addEventListener('click',()=>{
+          const amt = Number(prompt('Kaç kredi eklemek istersin?', '10'));
+          if(!amt || amt<=0) return;
+          u.credits = (u.credits||0)+amt;
+          saveDB();
+          renderAdminUsers();
+          renderCreditOptions();
+        });
+        const removeBtn=document.createElement('button');
+        removeBtn.textContent='Kaldır';
+        removeBtn.className='danger';
+        removeBtn.addEventListener('click',()=>{
+          if(!confirm('Kullanıcıyı kaldırmak istediğine emin misin?')) return;
+          const idx = DB.users.findIndex(x=>x.email===u.email);
+          if(idx>=0) DB.users.splice(idx,1);
+          saveDB();
+          renderAdminUsers();
+          renderCreditOptions();
+        });
+        actions.appendChild(creditBtn);
+        actions.appendChild(removeBtn);
+        item.appendChild(actions);
         adminUsersEl.appendChild(item);
       });
     }
