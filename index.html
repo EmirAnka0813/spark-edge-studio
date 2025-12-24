@@ -157,27 +157,18 @@
     .login{ transition: transform .36s cubic-bezier(.22,.9,.3,1), box-shadow .28s ease; }
     .login:hover{ transform:translateY(-6px); box-shadow:0 30px 80px rgba(0,0,0,0.48); }
     .login h1{ font-size:24px; letter-spacing:0.02em; }
-    .tiny.shimmer{ background:linear-gradient(90deg,#fbbf24,#ffd66b,#fbbf24); -webkit-background-clip:text; background-clip:text; color:transparent; animation: shimmer 3s linear infinite; background-size:200% 100%; }
-    @keyframes shimmer{ 0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%} }
-
-    /* pack card animations */
-    @keyframes packPulse { 0%{transform:scale(1)}50%{transform:scale(1.03)}100%{transform:scale(1)} }
-    @keyframes goldShine { 0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%} }
+    /* Removed shimmer and pack entrance animations to restore original look */
 
     .pack{ transition: transform .24s ease, box-shadow .24s ease, border-color .24s ease; cursor:pointer; }
     .pack:hover{ transform:translateY(-6px) scale(1.01); box-shadow:0 20px 60px rgba(0,0,0,0.36); }
     .pack.active{ box-shadow:0 30px 90px rgba(59,130,246,0.08); transform:translateY(-8px) scale(1.02); border:1px solid rgba(59,130,246,0.18); }
 
-    /* Influencer: gold shimmer tag and entrance */
-    .pack.inf .tag{ background:linear-gradient(90deg,var(--inf1),var(--inf2)); position:relative; overflow:hidden; }
-    .pack.inf .tag::after{ content:''; position:absolute; inset:0; background:linear-gradient(90deg,#fbbf24,#ffd66b,#fbbf24); opacity:0.7; mix-blend-mode:overlay; background-size:200% 100%; animation: goldShine 3.2s linear infinite; }
-    .pack.inf.active{ box-shadow:0 28px 100px rgba(251,191,36,0.08); border-color:rgba(251,191,36,0.22); }
+    .pack.inf{border-color:rgba(192,38,211,.35)}
+    .pack.inf .tag{background:linear-gradient(90deg,var(--inf1),var(--inf2));}
+    .pack.inf.active{ box-shadow:0 12px 40px rgba(192,38,211,0.06); }
 
-    /* Pro: bright pulse */
-    .pack.pro.active{ animation: packPulse .9s ease; box-shadow:0 36px 120px rgba(248,199,81,0.12); border-color:rgba(245,158,11,0.22); }
-
-    /* small entrance animation when pack selected */
-    body.pack-animate .packs .pack.active{ animation: packPulse .9s cubic-bezier(.22,.9,.3,1); }
+    .pack.pro{border-color:rgba(245,158,11,.35)}
+    .pack.pro .tag{background:linear-gradient(90deg,var(--pro1),var(--pro2)); color:#111827} 
 
     /* subtle label shimmer for active pack */
     .pack .pname{ transition: color .18s ease; }
@@ -210,22 +201,10 @@
       <div class="row login-actions">
         <button class="primary" id="enterBtn">Devam</button>
         <button class="ghost" id="skipBtn">Şimdilik geç</button>
-        <button class="btn-quick-admin" id="btn-admin-quick" title="Admin hızlı girişi demo">Admin Hızlı Giriş</button>
-        <button class="linkbtn" id="openRegisterBtn" style="margin-left:8px">Üye Ol</button>
         <span class="tiny" id="loginStatus"></span>
       </div>
 
-      <div class="register-section" id="registerSection" style="display:none; margin-top:12px;">
-        <hr />
-        <div style="margin-top:8px" class="field"><label>İsim</label><input id="reg-name" placeholder="Adın" /></div>
-        <div style="margin-top:8px" class="field"><label>E-posta</label><input id="reg-email" placeholder="mail@ornek.com" /></div>
-        <div style="margin-top:8px" class="field"><label>Şifre (min 6)</label><input id="reg-pass" type="password" placeholder="şifre" /></div>
-        <div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
-          <button class="primary" id="btn-register">Üye Ol ve Giriş Yap</button>
-          <button class="ghost" id="btn-register-cancel">Geri</button>
-          <span class="tiny" id="regStatus"></span>
-        </div>
-      </div>
+
 
     </div>
   </div>
@@ -392,8 +371,6 @@
     }
     setCurrentUser({ name: v, role: 'user' });
     $("loginStatus").textContent = "";
-    // success flash
-    try{ document.body.classList.add('auth-success'); setTimeout(()=>document.body.classList.remove('auth-success'),900); }catch(e){}
     closeLogin();
   });
   $("skipBtn").addEventListener("click", () => {
@@ -402,47 +379,16 @@
   });
   $("whoAmI").addEventListener("click", () => openLogin());
 
-  // Admin quick-login
-  try{ const btnAdminQuick = document.getElementById('btn-admin-quick'); if(btnAdminQuick){ btnAdminQuick.addEventListener('click', ()=>{ setCurrentUser({ name: 'Yönetici', role: 'admin' }); $("loginStatus").textContent = 'Yönetici olarak giriş yapıldı.'; try{ document.body.classList.add('auth-success'); setTimeout(()=>document.body.classList.remove('auth-success'),900); }catch(e){} closeLogin(); }); } }catch(e){}
+
 
   // Admin panel demo
   try{ const btnAdminPanel = document.getElementById('btn-admin-panel'); if(btnAdminPanel){ btnAdminPanel.addEventListener('click', ()=>{ alert('Yönetici paneli (demo): Üyeler, Kredi, Paketler yönetim bölümü.'); }); } }catch(e){}
 
-  // --- Kullanıcılar: basit localStorage tabanlı kayıt (demo) ---
-  function getUsers(){ try{ return JSON.parse(localStorage.getItem('sparkad_users_v1')||'[]'); }catch(e){return [];} }
-  function saveUsers(u){ localStorage.setItem('sparkad_users_v1', JSON.stringify(u)); }
-  function findUserByEmail(email){ if(!email) return null; return getUsers().find(x=>x.email && x.email.toLowerCase()===email.toLowerCase()); }
+  // --- Kullanıcılar: kayıt/davet özelliği kaldırıldı (sadece basit giriş) ---
 
-  // Kayıt formu aç/kapat
-  try{
-    const openReg = document.getElementById('openRegisterBtn');
-    const regSec = document.getElementById('registerSection');
-    const regCancel = document.getElementById('btn-register-cancel');
-    if(openReg) openReg.addEventListener('click', ()=>{ if(regSec) regSec.style.display='block'; });
-    if(regCancel) regCancel.addEventListener('click', ()=>{ if(regSec) regSec.style.display='none'; document.getElementById('reg-name').value=''; document.getElementById('reg-email').value=''; document.getElementById('reg-pass').value=''; document.getElementById('regStatus').textContent=''; });
-  }catch(e){ console.warn('[auth] reg ui init failed', e); }
+  // Kayıt UI handler'ları kaldırıldı
 
-  // Kayıt işlemi
-  try{
-    const btnReg = document.getElementById('btn-register');
-    if(btnReg) btnReg.addEventListener('click', ()=>{
-      const rn = (document.getElementById('reg-name')||{}).value.trim();
-      const re = (document.getElementById('reg-email')||{}).value.trim();
-      const rp = (document.getElementById('reg-pass')||{}).value;
-      const status = document.getElementById('regStatus');
-      if(!rn || !re || !rp){ status.textContent = 'Lütfen tüm alanları doldur.'; return; }
-      if(rp.length<6){ status.textContent = 'Şifre en az 6 karakter olmalı.'; return; }
-      if(findUserByEmail(re)){ status.textContent = 'Bu e-posta zaten kayıtlı.'; return; }
-      const users = getUsers();
-      const newUser = { id:'u_'+Date.now(), name:rn, email:re, pass:rp, role:'user', credits:5, createdAt:Date.now() };
-      users.push(newUser); saveUsers(users);
-      // auto-login
-      setCurrentUser({ name: newUser.name, email: newUser.email, role: newUser.role, credits:newUser.credits });
-      status.textContent = 'Kayıt başarılı, yönlendiriliyorsun...';
-      try{ document.body.classList.add('auth-success'); setTimeout(()=>document.body.classList.remove('auth-success'),900); }catch(e){}
-      setTimeout(()=>{ closeLogin(); },600);
-    });
-  }catch(e){ console.warn('[auth] register handler failed', e); }
+
 
   // --- Paket seçimi + kredi ---
   let selectedPack = "free";
@@ -458,18 +404,8 @@
     enforceLocks();
     saveState();
 
-    // apply theme + small animated feedback
-    try{
-      applyPlanTheme(selectedPack);
-      document.body.classList.add('pack-animate');
-      setTimeout(()=>{ document.body.classList.remove('pack-animate'); },1200);
-      // quick status flash for influencer
-      if(selectedPack==='influencer'){
-        const old = $("status").textContent;
-        $("status").textContent = 'Influencer etkin: ekstra animasyonlar aktif!';
-        setTimeout(()=>{ $("status").textContent = old; },1400);
-      }
-    }catch(e){ console.warn('[ui] pack animation failed', e); }
+    // animations disabled — restoring original behavior (no theme apply)
+    try{ /* no-op */ }catch(e){}
   }
   packEls.forEach(el => el.addEventListener("click", () => setPack(el)));
 
