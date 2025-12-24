@@ -1255,7 +1255,8 @@
         authMsg.textContent="E-posta veya şifre hatalı.";
         return;
       }
-      currentUser={name:u.name,email:u.email,plan:u.plan||"starter", role:u.role||'user'};
+      // Normalize role to lower-case to avoid casing issues
+      currentUser={name:u.name,email:u.email,plan:u.plan||"starter", role:String(u.role||'user').toLowerCase()};
       saveDB();
       console.log('[auth] login success', currentUser.email, 'role=', currentUser.role);
       // remember me: persist user's email for convenience (demo only)
