@@ -1490,6 +1490,33 @@
       });
     }
 
+    function renderCreditOptions(){
+      const sel = document.getElementById('credit-user');
+      if(!sel) return;
+      sel.innerHTML = '';
+      DB.users.forEach(u=>{
+        const opt = document.createElement('option');
+        opt.value = u.email;
+        opt.textContent = u.name + ' ('+u.email+')' + (u.credits?(' • '+u.credits+' kredi'):'');
+        sel.appendChild(opt);
+      });
+    }
+
+    document.getElementById('btn-give-credit').addEventListener('click',()=>{
+      const sel = document.getElementById('credit-user');
+      const amt = Number(document.getElementById('credit-amount').value||0);
+      const status = document.getElementById('credit-status');
+      if(!sel || !sel.value || !amt || amt<=0){ status.textContent='Geçerli bir kullanıcı ve pozitif kredi gir.'; return; }
+      const u = DB.users.find(x=>x.email===sel.value);
+      if(!u){ status.textContent='Kullanıcı bulunamadı.'; return; }
+      u.credits = (u.credits||0)+amt;
+      saveDB();
+      status.textContent = `${u.name} kullanıcısına ${amt} kredi verildi. Yeni toplam: ${u.credits}`;
+      renderAdminUsers();
+      renderCreditOptions();
+      setTimeout(()=>status.textContent='',2400);
+    });
+
     function renderAdminRequests(){
       adminRequestsEl.innerHTML="";
       DB.requests.forEach(r=>{
@@ -1646,6 +1673,7 @@
 
     function renderAdmin(){
       renderAdminUsers();
+      renderCreditOptions();
       renderAdminRequests();
       renderAdminMessages();
       renderAdminPricing();
