@@ -68,6 +68,34 @@
       position:relative;
     }
 
+    /* INFLUENCER: GOLD & ANIMATIONS */
+    @keyframes goldShimmer { 0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%} }
+    @keyframes navPop { 0%{opacity:0; transform:translateY(6px) scale(.98)} 60%{opacity:1; transform:translateY(-2px) scale(1.02)} 100%{transform:none} }
+
+    body.plan-influencer .top-nav .nav-btn{ transition: transform .24s ease, box-shadow .24s ease, color .18s ease; }
+    body.plan-influencer .top-nav .nav-btn:hover{ transform:translateY(-3px) scale(1.02); box-shadow:0 8px 30px rgba(251,191,36,0.12); color:#fbbf24; }
+    /* one-time pop on login when influencer animation class is set */
+    body.plan-influencer.influencer-animate .top-nav .nav-btn{ animation: navPop .8s cubic-bezier(.22,.9,.3,1); }
+
+    /* Profile gold name shimmer */
+    #profile-card.profile-influencer{ position:relative; overflow:visible; }
+    #profile-card.profile-influencer::after{ content:''; position:absolute; inset:0; pointer-events:none; box-shadow:0 18px 40px rgba(251,191,36,0.06); border-radius:12px; }
+    #profile-card.profile-influencer #profile-name{ background:linear-gradient(90deg,#fbbf24 0%, #ffd66b 20%, #f6e05e 40%, #ffd66b 60%, #fbbf24 100%); -webkit-background-clip:text; background-clip:text; color:transparent; background-size:200% 100%; animation: goldShimmer 3.4s linear infinite; }
+
+    /* Subtle card glow for influencer */
+    body.plan-influencer .card{ transition: box-shadow .36s ease, transform .28s ease; }
+    body.plan-influencer .card:hover{ box-shadow:0 24px 60px rgba(251,191,36,0.06); transform:translateY(-4px); }
+
+    /* menu items slide-in stagger (small) */
+    body.plan-influencer .top-nav .nav-btn{ opacity:0; }
+    body.plan-influencer.influencer-animate .top-nav .nav-btn{ opacity:1; }
+    body.plan-influencer.influencer-animate .top-nav .nav-btn:nth-child(1){ animation-delay:.05s }
+    body.plan-influencer.influencer-animate .top-nav .nav-btn:nth-child(2){ animation-delay:.08s }
+    body.plan-influencer.influencer-animate .top-nav .nav-btn:nth-child(3){ animation-delay:.11s }
+    body.plan-influencer.influencer-animate .top-nav .nav-btn:nth-child(4){ animation-delay:.14s }
+    body.plan-influencer.influencer-animate .top-nav .nav-btn:nth-child(5){ animation-delay:.17s }
+    body.plan-influencer.influencer-animate .top-nav .nav-btn:nth-child(6){ animation-delay:.2s }
+
 
 
     .logo{
@@ -1065,7 +1093,11 @@
 
       if(plan==="starter") b.classList.add("plan-starter");
       else if(plan==="pro") b.classList.add("plan-pro");
-      else if(plan==="influencer") b.classList.add("plan-influencer");
+      else if(plan==="influencer"){
+        b.classList.add("plan-influencer");
+        // briefly add an animation trigger class so menus/cards animate on login
+        try{ b.classList.add('influencer-animate'); setTimeout(()=>{ b.classList.remove('influencer-animate'); },1400); }catch(e){}
+      }
       else if(plan==="admin") b.classList.add("plan-admin");
       else b.classList.add("plan-free");
 
@@ -1328,7 +1360,7 @@
       }else if(p.id==="pro"){
         perks.push("Aylık 4–5 brif","Mor–mavi neon AI fikirleri","Panelde mor rozet");
       }else if(p.id==="influencer"){
-        perks.push("Gold animasyonlu profil kartı","En detaylı AI kampanya fikirleri","İsim altın tonlarıyla öne çıkar");
+        perks.push("Gold animasyonlu profil kartı","En detaylı AI kampanya fikirleri","İsim altın tonlarıyla öne çıkar","Profilde altın shimmer animasyonu","Menülerde animasyonlu giriş ve hover efektleri","Özel altın rozet ve görünürlük artışı");
       }else{
         perks.push(p.perks);
       }
