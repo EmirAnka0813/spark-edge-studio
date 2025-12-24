@@ -1796,6 +1796,10 @@
       }
       showScreen("settings");
     });
+    // Admin top-nav: open admin panel (only when admin logged in)
+    navAdmin.addEventListener("click",()=>{
+      try{ renderAdmin(); }catch(e){ console.warn('[nav] renderAdmin failed', e); }
+    });
 
     updateTopbar();
     renderUserPricing();
