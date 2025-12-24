@@ -750,12 +750,10 @@
           <div class="section-title">Yönetici Paneli</div>
           <div class="section-sub">Üyeler, istekler, mesajlar, paketler ve topluluk yönetimi.</div>
           <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;" id="admin-topnav">
-            <button class="btn-sm" id="admin-tab-users">Üyeler</button>
-            <button class="btn-sm" id="admin-tab-requests">İstekler</button>
-            <button class="btn-sm" id="admin-tab-community">Topluluk</button>
-            <button class="btn-sm" id="admin-tab-messages">Mesajlar</button>
-            <button class="btn-sm" id="admin-tab-pricing">Paketler</button>
-            <button class="btn-sm" id="admin-tab-logs">Loglar</button>
+            <button class="btn-sm primary" id="admin-tab-users">Üyeler</button>
+            <button class="btn-sm" id="admin-action-credit">Kredi Gönder</button>
+            <button class="btn-sm" id="admin-action-addplan">Paket Ekle</button>
+            <div class="muted small" style="margin-left:8px;align-self:center;">(Hızlı komutlar)</div>
           </div>
         </div>
 
@@ -997,7 +995,17 @@
     const navSettings = document.getElementById("nav-settings");
 
     function updateTopbar(){
-      if(currentUser){
+      if(currentUser && currentUser.role==='admin'){
+        // Admin: keep header minimal and show only admin button + logout
+        btnAuth.style.display="none";
+        btnLogout.style.display="inline-flex";
+        navStudio.style.display="none";
+        navCommunity.style.display="none";
+        navAssistant.style.display="none";
+        navProfile.style.display="none";
+        navSettings.style.display="none";
+        navAdmin.style.display="inline-flex";
+      }else if(currentUser){
         btnAuth.style.display="none";
         btnLogout.style.display="inline-flex";
         navStudio.style.display="inline-flex";
@@ -1005,7 +1013,7 @@
         navAssistant.style.display="inline-flex";
         navProfile.style.display="inline-flex";
         navSettings.style.display="inline-flex";
-        if(currentUser.role==='admin') navAdmin.style.display="inline-flex"; else navAdmin.style.display="none";
+        navAdmin.style.display="none";
       }else{
         btnAuth.style.display="inline-flex";
         btnLogout.style.display="none";
@@ -1405,6 +1413,28 @@
 
     // admin tab buttons
     ['users','requests','community','messages','pricing','logs'].forEach(s=>{ const btn=document.getElementById('admin-tab-'+s); if(btn) btn.addEventListener('click',()=>{ if(!ensureAdmin()) return; showAdminSection(s); }); });
+
+    // Quick admin actions (shortcuts shown in admin topnav)
+    const adminCreditBtn = document.getElementById('admin-action-credit');
+    if(adminCreditBtn) adminCreditBtn.addEventListener('click',()=>{
+      if(!ensureAdmin()) return;
+      const target = prompt('Kime kredi verilsin? (e-posta veya "all" tüm kullanıcılara)');
+      if(!target) return;
+      const amt = Number(prompt('Kaç kredi verilsin?','10')||'0');
+      if(!amt) return;
+      const emails = target.toLowerCase()==='all' ? DB.users.filter(u=>u.role!=='admin').map(u=>u.email) : target.split(',').map(s=>s.trim()).filter(Boolean);
+      const updated=[];
+      DB.users.forEach(u=>{ if(emails.includes(u.email)){ u.credits=(u.credits||0)+amt; updated.push(u.email); }});
+      if(!updated.length){ alert('Hiç kullanıcı bulunamadı'); return; }
+      saveDB(); logAdmin('credit', JSON.stringify(updated), 'Quick credit'); renderAdminUsers(); alert('Kredi verildi: '+updated.join(', '));
+    });
+
+    const adminAddPlanBtn = document.getElementById('admin-action-addplan');
+    if(adminAddPlanBtn) adminAddPlanBtn.addEventListener('click',()=>{
+      if(!ensureAdmin()) return;
+      renderAdminPricing(); showAdminSection('pricing');
+      setTimeout(()=>{ const input=document.getElementById('admin-new-plan-name'); if(input) input.focus(); },120);
+    });
 
 
 
