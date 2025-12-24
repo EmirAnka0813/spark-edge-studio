@@ -151,6 +151,20 @@
       color:#93c5fd; font-weight:800;
       text-decoration: underline;
     }
+
+    /* Auth overlay visuals */
+    .overlay{ background:linear-gradient(135deg, rgba(251,191,36,0.02), rgba(168,85,247,0.01)); }
+    .login{ transition: transform .36s cubic-bezier(.22,.9,.3,1), box-shadow .28s ease; }
+    .login:hover{ transform:translateY(-6px); box-shadow:0 30px 80px rgba(0,0,0,0.48); }
+    .login h1{ font-size:24px; letter-spacing:0.02em; }
+    .tiny.shimmer{ background:linear-gradient(90deg,#fbbf24,#ffd66b,#fbbf24); -webkit-background-clip:text; background-clip:text; color:transparent; animation: shimmer 3s linear infinite; background-size:200% 100%; }
+    @keyframes shimmer{ 0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%} }
+
+    /* pack card animations */
+    .pack{ transition: transform .24s ease, box-shadow .24s ease; cursor:pointer; }
+    .pack:hover{ transform:translateY(-6px) scale(1.01); box-shadow:0 20px 60px rgba(0,0,0,0.36); }
+    .pack.active{ box-shadow:0 30px 90px rgba(59,130,246,0.08); transform:translateY(-8px) scale(1.02); border:1px solid rgba(59,130,246,0.18); }
+
   </style>
 </head>
 <body>
@@ -178,6 +192,7 @@
       <div class="row">
         <button class="primary" id="enterBtn">Devam</button>
         <button class="ghost" id="skipBtn">Şimdilik geç</button>
+        <button class="btn-quick-admin" id="btn-admin-quick" title="Admin hızlı girişi demo">Admin Hızlı Giriş</button>
         <span class="tiny" id="loginStatus"></span>
       </div>
     </div>
@@ -209,6 +224,7 @@
 
         <button class="ghost" id="export">Export (.txt)</button>
         <button class="ghost" id="clear">Geçmişi Temizle</button>
+        <button class="ghost" id="btn-admin-panel" style="display:none">Admin</button>
         <button class="primary" id="run">ÜRET</button>
       </div>
     </div>
@@ -291,17 +307,30 @@
   const LS_STATE = "sparkad_state_v2";
   const LS_NAME = "sparkad_user_name_v1";
 
-  // --- Kullanıcı adı (giriş ekranı) ---
+  // --- Kullanıcı (giriş ekranı) ---
+  function getCurrentUser(){
+    try{ return JSON.parse(localStorage.getItem('sparkad_user_v1')) || null; }catch(e){ return null; }
+  }
+  function setCurrentUser(u){
+    if(!u){ localStorage.removeItem('sparkad_user_v1'); localStorage.removeItem(LS_NAME); }
+    else { localStorage.setItem('sparkad_user_v1', JSON.stringify(u)); localStorage.setItem(LS_NAME, u.name||""); }
+    updateHello();
+    // toggle admin button visibility
+    try{ const adminBtn = $("btn-admin-panel"); if(adminBtn) adminBtn.style.display = (u && u.role && String(u.role).toLowerCase()==='admin') ? 'inline-flex' : 'none'; }catch(e){}
+  }
+
   function getName(){
+    const u = getCurrentUser();
+    if(u && u.name) return (u.name||"").trim();
     return (localStorage.getItem(LS_NAME) || "").trim();
   }
-  function setName(n){
-    localStorage.setItem(LS_NAME, (n||"").trim());
-  }
+
   function updateHello(){
-    const n = getName();
-    $("hello").textContent = n ? `Selam ${n} 👋 • demo: paket + şablon + geçmiş + export` : `Uygulama (demo) — paket + şablon + geçmiş + export`;
+    const u = getCurrentUser();
+    const n = u && u.name ? u.name : getName();
+    $("hello").textContent = n ? `Selam ${n} ${u && u.role && u.role==='admin' ? '(Admin)' : ''} 👋 • demo: paket + şablon + geçmiş + export` : `Uygulama (demo) — paket + şablon + geçmiş + export`;
   }
+
   function openLogin(){
     $("overlay").style.display = "grid";
     $("nameInput").value = getName();
@@ -315,9 +344,12 @@
   // giriş ilk açılış
   window.addEventListener("load", () => {
     updateHello();
-    if(!getName()){
+    const cu = getCurrentUser();
+    if(!cu || !cu.name){
       $("overlay").style.display = "grid";
     }
+    // ensure admin panel button state
+    try{ const adminBtn = $("btn-admin-panel"); if(adminBtn) adminBtn.style.display = (cu && cu.role && String(cu.role).toLowerCase()==='admin') ? 'inline-flex' : 'none'; }catch(e){}
   });
 
   $("enterBtn").addEventListener("click", () => {
@@ -326,15 +358,23 @@
       $("loginStatus").textContent = "Ad yaz veya Şimdilik geç.";
       return;
     }
-    setName(v);
+    setCurrentUser({ name: v, role: 'user' });
     $("loginStatus").textContent = "";
+    // success flash
+    try{ document.body.classList.add('auth-success'); setTimeout(()=>document.body.classList.remove('auth-success'),900); }catch(e){}
     closeLogin();
   });
   $("skipBtn").addEventListener("click", () => {
-    setName(""); // boş bırak
+    setCurrentUser(null); // boş bırak
     closeLogin();
   });
   $("whoAmI").addEventListener("click", () => openLogin());
+
+  // Admin quick-login
+  try{ const btnAdminQuick = document.getElementById('btn-admin-quick'); if(btnAdminQuick){ btnAdminQuick.addEventListener('click', ()=>{ setCurrentUser({ name: 'Yönetici', role: 'admin' }); $("loginStatus").textContent = 'Yönetici olarak giriş yapıldı.'; try{ document.body.classList.add('auth-success'); setTimeout(()=>document.body.classList.remove('auth-success'),900); }catch(e){} closeLogin(); }); } }catch(e){}
+
+  // Admin panel demo
+  try{ const btnAdminPanel = document.getElementById('btn-admin-panel'); if(btnAdminPanel){ btnAdminPanel.addEventListener('click', ()=>{ alert('Yönetici paneli (demo): Üyeler, Kredi, Paketler yönetim bölümü.'); }); } }catch(e){}
 
   // --- Paket seçimi + kredi ---
   let selectedPack = "free";
