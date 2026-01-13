@@ -1,0 +1,14 @@
+export const metadata = {
+  title: "SparkAd Studio",
+  description: "SparkAd Studio",
+  manifest: "/manifest.json",
+  themeColor: "#111827",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "SparkAd Studio"
+  },
+  icons: {
+    apple: "/icons/icon-192.png"
+  }
+};
